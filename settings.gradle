@@ -1,2 +1,2 @@
-include ':app', ':testlibrary', ':simplesearchview', ':connectionframework', ':login', ':login-library'
+include ':app', ':testlibrary', ':simplesearchview', ':connectionframework', ':login', ':login-library', ':slideleftmenu'
 rootProject.name='Fragments'

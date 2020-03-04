@@ -28,4 +28,13 @@ public class JsonWrapper {
 
         return  object;
     }
+
+    public static Object getobject(Object jsonString, Object object) {
+
+        Gson gson = new Gson();
+
+        object = gson.fromJson(jsonString.toString(), object.getClass());
+
+        return object;
+    }
 }
