@@ -9,6 +9,12 @@ import java.util.List;
 
 public class RequestFunction {
 
+
+    public static Request getLanguageData(int activityId, String languageData){
+        List<Object> params = new ArrayList<>();
+        params.add(languageData);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.ANNOYING_PROJECTS_LANGUAGE_DATA, params);
+    }
     public static Request loginValidate(int activityId, User user) {
         List<Object> params = new ArrayList<>();
         params.add(user);

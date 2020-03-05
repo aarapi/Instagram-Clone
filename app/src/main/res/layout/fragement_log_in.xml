@@ -7,6 +7,19 @@
     android:background="@mipmap/back_ground"
     tools:context=".mobile.ui.beforelogin.LoginActivity">
 
+    <ImageView
+        android:id="@+id/iv_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_global"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:foreground="@drawable/ripple_background_transparent"
+        android:layout_marginRight="20dp"
+        >
+
+    </ImageView>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -88,7 +101,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
-                android:text="@string/forgot_password"
+                android:text="forgtoPasswordText"
                 android:textColor="@color/white" />
 
 

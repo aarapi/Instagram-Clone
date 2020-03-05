@@ -12,6 +12,7 @@ public class CheckSetup {
     public static Map<Integer, ApplicationActivity> applicationActivityMap;
 
     public static class ServerActions {
+        public static int ANNOYING_PROJECTS_LANGUAGE_DATA = 0;
         public static int ANNOYING_PROJECTS_LOG_IN = 1;
         public static int ANNOYING_PROJECTS_DASHBOARD_ACTIVITY = 2;
         public static int ANNOYING_PROJECTS_PERSONAL_DATA = 3;
