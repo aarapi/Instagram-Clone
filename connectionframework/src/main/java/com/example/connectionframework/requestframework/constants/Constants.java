@@ -13,9 +13,7 @@ public class Constants {
     public static boolean ON_LOCAL = false;
     public static boolean ON_PREPROD_DEV = false;
     public static boolean IS_CORPORATE = false;
-
-     public static String DEBUG_PREPROD_USERNAME = "401260289";
-	  public static String DEBUG_PREPROD_PASSWORD = "123123";
+    public static String ANNOYING_PROJECTS_STORY_PREF = "annoying_shared_prefs";
 
     public static class Application {
 
@@ -30,6 +28,7 @@ public class Constants {
         public static String STATIC_CRYPTO_KEY = "";
         public static final String HOCKEYAPP_BETA_ID="6a0ed5d67f5b08f2ae4ee9901b5465e6";
         public static final String HOCKEYAPP_ALPHA_ID="679f48dff3cef2880fe9dee845ad6c4a";
+
     }
 
 

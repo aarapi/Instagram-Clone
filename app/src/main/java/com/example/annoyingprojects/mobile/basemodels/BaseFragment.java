@@ -45,13 +45,17 @@ public abstract class BaseFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.activity = (BaseActivity) getActivity();
-        initViews();
-        setViews();
-        bindEvents();
-
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews();
+        setViews();
+        bindEvents();
+        setFragmentView(savedInstanceState);
+    }
 
     public BaseFragment(int layoutId) {
         this.layoutId = layoutId;
@@ -117,7 +121,11 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+
     public void onDataReceive(int action, List<Object> data) {
+
+    }
+    public void setFragmentView(Bundle bundle){
 
     }
 

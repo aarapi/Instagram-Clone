@@ -5,31 +5,53 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.personaldata.FragmentMenu;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.connectionframework.requestframework.json.JsonWrapper;
 import com.example.connectionframework.requestframework.sender.Message;
 import com.example.connectionframework.requestframework.sender.Request;
 import com.example.connectionframework.requestframework.sender.SenderBridge;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseActivity extends AppCompatActivity {
+import yalantis.com.sidemenu.interfaces.Resourceble;
+import yalantis.com.sidemenu.interfaces.ScreenShotable;
+import yalantis.com.sidemenu.model.SlideMenuItem;
+import yalantis.com.sidemenu.util.ViewAnimator;
+
+public abstract class BaseActivity extends AppCompatActivity implements ViewAnimator.ViewAnimatorListener, View.OnClickListener {
     public FragmentManager fragmentManager;
     private SenderBridge senderBridge;
     protected BaseActivity activity;
     private ApplicationActivity applicationActivity;
+    private List<SlideMenuItem> list = new ArrayList<>();
+    private ViewAnimator viewAnimator;
+    protected DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private LinearLayout linearLayout;
+    private ImageView iv_menu;
 
     private static final long MOVE_DEFAULT_TIME = 700;
     @Override
@@ -40,6 +62,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutContent());
 
         senderBridge = new SenderBridge(getActivity(), BaseFragment.ACTION_DATA_RECEIVER_BASE);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        if (drawerLayout != null)
+            setLeftMenu();
+
+       iv_menu =  findViewById(R.id.iv_menu);
+       if (iv_menu != null)
+        iv_menu.setOnClickListener(this);
 
     }
 
@@ -118,8 +147,167 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (applicationActivity != null) {
             Intent intent = new Intent(getApplicationContext(), applicationActivity.getActivityClass());
             startActivity(intent);
+            overridePendingTransition(R.anim.enter, R.anim.exit);
+
         }
     }
+
+
+    protected void setLeftMenu(){
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        linearLayout = findViewById(R.id.left_drawer);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
+            }
+        });
+
+
+        setActionBar();
+        createMenuList();
+
+        ScreenShotable screenShotable = new ScreenShotable() {
+            @Override
+            public void takeScreenShot() {
+            }
+
+            @Override
+            public Bitmap getBitmap() {
+                return null;
+            }
+        };
+
+        viewAnimator = new ViewAnimator<>(this, list, screenShotable, drawerLayout, this);
+    }
+
+    protected void setActionBar() {
+        drawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                drawerLayout,  /* nav drawer icon to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close /* "close drawer" description */
+        ) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                linearLayout.removeAllViews();
+                linearLayout.invalidate();
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                if (slideOffset > 0.6 && linearLayout.getChildCount() == 0)
+                    viewAnimator.showMenuContent();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        drawerLayout.addDrawerListener(drawerToggle);
+    }
+
+
+    protected void createMenuList() {
+        SlideMenuItem menuItem = new SlideMenuItem(FragmentMenu.BUILDING, R.drawable.icn_1);
+        list.add(menuItem);
+        SlideMenuItem menuItem2 = new SlideMenuItem(FragmentMenu.BOOK, R.drawable.icn_2);
+        list.add(menuItem2);
+        SlideMenuItem menuItem3 = new SlideMenuItem(FragmentMenu.PAINT, R.drawable.icn_3);
+        list.add(menuItem3);
+        SlideMenuItem menuItem4 = new SlideMenuItem(FragmentMenu.CASE, R.drawable.icn_4);
+        list.add(menuItem4);
+        SlideMenuItem menuItem5 = new SlideMenuItem(FragmentMenu.SHOP, R.drawable.icn_5);
+        list.add(menuItem5);
+        SlideMenuItem menuItem6 = new SlideMenuItem(FragmentMenu.PARTY, R.drawable.icn_6);
+        list.add(menuItem6);
+        SlideMenuItem menuItem7 = new SlideMenuItem(FragmentMenu.MOVIE, R.drawable.icn_7);
+        list.add(menuItem7);
+    }
+    @Override
+    public ScreenShotable onSwitch(Resourceble slideMenuItem, ScreenShotable screenShotable, int position) {
+        switch (slideMenuItem.getName()) {
+            case FragmentMenu.CLOSE:
+                return screenShotable;
+            default:
+                openActivity(screenShotable, position, slideMenuItem);
+                return new ScreenShotable() {
+                    @Override
+                    public void takeScreenShot() {
+
+                    }
+
+                    @Override
+                    public Bitmap getBitmap() {
+                        return null;
+                    }
+                };
+        }
+    }
+
+    private void openActivity(ScreenShotable screenShotable, int topPosition, Resourceble slideMenuItem) {
+        switch (slideMenuItem.getName()){
+            case FragmentMenu.BUILDING:
+                if (!isActivityOpened(CheckSetup.Activities.PERSONAL_DATA_ACTIVITY)) {
+                    startActivity(CheckSetup.Activities.PERSONAL_DATA_ACTIVITY);
+                }
+                break;
+        }
+
+    }
+
+    private boolean isActivityOpened(int nextActivityId){
+        if (getActivityId() == nextActivityId){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (drawerToggle != null)
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (drawerToggle != null)
+         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+
+
+
+    @Override
+    public void disableHomeButton() {
+
+    }
+
+    @Override
+    public void enableHomeButton() {
+        drawerLayout.closeDrawers();
+
+    }
+
+    @Override
+    public void addViewToContainer(View view) {
+        linearLayout.addView(view);
+    }
+    @Override
+    public void onClick(View v) {
+        if (v == iv_menu) {
+            drawerLayout.openDrawer(Gravity.LEFT, true);
+        }
+    }
+
 
 }
 

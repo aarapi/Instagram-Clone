@@ -90,7 +90,7 @@ public class LoginActivity extends BaseActivity {
                    .commit();
 
        }else if (action == CheckSetup.ServerActions.ANNOYING_PROJECTS_LOG_IN){
-           startActivity(CheckSetup.Activities.DASHBOARD_ACTIVITY);
+           startActivity(CheckSetup.Activities.HOME_ACTIVITY);
        }
 
     }

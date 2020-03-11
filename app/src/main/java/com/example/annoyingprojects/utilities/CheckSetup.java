@@ -2,6 +2,7 @@ package com.example.annoyingprojects.utilities;
 
 import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.DashboardActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.personaldata.PersonalDataActivity;
 import com.example.annoyingprojects.mobile.ui.beforelogin.LoginActivity;
 
@@ -22,6 +23,7 @@ public class CheckSetup {
         public static int LOG_IN_ACTIVITY = 0;
         public static int DASHBOARD_ACTIVITY = 1;
         public static int PERSONAL_DATA_ACTIVITY = 2;
+        public static int HOME_ACTIVITY = 3;
     }
 
 
@@ -30,6 +32,7 @@ public class CheckSetup {
         addApplicationActivityToConfigurationMap(Activities.LOG_IN_ACTIVITY, LoginActivity.class);
         addApplicationActivityToConfigurationMap(Activities.DASHBOARD_ACTIVITY, DashboardActivity.class);
         addApplicationActivityToConfigurationMap(Activities.PERSONAL_DATA_ACTIVITY, PersonalDataActivity.class);
+        addApplicationActivityToConfigurationMap(Activities.HOME_ACTIVITY, HomeActivity.class);
     }
 
 

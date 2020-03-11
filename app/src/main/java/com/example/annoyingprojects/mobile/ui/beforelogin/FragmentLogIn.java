@@ -100,8 +100,7 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
 
 
     public void signUser(User user) {
-        startActivity(CheckSetup.Activities.DASHBOARD_ACTIVITY);
-//        activity.sendRequest(RequestFunction.loginValidate(activity.getActivityId(), user));
+        activity.sendRequest(RequestFunction.loginValidate(activity.getActivityId(), user));
     }
 
 

@@ -25,7 +25,6 @@ android {
 
     productFlavors {
         DEV {
-            // Assigns this product flavor to the 'version' flavor dimension.
             dimension "api"
             buildConfigField("String", "HOST_URL", '"http://192.168.40.4:8085/annoyingProjectsGateway/generics"')
 
