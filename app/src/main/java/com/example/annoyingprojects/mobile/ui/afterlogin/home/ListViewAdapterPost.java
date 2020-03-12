@@ -21,20 +21,20 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class PagerAdapterCustomerClaims extends ArrayAdapter<PostModel> implements View.OnClickListener {
+public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View.OnClickListener {
 
     private List<PostModel> dataSet;
     private Context mContext;
 
     // View lookup cache
     private static class ViewHolder {
-        CircleImageView cv_user_img;
+        ImageView cv_user_img;
         TextView tv_user_name;
         ImageView iv_post_img;
 
     }
 
-    public PagerAdapterCustomerClaims(List<PostModel> data, Context context) {
+    public ListViewAdapterPost(List<PostModel> data, Context context) {
         super(context, R.layout.post_cell_layout, data);
         this.dataSet = data;
         this.mContext = context;
@@ -63,7 +63,7 @@ public class PagerAdapterCustomerClaims extends ArrayAdapter<PostModel> implemen
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.post_cell_layout, parent, false);
-            viewHolder.cv_user_img = (CircleImageView) convertView.findViewById(R.id.cv_user_img);
+            viewHolder.cv_user_img = (ImageView) convertView.findViewById(R.id.cv_user_img);
             viewHolder.tv_user_name = (TextView) convertView.findViewById(R.id.tv_user_name);
             viewHolder.iv_post_img = (ImageView) convertView.findViewById(R.id.iv_post_img);
 
