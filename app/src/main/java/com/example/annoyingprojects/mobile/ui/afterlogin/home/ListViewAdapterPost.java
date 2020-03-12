@@ -13,12 +13,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
-import com.example.annoyingprojects.mobile.ui.afterlogin.home.PostModel;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View.OnClickListener {

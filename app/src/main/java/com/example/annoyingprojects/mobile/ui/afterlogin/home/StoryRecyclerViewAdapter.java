@@ -26,6 +26,8 @@ import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
+
 public class StoryRecyclerViewAdapter
         extends RecyclerView.Adapter<StoryViewHolder>
         implements View.OnClickListener {
@@ -119,10 +121,6 @@ class StoryViewHolder extends RecyclerView.ViewHolder {
         mTextView.setText(item.Title);
         itemView.setTag(item);
         String imageUrl = item.getLink();
-        Glide.with(itemView)
-                .load(imageUrl)
-                .transition(DrawableTransitionOptions.withCrossFade(400))
-                .apply(new RequestOptions().override(Target.SIZE_ORIGINAL))
-                .into(mImageView);
+        setUserImageRes(itemView.getContext(), imageUrl, mImageView);
     }
 }

@@ -14,8 +14,9 @@ public class FramgentSplashScreen extends BaseFragment {
     private Animation anim1, anim2, anim3;
 
 
-    public FramgentSplashScreen() {
-        super(R.layout.fragment_splash_scr);
+    public static FramgentSplashScreen newInstance(){
+        FramgentSplashScreen framgentSplashScreen = new FramgentSplashScreen();
+        return framgentSplashScreen;
     }
 
     @Override
@@ -78,6 +79,10 @@ public class FramgentSplashScreen extends BaseFragment {
 
     }
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_splashscr_layout;
+    }
 
     private void init() {
 

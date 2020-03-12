@@ -2,12 +2,8 @@ package com.example.annoyingprojects.mobile.ui.beforelogin;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
 import android.view.ContextThemeWrapper;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -19,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.User;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
-import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.ResourceKey;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
@@ -36,11 +31,12 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
     private Fragment fragmentLogIn;
     private AlertDialog alertDialog;
 
-    public FragmentLogIn() {
-        super(R.layout.fragement_log_in);
 
+    public static FragmentLogIn newInstance(Bundle args){
+        FragmentLogIn fragmentLogIn = new FragmentLogIn();
+        fragmentLogIn.setArguments(args);
+        return fragmentLogIn;
     }
-
     @Override
     public void initViews() {
 
@@ -88,7 +84,7 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
                 signUser(user);
             }
         } else if (v == signUp) {
-            changeFragment("logo_transition", R.id.ivLogLogo, ((LoginActivity) activity).getFragmentSignUp());
+            changeFragment("logo_transition", R.id.ivLogLogo, FragmentSignUp.newInstance(new Bundle()));
         } else if (v == forgotPass) {
 
         }else if (v == iv_language){
@@ -152,6 +148,11 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
                         })
                 .setCancelable(true)
                 .create();
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_login_layout;
     }
 
     public AlertDialog getAlertDialog(){

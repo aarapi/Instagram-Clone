@@ -1,6 +1,7 @@
 package com.example.annoyingprojects.mobile.ui.beforelogin;
 
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -17,10 +18,12 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     private TextView signin;
     private ProgressDialog progressDialog;
 
-    public FragmentSignUp() {
-        super(R.layout.fragment_sign_up);
-    }
 
+    public static FragmentSignUp newInstance(Bundle args){
+        FragmentSignUp fragmentSignUp = new FragmentSignUp();
+        fragmentSignUp.setArguments(args);
+        return fragmentSignUp;
+    }
     @Override
     public void initViews() {
         logo = containerView.findViewById(R.id.ivRegLogo);
@@ -75,7 +78,12 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
             }
         } else if (v == signin) {
-            changeFragment("logo_transition", R.id.ivRegLogo, ((LoginActivity) activity).getFragmentSignIn());
+            changeFragment("logo_transition", R.id.ivRegLogo, FragmentLogIn.newInstance(new Bundle()));
         }
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_signup_layout;
     }
 }

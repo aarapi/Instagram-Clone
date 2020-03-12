@@ -27,7 +27,7 @@ public class PersonalDataActivity extends BaseActivity {
 
     @Override
     public int getLayoutContent() {
-        return R.layout.personal_data_activity;
+        return R.layout.activity_personaldata_layout;
     }
 
     @Override

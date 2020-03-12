@@ -17,6 +17,9 @@ public class CheckSetup {
         public static int ANNOYING_PROJECTS_LOG_IN = 1;
         public static int ANNOYING_PROJECTS_DASHBOARD_ACTIVITY = 2;
         public static int ANNOYING_PROJECTS_PERSONAL_DATA = 3;
+        public static int ANNOYING_PROJECTS_HOME_DATA = 4;
+        public static int ANNOYING_PROJECTS_SEARCH = 5;
+        public static int ANNOYING_PROJECTS_USER_PROFILE = 6;
     }
 
     public static class Activities {

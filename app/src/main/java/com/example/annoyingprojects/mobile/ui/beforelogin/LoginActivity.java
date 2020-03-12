@@ -38,9 +38,7 @@ public class LoginActivity extends BaseActivity {
 
 
 
-        fragmentSplash = new FramgentSplashScreen();
-        fragmentSignIn = new FragmentLogIn();
-        fragmentSignUp = new FragmentSignUp();
+        fragmentSplash = FramgentSplashScreen.newInstance();
         fragmentManager.beginTransaction()
                 .add(android.R.id.content, fragmentSplash).commit();
 
@@ -63,7 +61,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public int getLayoutContent() {
-        return R.layout.dashboard_activity;
+        return R.layout.activity_dashboard_layout;
     }
 
     @Override
@@ -95,17 +93,6 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    public Fragment getFragmentSplash() {
-        return fragmentSplash;
-    }
-
-    public Fragment getFragmentSignIn() {
-        return fragmentSignIn;
-    }
-
-    public Fragment getFragmentSignUp() {
-        return fragmentSignUp;
-    }
 
     public AlertDialog getLanguageDialog() {
 

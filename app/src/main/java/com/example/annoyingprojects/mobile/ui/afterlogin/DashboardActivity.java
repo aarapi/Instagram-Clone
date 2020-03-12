@@ -11,7 +11,6 @@ import androidx.cardview.widget.CardView;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
-import com.example.annoyingprojects.utilities.RequestFunction;
 
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class DashboardActivity extends BaseActivity implements ViewAnimator.View
 
     @Override
     public int getLayoutContent() {
-        return R.layout.dashboard_activity;
+        return R.layout.activity_dashboard_layout;
     }
 
     @Override

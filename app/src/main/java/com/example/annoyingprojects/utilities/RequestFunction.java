@@ -20,6 +20,14 @@ public class RequestFunction {
         params.add(user);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.ANNOYING_PROJECTS_LOG_IN, params);
     }
+    public static Request getPostData(int activityId){
+        List<Object> params = new ArrayList<>();
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.ANNOYING_PROJECTS_HOME_DATA, params);
+    }
+    public static Request getUserProfileData(int activityId){
+        List<Object> params = new ArrayList<>();
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.ANNOYING_PROJECTS_USER_PROFILE, params);
+    }
 
     public static Request getDashboardData(int activityId) {
         List<Object> params = new ArrayList<>();

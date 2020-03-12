@@ -7,79 +7,16 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/fl_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_camera"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"></ImageView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Instacommerce"
-            android:fontFamily="@font/mo_me"
-            android:textStyle="bold"></TextView>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_send"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="10dp"
-            ></ImageView>
+        android:layout_weight="3"></FrameLayout>
 
-    </RelativeLayout>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/storyContainer"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@drawable/border_drable_line_gray">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:id="@+id/swipeToRefresh"
-                >
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_stories"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:layout_marginBottom="21dp"
-                    android:clipToPadding="false" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <ListView
-        android:id="@+id/mainListView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="@color/white"
-        android:divider="@null">
-    </ListView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:background="@drawable/border_drable_line_gray"
         android:orientation="horizontal"
         >
         <RelativeLayout
@@ -129,7 +66,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/circular_border_shape"
 
                 >
                 <androidx.cardview.widget.CardView
@@ -137,6 +73,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     app:cardCornerRadius="50dp"
+                    android:padding="2dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     >

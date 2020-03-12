@@ -38,9 +38,7 @@ public class FragmentDashboard extends BaseFragment implements ScreenShotable, V
     private TextView user_name, user_id;
     private CardView cv_personal_data, cv_course_schedules, cv_study_result, cv_attendance, cv_course_booking, cv_course_plan;
 
-    public FragmentDashboard() {
-        super(R.layout.fragment_dashboard_layout);
-    }
+
 
 
     @Override
@@ -95,5 +93,10 @@ public class FragmentDashboard extends BaseFragment implements ScreenShotable, V
         } else if (v == cv_study_result) {
 
         }
+    }
+
+    @Override
+    public int getLayoutId() {
+        return 0;
     }
 }

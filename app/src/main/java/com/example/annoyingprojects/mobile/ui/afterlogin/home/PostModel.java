@@ -1,9 +1,19 @@
 package com.example.annoyingprojects.mobile.ui.afterlogin.home;
 
 public class PostModel {
+    private String ID;
     private String name;
     private String linkImage;
     private String linkUserImg;
+
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getName() {
         return name;

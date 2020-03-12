@@ -2,6 +2,7 @@ package com.example.connectionframework.requestframework.receiver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.connectionframework.requestframework.components.CustomAlertBox;
 import com.example.connectionframework.requestframework.components.LottieDialog;
@@ -14,6 +15,7 @@ import com.rahman.dialog.ListenerCallBack.SmartDialogClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ReceiverBridge {
     private Activity baseActivity;
@@ -34,6 +36,8 @@ public class ReceiverBridge {
         lottieDialog.dismiss();
 
         Message message = returnMessage(response);
+
+        Log.e("Response", response);
 
         int status = message.getStatusCode();
 

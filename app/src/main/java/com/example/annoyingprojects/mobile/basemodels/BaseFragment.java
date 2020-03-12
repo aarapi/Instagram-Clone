@@ -26,7 +26,6 @@ import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
     protected View containerView;
-    private int layoutId;
     protected BaseActivity activity;
     private ApplicationActivity applicationActivity;
 
@@ -36,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       containerView = inflater.inflate(layoutId, null);
+       containerView = inflater.inflate(getLayoutId(), null);
        return containerView;
 
     }
@@ -57,14 +56,12 @@ public abstract class BaseFragment extends Fragment {
         setFragmentView(savedInstanceState);
     }
 
-    public BaseFragment(int layoutId) {
-        this.layoutId = layoutId;
-    }
+
 
     public abstract void initViews();
     public abstract void bindEvents();
     public abstract void setViews();
-
+    public abstract int getLayoutId();
 
     protected void addToRegister(int action) {
         BaseFragment.DataReceiver receiver = new DataReceiver();
