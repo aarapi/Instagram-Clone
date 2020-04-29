@@ -1,39 +1,32 @@
 package com.example.connectionframework.requestframework.receiver;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 
-import com.example.connectionframework.requestframework.components.CustomAlertBox;
 import com.example.connectionframework.requestframework.components.LottieDialog;
 import com.example.connectionframework.requestframework.constants.Constants;
 import com.example.connectionframework.requestframework.constants.MessagingFrameworkConstant;
 import com.example.connectionframework.requestframework.json.JsonWrapper;
 import com.example.connectionframework.requestframework.sender.Message;
-import com.rahman.dialog.Activity.SmartDialog;
 import com.rahman.dialog.ListenerCallBack.SmartDialogClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ReceiverBridge {
-    private Activity baseActivity;
-    private String baseReceiver;
-    private LottieDialog lottieDialog;
+    private RequestReceived requestReceived;
+//    private LottieDialog lottieDialog;
     private String response;
     private SmartDialogClickListener listener;
 
-    public ReceiverBridge(Activity baseActivity, String basereceiver, LottieDialog lottieDialog) {
-        this.baseActivity = baseActivity;
-        this.baseReceiver = basereceiver;
-        this.lottieDialog = lottieDialog;
+    public ReceiverBridge(RequestReceived requestReceived, LottieDialog lottieDialog) {
+        this.requestReceived = requestReceived;
+//        this.lottieDialog = lottieDialog;
     }
 
     public void responseReceived(String response){
         this.response = response;
 
-        lottieDialog.dismiss();
+//        lottieDialog.dismiss();
 
         Message message = returnMessage(response);
 
@@ -49,14 +42,11 @@ public class ReceiverBridge {
                 requestAppearSuccesfully(message);
                 break;
             case MessagingFrameworkConstant.STATUS_CODES.WarningWithoutAlert:
-                break;
             case MessagingFrameworkConstant.STATUS_CODES.Error:
             case MessagingFrameworkConstant.STATUS_CODES.Warning:
             case MessagingFrameworkConstant.STATUS_CODES.ConnectionTimedOut:
-                  requestAppearNotSucessfully(message);
-                break;
             case MessagingFrameworkConstant.STATUS_CODES.ConnectionFailed:
-                requestFailed(message);
+                errorMessageReceived(message);
                 break;
 
 
@@ -69,48 +59,45 @@ public class ReceiverBridge {
     }
 
     private void requestAppearSuccesfully(Message message){
-        Intent intent = new Intent(baseReceiver + message.getAction());
-
-        intent.putExtra("action", message.getAction());
-        intent.putExtra("data", response);
-
-        baseActivity.sendBroadcast(intent);
-
+        requestReceived.onRequestReceived(message.getAction(), message.getData());
+    }
+    private void errorMessageReceived(Message message){
+        requestReceived.onErrorReceived(message.getAction(), message.getData());
     }
 
-    private void requestAppearNotSucessfully(Message message){
-
-       String reason = (String) message.getData().get(0);
-
-       listener = new SmartDialogClickListener() {
-           @Override
-           public void onClick(SmartDialog smartDialog) {
-             smartDialog.dismiss();
-           }
-       };
-
-        CustomAlertBox customAlertBox = new CustomAlertBox(baseActivity,"Warning",
-                reason, true, listener);
-
-        customAlertBox.showAlertBox();
-    }
-
-    private void requestFailed(Message message){
-        String reason = (String) message.getData().get(0);
-
-        listener = new SmartDialogClickListener() {
-            @Override
-            public void onClick(SmartDialog smartDialog) {
-                smartDialog.dismiss();
-            }
-        };
-
-        CustomAlertBox customAlertBox = new CustomAlertBox(baseActivity,"Warning",
-                reason, true, listener);
-
-        customAlertBox.showAlertBox();
-
-    }
+//    private void requestAppearNotSucessfully(Message message){
+//
+//       String reason = (String) message.getData().get(0);
+//
+//       listener = new SmartDialogClickListener() {
+//           @Override
+//           public void onClick(SmartDialog smartDialog) {
+//             smartDialog.dismiss();
+//           }
+//       };
+//
+//        CustomAlertBox customAlertBox = new CustomAlertBox(baseActivity,"Warning",
+//                reason, true, listener);
+//
+//        customAlertBox.showAlertBox();
+//    }
+//
+//    private void requestFailed(Message message){
+//        String reason = (String) message.getData().get(0);
+//
+//        listener = new SmartDialogClickListener() {
+//            @Override
+//            public void onClick(SmartDialog smartDialog) {
+//                smartDialog.dismiss();
+//            }
+//        };
+//
+//        CustomAlertBox customAlertBox = new CustomAlertBox(baseActivity,"Warning",
+//                reason, true, listener);
+//
+//        customAlertBox.showAlertBox();
+//
+//    }
 
     private Message returnMessage(String response){
         Message message = new Message();

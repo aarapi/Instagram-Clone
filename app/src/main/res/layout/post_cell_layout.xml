@@ -3,23 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="300dp">
-        <RelativeLayout
-            android:id="@+id/rl_user_img"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp">
 
-            >
+
             <androidx.cardview.widget.CardView
-                android:id="@+id/myCardView"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:cardCornerRadius="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:id="@+id/rl_user_img"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                app:cardCornerRadius="13dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 >
                 <ImageView
                     android:id="@+id/cv_user_img"
@@ -29,23 +24,139 @@
                     android:adjustViewBounds="true"
                     />
             </androidx.cardview.widget.CardView>
-        </RelativeLayout>
     <TextView
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="aarapi"
         android:textStyle="bold"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
         android:layout_toRightOf="@+id/rl_user_img"
         android:layout_marginLeft="10dp"></TextView>
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_user_name"
+        android:layout_toRightOf="@+id/rl_user_img"
+        android:layout_marginLeft="10dp"
+        android:text="Laptop Dell"></TextView>
     <ImageView
-        android:id="@+id/iv_post_img"
+        android:id="@+id/iv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_more"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentEnd="true"
+        ></ImageView>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="10dp"
         android:scaleType="fitXY"
-        android:layout_below="@+id/rl_user_img"
-        android:src="@mipmap/back_ground"></ImageView>
+        android:layout_below="@+id/rl_user_img"></androidx.viewpager.widget.ViewPager>
+
+    <RelativeLayout
+        android:id="@+id/ll_actions_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewPager"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal">
+            <CheckBox
+                android:id="@+id/iv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:checked="false"
+                android:stateListAnimator="@animator/button_animator"
+                android:background="@drawable/ic_heart"></CheckBox>
+            <ImageView
+                android:id="@+id/iv_send_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/ic_send_message"></ImageView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/SliderDots"
+            android:orientation="horizontal"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            ></LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/tv_likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/ll_actions_container">
+        <TextView
+            android:id="@+id/tv_likedby_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="90"></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text=" likes"></TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_likes"
+        android:text="Price: "
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        ></TextView>
+    <TextView
+        android:id="@+id/product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_likes"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/tv_price"
+        android:text="50,000.00 EUR"
+        android:textColor="@color/green"
+        ></TextView>
+    <TextView
+        android:id="@+id/tv_product_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product_price"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="Description: "></TextView>
+    <com.skyhope.showmoretextview.ShowMoreTextView
+        android:id="@+id/tv_product_description_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textStyle="normal"
+        android:layout_toRightOf="@+id/tv_product_description"
+        android:layout_below="@+id/product_price"
+        android:maxLines="4"
+        android:text="Tanimë që qeveria ka marrë masa të rrepta për ndalimin e përhapjes së koronavirusit, Tirana dhe jo vetëm duken si qytete ‘bosh’. Më poshtë ju sjellim disa pamje me dron nga kryeqyteti."></com.skyhope.showmoretextview.ShowMoreTextView>
+
 
 </RelativeLayout>

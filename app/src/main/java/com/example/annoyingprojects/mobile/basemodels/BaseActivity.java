@@ -1,10 +1,7 @@
 package com.example.annoyingprojects.mobile.basemodels;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -28,11 +25,11 @@ import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.personaldata.FragmentMenu;
 import com.example.annoyingprojects.utilities.CheckSetup;
-import com.example.connectionframework.requestframework.json.JsonWrapper;
-import com.example.connectionframework.requestframework.sender.Message;
+import com.example.connectionframework.requestframework.receiver.RequestReceived;
 import com.example.connectionframework.requestframework.sender.Request;
 import com.example.connectionframework.requestframework.sender.SenderBridge;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +38,9 @@ import yalantis.com.sidemenu.interfaces.ScreenShotable;
 import yalantis.com.sidemenu.model.SlideMenuItem;
 import yalantis.com.sidemenu.util.ViewAnimator;
 
-public abstract class BaseActivity extends AppCompatActivity implements ViewAnimator.ViewAnimatorListener, View.OnClickListener {
+public abstract class BaseActivity extends AppCompatActivity implements
+        ViewAnimator.ViewAnimatorListener,
+        View.OnClickListener {
     public FragmentManager fragmentManager;
     private SenderBridge senderBridge;
     protected BaseActivity activity;
@@ -52,6 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewAnim
     private ActionBarDrawerToggle drawerToggle;
     private LinearLayout linearLayout;
     private ImageView iv_menu;
+    boolean isCreated = true;
 
     private static final long MOVE_DEFAULT_TIME = 700;
     @Override
@@ -61,7 +61,19 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewAnim
         fragmentManager = getSupportFragmentManager();
         setContentView(getLayoutContent());
 
-        senderBridge = new SenderBridge(getActivity(), BaseFragment.ACTION_DATA_RECEIVER_BASE);
+        RequestReceived requestReceived = new RequestReceived() {
+            @Override
+            public void onRequestReceived(int p_action, List<Object> data) {
+                onDataReceive(p_action, data);
+            }
+            @Override
+            public void onErrorReceived(int p_action, List<Object> data) {
+                onErrorDataReceive(p_action, data);
+            }
+        };
+        senderBridge = new SenderBridge(requestReceived);
+
+
         drawerLayout = findViewById(R.id.drawer_layout);
         if (drawerLayout != null)
             setLeftMenu();
@@ -75,50 +87,27 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewAnim
     @Override
     protected void onResume() {
         super.onResume();
-        initViews();
-        setViews();
-        bindEvents();
+        if (isCreated) {
+            initViews();
+            setViews();
+            bindEvents();
+
+            isCreated = false;
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
     }
-
-    public abstract void initViews();
-    public abstract void bindEvents();
-    public abstract void setViews();
-    public abstract int getLayoutContent();
-    public abstract Activity getActivity();
-    public abstract int getActivityId();
-
     public void sendRequest(Request request) {
 
         if (senderBridge != null)
             senderBridge.sendMessage(request);
     }
 
-    public void addToRegister(int action){
-        DataReceiver receiver = new DataReceiver();
-        String _action = BaseFragment.ACTION_DATA_RECEIVER_BASE + action;
-        getActivity().registerReceiver(receiver, new IntentFilter(_action));
-    }
-
-    class DataReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context p_context, Intent p_intent) {
-            int _action = p_intent.getIntExtra("action", -1);
-
-            Message message = JsonWrapper.getobject(p_intent.getStringExtra("data"));
-
-            onDataReceive(_action, message.getData());
-
-        }
-    }
-
-    public void onDataReceive(int action, List<Object> data) {
-
-    }
+    public void onDataReceive(int action, List<Object> data) {}
+    public void onErrorDataReceive(int action, List<Object> data) {}
 
 
     protected void changeFragment(String tagTransition, int viewId, Fragment nextFragment) {
@@ -146,6 +135,16 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewAnim
         applicationActivity = CheckSetup.applicationActivityMap.get(activityId);
         if (applicationActivity != null) {
             Intent intent = new Intent(getApplicationContext(), applicationActivity.getActivityClass());
+            startActivity(intent);
+            overridePendingTransition(R.anim.enter, R.anim.exit);
+
+        }
+    }
+    protected void startActivity(int activityId, List<Object> data) {
+        applicationActivity = CheckSetup.applicationActivityMap.get(activityId);
+        if (applicationActivity != null) {
+            Intent intent = new Intent(getApplicationContext(), applicationActivity.getActivityClass());
+            intent.putExtra("data", (Serializable) data);
             startActivity(intent);
             overridePendingTransition(R.anim.enter, R.anim.exit);
 
@@ -252,8 +251,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewAnim
     private void openActivity(ScreenShotable screenShotable, int topPosition, Resourceble slideMenuItem) {
         switch (slideMenuItem.getName()){
             case FragmentMenu.BUILDING:
-                if (!isActivityOpened(CheckSetup.Activities.PERSONAL_DATA_ACTIVITY)) {
-                    startActivity(CheckSetup.Activities.PERSONAL_DATA_ACTIVITY);
+                if (!isActivityOpened(CheckSetup.Activities.COURSE_EXAMPLE_ACTIVITY)) {
+                    startActivity(CheckSetup.Activities.COURSE_EXAMPLE_ACTIVITY);
                 }
                 break;
         }
@@ -282,10 +281,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewAnim
          drawerToggle.onConfigurationChanged(newConfig);
     }
 
-
-
-
-
     @Override
     public void disableHomeButton() {
 
@@ -308,6 +303,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ViewAnim
         }
     }
 
-
+    public abstract void initViews();
+    public abstract void bindEvents();
+    public abstract void setViews();
+    public abstract int getLayoutContent();
+    public abstract Activity getActivity();
+    public abstract int getActivityId();
 }
 

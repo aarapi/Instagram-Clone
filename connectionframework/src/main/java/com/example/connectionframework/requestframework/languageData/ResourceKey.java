@@ -7,6 +7,8 @@ public enum ResourceKey {
     ForgotPasswordText("forgotPassowrdText"),
     PersonalDataText("personalDataText");
 
+
+
     private final String value;
 
     ResourceKey(String value) {

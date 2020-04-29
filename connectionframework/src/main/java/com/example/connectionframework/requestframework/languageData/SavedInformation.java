@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class SavedInformation {
@@ -51,6 +52,24 @@ public class SavedInformation {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(preferenceKey, languageValue);
         editor.apply();
+    }
+    public void setPreferenceData(Context context, Object object, String preferenceKey){
+        SharedPreferences prefs =  context.getSharedPreferences("PREFERENCE_NAME",
+                Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(preferenceKey, gson.toJson(object));
+        editor.apply();
+    }
+    public Object getPreferenceData(Context context, String key, Class objectClass){
+        Gson gson = new Gson();
+        SharedPreferences preferences = context.getSharedPreferences("PREFERENCE_NAME",
+                Context.MODE_PRIVATE);
+        String jsonValue = preferences.getString(key, "");
+
+        Object value = gson.fromJson(jsonValue, objectClass);
+
+        return value;
     }
 
     public String getPreferenceData(Context context, String key){

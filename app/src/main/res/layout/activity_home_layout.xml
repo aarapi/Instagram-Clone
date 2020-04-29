@@ -13,24 +13,31 @@
         android:layout_height="0dp"
         android:layout_weight="3"></FrameLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:background="@color/white_five"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
         android:orientation="horizontal"
+        android:background="@color/white_one"
         >
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5">
+
             <ImageView
                 android:id="@+id/iv_home_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_home_run"
                 android:layout_centerInParent="true"
-                ></ImageView>
+                android:src="@drawable/ic_home_run"></ImageView>
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -48,6 +55,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5">
             <ImageView
+                android:id="@+id/iv_add_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_plus"
@@ -58,30 +66,26 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5">
+
+
             <RelativeLayout
                 android:id="@+id/rl_user_img"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_centerInParent="true"
-
-                >
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/myCardView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:cardCornerRadius="50dp"
-                    android:padding="2dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:cardCornerRadius="13dp"
+                    android:layout_centerInParent="true"
                     >
                     <ImageView
                         android:id="@+id/cv_user_img"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
                         />
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>

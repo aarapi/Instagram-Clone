@@ -2,6 +2,7 @@ package com.example.annoyingprojects.mobile.ui.beforelogin;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 
@@ -9,15 +10,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.data.PostModel;
+import com.example.annoyingprojects.data.Posts;
+import com.example.annoyingprojects.data.StoryInfo;
+import com.example.annoyingprojects.data.User;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
+import com.example.annoyingprojects.utilities.ClassType;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity.scrollTime;
 import static com.example.annoyingprojects.utilities.CheckSetup.initializeApplicationActivity;
 
 public class LoginActivity extends BaseActivity {
@@ -33,8 +44,6 @@ public class LoginActivity extends BaseActivity {
                 SavedInformation.getInstance().
                         getPreferenceData(getApplicationContext(), "languageData")));
 
-        addToRegister(CheckSetup.ServerActions.ANNOYING_PROJECTS_LOG_IN);
-        addToRegister(CheckSetup.ServerActions.ANNOYING_PROJECTS_LANGUAGE_DATA);
 
 
 
@@ -76,8 +85,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onDataReceive(int action, List<Object> data) {
-       if (action == CheckSetup.ServerActions.ANNOYING_PROJECTS_LANGUAGE_DATA){
-
+       if (action == CheckSetup.ServerActions.INSTA_COMMERCE_LANGUAGE_DATA){
            LinkedTreeMap<String, String> resourceList = (LinkedTreeMap<String, String>) data.get(0);
            SavedInformation.getInstance().setResourceList(resourceList);
 
@@ -87,16 +95,13 @@ public class LoginActivity extends BaseActivity {
                    .attach(currentFragment)
                    .commit();
 
-       }else if (action == CheckSetup.ServerActions.ANNOYING_PROJECTS_LOG_IN){
-           startActivity(CheckSetup.Activities.HOME_ACTIVITY);
        }
-
-    }
+        }
 
 
     public AlertDialog getLanguageDialog() {
 
-        final String[] languages = {"Shqip","English"};
+        final String[] languages = {"sq","en"};
         int selectedIndex = -1;
 
         for (int i = 0; i<languages.length; i++){

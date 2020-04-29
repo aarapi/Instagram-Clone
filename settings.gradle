@@ -1,2 +1,2 @@
-include ':app', ':testlibrary', ':simplesearchview', ':connectionframework', ':login', ':login-library', ':slideleftmenu'
+include ':app', ':connectionframework', ':slideleftmenu', ':gallery_picker', ':searchview', ':chatkit', ':messages_library'
 rootProject.name='Fragments'

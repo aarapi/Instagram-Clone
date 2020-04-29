@@ -9,7 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.data.User;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
+import com.example.annoyingprojects.utilities.RequestFunction;
+
+import java.util.List;
 
 public class FragmentSignUp extends BaseFragment implements View.OnClickListener {
     private ImageView logo, joinus;
@@ -76,14 +80,28 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
             if (validateInput(inputName, inputPw, inputEmail)) {
 
+                User user = new User();
+                user.email = inputEmail;
+                user.password = inputPw;
+                user.username = inputName;
+
+                sendRequest(RequestFunction.signUp(0, user));
             }
         } else if (v == signin) {
             changeFragment("logo_transition", R.id.ivRegLogo, FragmentLogIn.newInstance(new Bundle()));
         }
     }
 
+
+    @Override
+    public void onDataReceive(int action, List<Object> data) {
+        System.out.println(data);
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_signup_layout;
     }
+
+
 }

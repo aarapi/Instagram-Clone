@@ -3,28 +3,22 @@ package com.example.connectionframework.requestframework.tasks;
 import android.app.Activity;
 import android.os.AsyncTask;
 
+import com.example.connectionframework.BuildConfig;
 import com.example.connectionframework.requestframework.components.LottieDialog;
 import com.example.connectionframework.requestframework.constants.Constants;
 import com.example.connectionframework.requestframework.httpconnection.HttpConnectionException;
 import com.example.connectionframework.requestframework.httpconnection.HttpUtil;
 import com.example.connectionframework.requestframework.receiver.ReceiverBridge;
+import com.example.connectionframework.requestframework.receiver.RequestReceived;
 
 
 public class SendRequest extends AsyncTask<String, Integer, String> {
     private String request;
-    private Activity baseActivity;
     private ReceiverBridge receiverBridge;
-    private String messageServiceUrl;
-    private String baseReceiver;
-    private LottieDialog lottieDialog;
+    private String messageServiceUrl = BuildConfig.HOST_URL;
 
-    public SendRequest(String messageServiceUrl, String baseReceiver,
-                       Activity baseActivity, LottieDialog lottieDialog) {
-        this.messageServiceUrl = messageServiceUrl;
-        this.baseActivity = baseActivity;
-        receiverBridge = new ReceiverBridge(baseActivity, baseReceiver, lottieDialog);
-        this.baseReceiver = baseReceiver;
-        this.lottieDialog = lottieDialog;
+    public SendRequest(RequestReceived requestReceived, LottieDialog lottieDialog) {
+        receiverBridge = new ReceiverBridge(requestReceived, lottieDialog);
     }
 
     @Override

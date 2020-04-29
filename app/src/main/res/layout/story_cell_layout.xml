@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020. http://annoyingprojects.com- All Rights Reserved
+  ~ Unauthorized copying of this file, via any medium is strictly prohibited
+  ~ If you use or distribute this project then you MUST ADD A COPY OF LICENCE
+  ~ along with the project.
+  ~  Written by Albi Arapi <albiarapi1@gmail.com>, 2020.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/ripple_background_transparent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="7dp"
@@ -10,30 +17,25 @@
     android:gravity="center">
 
 
-    <RelativeLayout
-        android:id="@+id/shape_layout"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/myCardView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:cardCornerRadius="20dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         >
-        <androidx.cardview.widget.CardView
-            android:id="@+id/myCardView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:cardCornerRadius="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            >
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                />
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:layout_width="match_parent"
@@ -41,7 +43,7 @@
         android:id="@+id/textView"
         android:gravity="center"
         android:layout_marginTop="7dp"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:text="Demo"
         android:textSize="11sp"
         android:lines="1"

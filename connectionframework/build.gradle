@@ -26,7 +26,7 @@ android {
     productFlavors {
         DEV {
             dimension "api"
-            buildConfigField("String", "HOST_URL", '"http://192.168.40.4:8085/annoyingProjectsGateway/generics"')
+            buildConfigField("String", "HOST_URL", '"http://192.168.1.4:8089/annoyingProjectsGateway/generics"')
 
         }
 
@@ -42,7 +42,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'com.github.TecOrb-Developers:SmartAlertDialog:v1.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.8'

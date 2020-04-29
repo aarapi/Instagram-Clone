@@ -1,26 +1,50 @@
 package com.example.annoyingprojects.mobile.ui.afterlogin.home;
 
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.adapters.ListViewAdapterPost;
+import com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter;
+import com.example.annoyingprojects.data.PostModel;
+import com.example.annoyingprojects.data.Posts;
+import com.example.annoyingprojects.data.StoryInfo;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
+import com.example.annoyingprojects.utilities.CheckSetup;
+import com.example.annoyingprojects.utilities.RequestFunction;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.stfalcon.chatkit.sample.features.demo.styled.StyledDialogsActivity;
+import com.stfalcon.chatkit.sample.features.demo.styled.StyledMessagesActivity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends BaseFragment {
+import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity.scrollTime;
+
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public static String HOME_FRAMGENT_DATA_LIST = "HOME_FRAMGENT_DATA_LIST";
     private RecyclerView rv_stories;
     private ListView mainListView;
     private ListViewAdapterPost adapter;
+    private ImageView iv_send_message;
+    private int postNumbers;
     StoryRecyclerViewAdapter mStoryRVAdapter = new StoryRecyclerViewAdapter();
+    private List<PostModel> postModelList;
 
 
     public static HomeFragment newInstance(Bundle args){
@@ -35,61 +59,28 @@ public class HomeFragment extends BaseFragment {
         initViews();
         bindEvents();
         setViews();
+
+        List<Object> homeData = (List<Object>) getArguments().getSerializable(HOME_FRAMGENT_DATA_LIST);
+        setFragmentView(homeData);
+
     }
 
     @Override
     public void initViews() {
         rv_stories = containerView.findViewById(R.id.rv_stories);
         mainListView = containerView.findViewById(R.id.mainListView);
+        iv_send_message = containerView.findViewById(R.id.iv_send_message);
+
 
     }
 
     @Override
     public void bindEvents() {
-
+        iv_send_message.setOnClickListener(this);
     }
 
     @Override
     public void setViews() {
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        ArrayList<StoryInfo> storyInfos = new ArrayList<>();
-        for (int i =0; i<6; i++){
-            StoryInfo storyInfo = new StoryInfo();
-            storyInfo.ID = i+"";
-            storyInfo.Name = "test";
-            storyInfo.Title = "test";
-            if(i%2 ==0) {
-                storyInfo.setLink("https://cdn.urldecoder.org/assets/images/url-fb.png");
-            }else
-                storyInfo.setLink("https://i-cdn.phonearena.com/images/review/4721-image/Apple-iPhone-11-Review.jpg");
-
-            storyInfos.add(storyInfo);
-        }
-        mStoryRVAdapter.setList(storyInfos);
-        rv_stories.setLayoutManager(layoutManager);
-        rv_stories.setAdapter(mStoryRVAdapter);
-        mStoryRVAdapter.notifyDataSetChanged();
-
-        List<PostModel> postModels = new ArrayList<>();
-
-        PostModel postModel = new PostModel();
-        postModel.setName("dtrump");
-        postModel.setLinkImage("https://5.imimg.com/data5/AC/TF/MY-49552276/apple-laptop-500x500.jpg");
-        postModel.setLinkUserImg("https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/1200px-Donald_Trump_official_portrait.jpg");
-        postModels.add(postModel);
-
-        postModel = new PostModel();
-        postModel.setName("aarapi");
-        postModel.setLinkImage("https://ae01.alicdn.com/kf/HTB1QwDVXOwIL1JjSZFsq6AXFFXaY.jpg?size=109055&height=664&width=1000&hash=e26844beb055d804a71537690816fd65");
-        postModel.setLinkUserImg("https://media-exp1.licdn.com/dms/image/C4D03AQFz1Xa99TZZmw/profile-displayphoto-shrink_200_200/0?e=1586995200&v=beta&t=Wkm1OKAc9TNV4JWpBQ0JLzlxmWwpRikgFFPCkTPkUJk");
-        postModels.add(postModel);
-
-        adapter = new ListViewAdapterPost(postModels, getContext());
-        if (mainListView != null)
-            mainListView.setAdapter(adapter);
-
-
     }
 
     @Override
@@ -97,4 +88,61 @@ public class HomeFragment extends BaseFragment {
         return R.layout.fragment_home_layout;
     }
 
+    @Override
+    public void setFragmentView(List<Object> data) {
+
+        ArrayList<StoryInfo> storyInfoArrayList = (ArrayList<StoryInfo>) data.get(0);
+        postModelList = (List<PostModel>) data.get(1);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        mStoryRVAdapter.setList(storyInfoArrayList);
+        rv_stories.setLayoutManager(layoutManager);
+        rv_stories.setAdapter(mStoryRVAdapter);
+        mStoryRVAdapter.notifyDataSetChanged();
+
+
+
+        adapter = new ListViewAdapterPost(postModelList, getContext(), getParentFragmentManager(),
+                false, mainListView);
+        if (mainListView != null)
+            mainListView.setAdapter(adapter);
+
+
+
+        adapter.setOnLoadMoreListener(() -> {
+            adapter.getDataSet().add(null);
+            adapter.notifyDataSetChanged();
+            sendRequest(RequestFunction.getPostData(0, scrollTime));
+        });
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == iv_send_message){
+            StyledDialogsActivity.open(getContext());
+        }
+    }
+
+    @Override
+    public void onDataReceive(int action, List<Object> data) {
+        if (action == CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA){
+
+            Gson gson = new Gson();
+            Type founderListType = new TypeToken<ArrayList<Posts>>(){}.getType();
+
+            ArrayList<Posts> posts = gson.fromJson(gson.toJson(data.get(0)),
+                    founderListType);
+
+            adapter.setData(posts);
+            adapter.isLoading = false;
+            ((HomeActivity) getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+        }
+    }
 }

@@ -13,14 +13,15 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.data.StoryInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.shts.android.storiesprogressview.StoriesProgressView;
 
-import static com.example.annoyingprojects.mobile.ui.afterlogin.home.StoryRecyclerViewAdapter.SELECTED_ITEM_INFO;
-import static com.example.annoyingprojects.mobile.ui.afterlogin.home.StoryRecyclerViewAdapter.STORY_LIST_INFO;
+import static com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter.SELECTED_ITEM_INFO;
+import static com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter.STORY_LIST_INFO;
 
 public class StoryActivity extends AppCompatActivity implements StoriesProgressView.StoriesListener {
 

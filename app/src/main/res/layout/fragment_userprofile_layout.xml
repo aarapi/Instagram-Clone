@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/white_one">
     <RelativeLayout
         android:id="@+id/rl_username"
         android:layout_width="match_parent"
@@ -35,18 +35,18 @@
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_profile_menu"
-            android:background="@drawable/ripple_background_transparent"
-            android:layout_marginRight="10dp"></ImageView>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginRight="15dp"></ImageView>
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/shape_layout"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -57,15 +57,26 @@
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                app:cardCornerRadius="50dp">
-
+                app:cardCornerRadius="35dp">
                 <ImageView
                     android:id="@+id/iv_user_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
-        </RelativeLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_add_attachment"
+                android:tint="@color/white"
+                android:background="@drawable/user_photo_add"
+                android:layout_gravity="bottom|right"
+                android:elevation="100dp"
+                android:outlineProvider="none"
+
+                ></ImageView>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -84,11 +95,14 @@
                 android:gravity="center"
                 android:text="980"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_gravity="center"></TextView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/dark_chocolate"
+                android:textSize="12sp"
                 android:text="Posts"></TextView>
         </LinearLayout>
 
@@ -108,11 +122,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="1256"
+                android:textColor="@color/black"
                 android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/dark_chocolate"
+                android:textSize="12sp"
                 android:text="Followers"></TextView>
         </LinearLayout>
 
@@ -131,24 +148,51 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="595"
+                android:textColor="@color/black"
                 android:textStyle="bold"></TextView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/dark_chocolate"
+                android:textSize="12sp"
                 android:text="Following"></TextView>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+   <RelativeLayout
+       android:id="@+id/rl_edit_profile"
+       android:layout_width="match_parent"
+       android:layout_height="30dp"
+       android:layout_marginTop="15dp"
+       android:layout_marginLeft="15dp"
+       android:layout_marginRight="15dp"
+       android:foreground="@drawable/custom_riple"
+       android:background="@drawable/rounded_background">
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+           android:textStyle="bold"
+           android:textColor="@color/black"
+           android:text="Edit Profile"/>
+   </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.05dp"
         android:background="@android:color/darker_gray"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="20dp"/>
 
         <GridView
             android:id="@+id/gv_user_post"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="3">
-        </GridView>
+            android:numColumns="3"/>
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="@style/CustomProgressBar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"></ProgressBar>
 </LinearLayout>

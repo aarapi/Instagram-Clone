@@ -3,7 +3,8 @@
     package="com.example.annoyingprojects">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -20,10 +21,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".mobile.ui.afterlogin.DashboardActivity"></activity>
-        <activity android:name=".mobile.ui.afterlogin.personaldata.PersonalDataActivity"></activity>
+        <activity android:name=".mobile.ui.afterlogin.personaldata.CourseExampleActivity"></activity>
 <!--        <activity android:name=".mobile.ui.afterlogin.home.HomeActivity"></activity>-->
         <activity android:name=".mobile.ui.afterlogin.home.StoryActivity"></activity>
         <activity android:name=".mobile.ui.afterlogin.home.HomeActivity"></activity>
+        <activity android:name=".mobile.ui.afterlogin.userprofile.ActivitySinglePost"></activity>
+        <activity android:name=".mobile.ui.afterlogin.messages.MessagesActivity"></activity>
     </application>
 
 
