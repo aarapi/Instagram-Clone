@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeFragment;
+import com.example.annoyingprojects.mobile.ui.afterlogin.search.SearchFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment;
 
 import java.io.File;
@@ -34,6 +35,7 @@ public class FragmentUtil {
     private static Map<String, Typeface> TYPEFACE = new HashMap<String, Typeface>();
     public static final String HOME_FRAGMENT = "HOME_FRAMGNET";
     public static final String USER_PROFILE_FRAGMENT = "USER_PROFILE_FRAGMENT";
+    public static final String SEARCH_FRAGMENT = "SEARCH_FRAGMENT";
 
 
     public static int getToolbarHeight(Context context) {
@@ -290,6 +292,8 @@ public class FragmentUtil {
                     fragmentToReplace = new HomeFragment();
                 }else if (TAG.equals(USER_PROFILE_FRAGMENT)) {
                     fragmentToReplace = new UserProfileFragment();
+                } else if (TAG.equals(SEARCH_FRAGMENT)) {
+                    fragmentToReplace = new SearchFragment();
                 }
 
             } else{
@@ -297,6 +301,8 @@ public class FragmentUtil {
                     fragmentToReplace = (HomeFragment) fragment;
                 }else  if (TAG.equals(USER_PROFILE_FRAGMENT)) {
                     fragmentToReplace = (UserProfileFragment) fragment;
+                } else if (TAG.equals(SEARCH_FRAGMENT)) {
+                    fragmentToReplace = (SearchFragment) fragment;
                 }
             }
 

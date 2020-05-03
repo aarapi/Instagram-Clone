@@ -2,10 +2,9 @@ package com.example.annoyingprojects.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PostModel implements Serializable {
-    private String ID;
+    private int postId;
     private String userName;
     private ArrayList<String> linkImages;
     private String linkUserImg;
@@ -15,12 +14,12 @@ public class PostModel implements Serializable {
     private boolean isLikeChecked;
     private int likedByNo;
 
-    public String getID() {
-        return ID;
+    public int getPostId() {
+        return postId;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public String getUserName() {

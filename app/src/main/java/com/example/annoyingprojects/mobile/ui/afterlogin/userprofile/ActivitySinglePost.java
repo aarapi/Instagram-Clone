@@ -62,7 +62,7 @@ public class ActivitySinglePost extends BaseActivity {
 
     public void setActivityView(List<Object> data, int position){
         List<PostModel> postModelList = (List<PostModel>) data.get(0);
-        adapter = new ListViewAdapterPost(postModelList, getApplicationContext(), fragmentManager, true, mainListView);
+        adapter = new ListViewAdapterPost(postModelList, this, fragmentManager, true, mainListView);
         if (mainListView != null) {
             mainListView.setAdapter(adapter);
             mainListView.setSelection(position);

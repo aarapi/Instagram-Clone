@@ -125,6 +125,10 @@ public class HomeActivity extends BaseActivity implements ViewAnimator.ViewAnima
     @Override
     public void onClick(View v) {
         if (v == iv_search_button){
+            FragmentUtil.switchContent(R.id.fl_fragment_container,
+                    FragmentUtil.SEARCH_FRAGMENT,
+                    this,
+                    FragmentUtil.AnimationType.SLIDE_UP);
         }else if (v == iv_home_button){
             FragmentUtil.switchContent(R.id.fl_fragment_container,
                     FragmentUtil.HOME_FRAGMENT,

@@ -3,6 +3,7 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.home;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.ListViewAdapterPost;
@@ -27,8 +29,6 @@ import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.stfalcon.chatkit.sample.features.demo.styled.StyledDialogsActivity;
-import com.stfalcon.chatkit.sample.features.demo.styled.StyledMessagesActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.List;
 
 import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity.scrollTime;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static String HOME_FRAMGENT_DATA_LIST = "HOME_FRAMGENT_DATA_LIST";
     private RecyclerView rv_stories;
     private ListView mainListView;
@@ -45,6 +45,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private int postNumbers;
     StoryRecyclerViewAdapter mStoryRVAdapter = new StoryRecyclerViewAdapter();
     private List<PostModel> postModelList;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public static HomeFragment newInstance(Bundle args){
@@ -70,6 +72,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         rv_stories = containerView.findViewById(R.id.rv_stories);
         mainListView = containerView.findViewById(R.id.mainListView);
         iv_send_message = containerView.findViewById(R.id.iv_send_message);
+
+        swipeRefreshLayout = containerView.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
 
     }
@@ -113,6 +118,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             adapter.getDataSet().add(null);
             adapter.notifyDataSetChanged();
             sendRequest(RequestFunction.getPostData(0, scrollTime));
+            scrollTime++;
         });
 
     }
@@ -120,13 +126,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view == iv_send_message){
-            StyledDialogsActivity.open(getContext());
+            startActivity(CheckSetup.Activities.MESSAGES_ACTIVITY);
         }
     }
 
     @Override
     public void onDataReceive(int action, List<Object> data) {
         if (action == CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA){
+
+            if (swipeRefreshLayout.isRefreshing()) {
+                swipeRefreshLayout.setRefreshing(false);
+                adapter.getDataSet().clear();
+                scrollTime = 1;
+            }
 
             Gson gson = new Gson();
             Type founderListType = new TypeToken<ArrayList<Posts>>(){}.getType();
@@ -135,14 +147,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     founderListType);
 
             adapter.setData(posts);
-            adapter.isLoading = false;
-            ((HomeActivity) getContext()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.notifyDataSetChanged();
-                }
-            });
+            if (posts.size() > 0) {
+                adapter.isLoading = false;
+            }
 
+
+            adapter.notifyDataSetChanged();
         }
     }
+
+
+    @Override
+    public void onRefresh() {
+        sendRequest(RequestFunction.getPostData(0, 0));
+    }
+
+
 }

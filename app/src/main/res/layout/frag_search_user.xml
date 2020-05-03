@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/tools"
+    android:layout_gravity="clip_horizontal"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/search_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edt_search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toLeftOf="@+id/tv_cancel"
+            android:background="@drawable/edit_text_search_backround"
+            android:hapticFeedbackEnabled="true"
+            android:hint="Kerko produktin"
+            android:drawableLeft="@drawable/ic_search_icon"
+            android:drawablePadding="5dp"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:textColor="@color/holo_gray_dark"
+            android:textColorHint="@color/color_gray_light"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="Cancel"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+
+            />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/CustomProgressBar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/search_root"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"></ProgressBar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_user_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/progress" />
+
+
+    <TextView
+        android:id="@+id/txtSpeechInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_root"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="#70000000"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="normal"
+        android:visibility="gone" />
+
+</RelativeLayout>

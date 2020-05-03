@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white_one">
     <RelativeLayout
         android:id="@+id/rl_username"
         android:layout_width="match_parent"
@@ -59,34 +59,11 @@
         android:background="@color/gray"
         android:layout_below="@+id/rl_username"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_search_bar"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_message_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_user"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-
-        >
-    <com.mancj.materialsearchbar.MaterialSearchBar
-        app:mt_speechMode="false"
-        app:mt_maxSuggestionsCount="10"
-        app:mt_searchBarColor="@color/gray"
-        app:mt_borderlessRippleEnabled="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchBar" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@+id/mainListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_below="@+id/rl_search_bar"
         android:divider="@null"
-        >
-    </ListView>
+        ></androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

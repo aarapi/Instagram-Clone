@@ -31,10 +31,23 @@ public class RequestFunction {
         params.add(scrollTime);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA, params);
     }
+
+    public static Request setPostLike(int activityId, int postId, boolean setChecked) {
+        List<Object> params = new ArrayList<>();
+        params.add(postId);
+        params.add(setChecked);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_SET_POST_LIKE, params);
+    }
     public static Request getUserProfileData(int activityId, String username){
         List<Object> params = new ArrayList<>();
         params.add(username);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_USER_PROFILE, params);
+    }
+
+    public static Request getSearchedUSer(int activityId, String searchString) {
+        List<Object> params = new ArrayList<>();
+        params.add(searchString);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_GET_SEARCHED_USERS, params);
     }
 
     public static Request getDashboardData(int activityId) {
@@ -51,6 +64,12 @@ public class RequestFunction {
         List<Object> params = new ArrayList<>();
         params.add(postData);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_POST, params);
+
+    }
+
+    public static Request getMessageUsers(int activityId) {
+        List<Object> params = new ArrayList<>();
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_MESSAGE_USERS, params);
 
     }
 }

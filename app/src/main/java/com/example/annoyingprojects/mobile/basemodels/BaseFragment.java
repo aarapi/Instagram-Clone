@@ -45,11 +45,23 @@ public abstract class BaseFragment extends Fragment {
         RequestReceived requestReceived = new RequestReceived() {
             @Override
             public void onRequestReceived(int p_action, List<Object> data) {
-                onDataReceive(p_action, data);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onDataReceive(p_action, data);
+                    }
+                });
+
             }
             @Override
             public void onErrorReceived(int p_action, List<Object> data) {
-                onErrorDataReceive(p_action, data);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onErrorDataReceive(p_action, data);
+                    }
+                });
+
             }
         };
         senderBridge = new SenderBridge(requestReceived);

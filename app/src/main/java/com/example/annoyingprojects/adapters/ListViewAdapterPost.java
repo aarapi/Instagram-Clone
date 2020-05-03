@@ -1,5 +1,6 @@
 package com.example.annoyingprojects.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,8 +25,12 @@ import com.bumptech.glide.request.target.Target;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.Posts;
+import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.MoreBottomSheetFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.SettingFragment;
+import com.example.annoyingprojects.utilities.RequestFunction;
 import com.skyhope.showmoretextview.ShowMoreTextView;
 
 import java.util.ArrayList;
@@ -148,14 +153,24 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
                 viewHolder.iv_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        BaseActivity activity;
+                        if (isUserPost) {
+                            activity = (ActivitySinglePost) getContext();
+                        } else {
+                            activity = (HomeActivity) getContext();
+                        }
+
                         if (dataModel.isLikeChecked()) {
                             viewHolder.iv_like.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_heart));
                             getItem(position).setLikeChecked(false);
                             getItem(position).setLikedByNo(dataModel.getLikedByNo() - 1);
+
+                            activity.sendRequest(RequestFunction.setPostLike(0, dataModel.getPostId(), false));
                         } else {
                             viewHolder.iv_like.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_heart_clicked));
                             getItem(position).setLikeChecked(true);
                             getItem(position).setLikedByNo(dataModel.getLikedByNo() + 1);
+                            activity.sendRequest(RequestFunction.setPostLike(0, dataModel.getPostId(), true));
                         }
                         viewHolder.tv_likedby_value.setText(getItem(position).getLikedByNo() + "");
                     }
@@ -267,12 +282,13 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
 
     public void setData(ArrayList<Posts> posts){
         int postsSize = posts.size();
-        dataSet.remove(dataSet.size() - 1);
+        if (dataSet.size() > 0) {
+            dataSet.remove(dataSet.size() - 1);
+        }
         for (int i =0; i<postsSize; i++){
             PostModel postModel = posts.get(i).getPostModel();
             postModel.setLinkUserImg(posts.get(i).getLinkUserImg());
             postModel.setLinkImages(posts.get(i).getLinkImages());
-
 
             dataSet.add(postModel);
         }

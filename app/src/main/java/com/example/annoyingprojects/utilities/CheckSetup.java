@@ -23,6 +23,9 @@ public class CheckSetup {
         public final static int INSTA_COMMERCE_SEARCH = 5;
         public final static int INSTA_COMMERCE_USER_PROFILE = 6;
         public final static int INSTA_COMMERCE_CREATE_NEW_POST = 7;
+        public final static int INSTA_COMMERCE_MESSAGE_USERS = 8;
+        public final static int INSTA_COMMERCE_SET_POST_LIKE = 9;
+        public final static int INSTA_COMMERCE_GET_SEARCHED_USERS = 10;
     }
 
     public static class Activities {
