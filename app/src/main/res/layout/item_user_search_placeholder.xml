@@ -3,41 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:foreground="?android:attr/selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:id="@+id/cv_image"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        app:cardCornerRadius="18dp">
+        android:background="@drawable/active_dot"
+        android:backgroundTint="@color/holo_gray_bright">
 
-        <ImageView
-            android:id="@+id/iv_user"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"></ImageView>
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_username"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/cv_image"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="12sp"
-        android:text="albi"></TextView>
+        android:background="@drawable/edit_text_search_backround"
+        android:textSize="12sp"></TextView>
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/cv_image"
         android:layout_below="@+id/tv_username"
         android:layout_marginLeft="10dp"
-        android:textSize="12sp"
-        android:text="Albi Arapi"></TextView>
+        android:background="@drawable/edit_text_search_backround"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"></TextView>
 
 </RelativeLayout>

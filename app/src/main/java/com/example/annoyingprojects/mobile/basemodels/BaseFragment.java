@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
+import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.connectionframework.requestframework.json.Deserializer;
 import com.example.connectionframework.requestframework.json.JsonWrapper;
 import com.example.connectionframework.requestframework.receiver.RequestReceived;
@@ -40,7 +43,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       containerView = inflater.inflate(getLayoutId(), null);
+        containerView = inflater.inflate(getLayoutId(), container, false);
 
         RequestReceived requestReceived = new RequestReceived() {
             @Override
@@ -81,6 +84,25 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        containerView.setFocusableInTouchMode(true);
+        containerView.requestFocus();
+
+        containerView.setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+
+                if (event.getAction() == KeyEvent.ACTION_UP
+                        && keyCode == KeyEvent.KEYCODE_BACK) {
+                    onBackClicked();
+                }
+
+                return true;
+            }
+        });
+
         initViews();
         setViews();
         bindEvents();
@@ -149,6 +171,10 @@ public abstract class BaseFragment extends Fragment {
     public void onDataReceive(int action, List<Object> data) {}
     public void onErrorDataReceive(int action, List<Object> data) {}
 
+    public void onBackClicked() {
+    }
+
+    ;
 
 
 

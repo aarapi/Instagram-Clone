@@ -14,8 +14,11 @@ import androidx.fragment.app.FragmentManager;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost;
+import com.example.annoyingprojects.utilities.CheckSetup;
+import com.octopepper.mediapickerinstagram.commons.models.Post;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +31,8 @@ public class GridAdapter extends BaseAdapter
 {
    private Context context;
    private List<PostModel> postModelList;
-   private FragmentManager fragmentManager;
+    private GridAdapter adapter;
+
     private static class ViewHolder {
         ImageView iv_post_image;
         ImageView iv_multiple;
@@ -36,13 +40,11 @@ public class GridAdapter extends BaseAdapter
     }
 
 
-
-    public GridAdapter(Context context, List<PostModel> postModelList
-            , FragmentManager fragmentManager)
+    public GridAdapter(Context context, List<PostModel> postModelList)
     {
         this.context = context;
         this.postModelList = postModelList;
-        this.fragmentManager = fragmentManager;
+        adapter = this;
     }
 
     @Override
@@ -87,11 +89,10 @@ public class GridAdapter extends BaseAdapter
                     Intent intent = new Intent(context, ActivitySinglePost.class);
                     intent.putExtra(SINGLE_POST_DATA, (Serializable) data);
                     intent.putExtra("position", position);
-                    context.startActivity(intent);
+                    ((HomeActivity) context).startActivityForResult(intent, CheckSetup.Activities.SINGLE_POST_ACTIVITY);
                     ((BaseActivity)context).overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
             });
-
 
             if (postModel.getLinkImages().size() > 1){
                 viewHolder.iv_multiple.setVisibility(View.VISIBLE);
@@ -103,4 +104,9 @@ public class GridAdapter extends BaseAdapter
     }
 
 
+    public void updatePosts(List<PostModel> postModels) {
+        postModelList.clear();
+        postModelList.addAll(postModels);
+        this.notifyDataSetChanged();
+    }
 }

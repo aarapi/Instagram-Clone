@@ -6,6 +6,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.repository.LocalServer;
+import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,42 +32,46 @@ import java.util.List;
 import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
 
 public class UserProfileFragment extends BaseFragment implements View.OnClickListener {
+    public static String USER_PROFILE_DATA = "USER_PROFILE_DATA";
+    private User user;
+    private List<PostModel> postModels;
 
     private GridView gv_user_post;
     private GridAdapter gridAdapter;
     private ProgressBar progressBar;
-    private ImageView iv_user_profile, iv_menu_settings;
-    public static String USER_PROFILE_DATA = "USER_PROFILE_DATA";
-    private static FragmentManager fragmentManager;
-    private User user;
     private RelativeLayout rl_edit_profile;
 
-    public static UserProfileFragment newInstance(Bundle args, FragmentManager fragmentManagerSupport){
+    private ImageView iv_user_profile;
+    private ImageView iv_menu_settings;
+
+    private TextView tv_posts_value;
+    private TextView tv_email;
+
+    public static UserProfileFragment newInstance(Bundle args) {
         UserProfileFragment userProfileFragment = new UserProfileFragment();
         userProfileFragment.setArguments(args);
-        fragmentManager = fragmentManagerSupport;
         return userProfileFragment;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        user = LocalServer.getInstance(getContext()).getUser();
-        initViews();
-        bindEvents();
-        setViews();
-
-        progressBar.setVisibility(View.VISIBLE);
-        sendRequest(RequestFunction.getUserProfileData(0, user.username));
-
-    }
-
-    @Override
     public void initViews() {
+        rl_edit_profile = containerView.findViewById(R.id.rl_edit_profile);
+
+        if (getArguments() != null) {
+            user = (User) getArguments().getSerializable(USER_PROFILE_DATA);
+            rl_edit_profile.setVisibility(View.GONE);
+        } else {
+            user = LocalServer.getInstance(getContext()).getUser();
+        }
+
+        progressBar = containerView.findViewById(R.id.progressbar);
+
         iv_user_profile = containerView.findViewById(R.id.iv_user_profile);
         gv_user_post = containerView.findViewById(R.id.gv_user_post);
         iv_menu_settings = containerView.findViewById(R.id.iv_menu_settings);
-        progressBar = containerView.findViewById(R.id.progressbar);
-        rl_edit_profile = containerView.findViewById(R.id.rl_edit_profile);
+
+        tv_posts_value = containerView.findViewById(R.id.tv_posts_value);
+        tv_email = containerView.findViewById(R.id.tv_email);
     }
 
     @Override
@@ -77,6 +83,10 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void setViews() {
         setUserImageRes(getContext(), user.userImage, iv_user_profile);
+        tv_email.setText(user.email);
+
+        progressBar.setVisibility(View.VISIBLE);
+        sendRequest(RequestFunction.getUserProfileData(0, user.username));
     }
 
     @Override
@@ -87,16 +97,13 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onDataReceive(int action, List<Object> data) {
         List<Object> profileData = new ArrayList<>();
-        profileData.add(getUserPosts(data));
+        List<PostModel> postModels = getUserPosts(data);
+        profileData.add(postModels);
 
-        ((HomeActivity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-                setFragmentView(profileData);
-            }
-        });
+        progressBar.setVisibility(View.GONE);
+        tv_posts_value.setText(postModels.size() + "");
 
+        setFragmentView(profileData);
     }
 
     @Override
@@ -108,8 +115,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void setFragmentView(List<Object> data) {
-        List<PostModel> postModels = (List<PostModel>) data.get(0);
-        gridAdapter = new GridAdapter(getContext(), postModels, fragmentManager);
+        postModels = (List<PostModel>) data.get(0);
+        gridAdapter = new GridAdapter(getContext(), postModels);
         gv_user_post.setAdapter(gridAdapter);
     }
 
@@ -141,4 +148,25 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         return postModels;
     }
 
+    @Override
+    public void onBackClicked() {
+        FragmentUtil
+                .switchContent(R.id.fl_fragment_container,
+                        FragmentUtil.HOME_FRAGMENT,
+                        (HomeActivity) getContext(),
+                        null);
+        ((HomeActivity) getContext()).setHomeIcon();
+    }
+
+    public List<PostModel> getPostModels() {
+        return postModels;
+    }
+
+    public void updateUserPosts(List<PostModel> modelList) {
+        gridAdapter.updatePosts(modelList);
+    }
+
+    public TextView getTv_posts_value() {
+        return tv_posts_value;
+    }
 }

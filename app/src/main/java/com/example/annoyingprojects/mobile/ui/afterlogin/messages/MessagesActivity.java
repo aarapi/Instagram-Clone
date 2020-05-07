@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
@@ -90,7 +91,12 @@ public class MessagesActivity extends BaseActivity implements  MaterialSearchBar
         ArrayList<UserMessagesModel> userMessagesModels = gson.fromJson(gson.toJson(data.get(0)),
                 founderListType);
 
-        recyclerViewAdapterMessageUsers = new RecyclerViewAdapterMessageUsers(userMessagesModels);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(getActivity().getBaseContext());
+        rv_message_users.setLayoutManager(linearLayoutManager);
+        rv_message_users.setHasFixedSize(true);
+
+        recyclerViewAdapterMessageUsers = new RecyclerViewAdapterMessageUsers(getApplicationContext(), userMessagesModels);
         rv_message_users.setAdapter(recyclerViewAdapterMessageUsers);
 
     }

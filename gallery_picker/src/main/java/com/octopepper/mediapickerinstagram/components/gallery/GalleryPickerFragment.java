@@ -45,6 +45,8 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     private static final int MARGING_GRID = 2;
     private static final int RANGE = 20;
 
+    List<File> files = new ArrayList<>();
+
     private Session mSession = Session.getInstance();
     private LoadMoreModule mLoadMoreModule = new LoadMoreModule();
     private GridAdapter mGridAdapter;
@@ -186,9 +188,14 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     }
 
     @Override
-    public void onClickMediaItem(File file) {
+    public void onClickMediaItem(File file, boolean isImageClicked) {
         displayPreview(file);
-        mSession.setFileToUpload(file);
+        if (isImageClicked) {
+            files.remove(file);
+        } else {
+            files.add(file);
+        }
+        mSession.setFileToUpload(files);
         mAppBarContainer.setExpanded(true, true);
     }
 

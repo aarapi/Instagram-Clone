@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -45,8 +46,7 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
     String _tabGallery;
     @BindString(R2.string.tab_photo)
     String _tabPhoto;
-    @BindString(R2.string.tab_video)
-    String _tabVideo;
+
 
 
     private FrameLayout fr_fragment_container;
@@ -120,12 +120,6 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
             mMainTabLayout.addTab(mMainTabLayout.newTab().setText(_tabPhoto));
         }
 
-        if (mSourceTypeSet.contains(SourceType.Video)) {
-            fragments.add(CaptureVideoFragment.newInstance());
-            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(_tabVideo));
-        }
-
-
         return fragments;
     }
 
@@ -165,17 +159,21 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
 
 
         if (!isNewPost) {
-            isNewPost = true;
-            Bundle args = new Bundle();
-            args.putSerializable("filePath", mSession.getFileToUpload().getAbsolutePath());
-            newPostFragment = NewPostFragment.newInstance(args);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fr_fragment_container, newPostFragment)
-                    .commit();
-            fr_fragment_container = findViewById(R.id.fr_fragment_container);
-            fr_fragment_container.setVisibility(View.VISIBLE);
-            mMainTabLayout.setVisibility(View.GONE);
-            mMainViewPager.setVisibility(View.GONE);
+            if (mSession.getFilesToUpload().size() == 0) {
+                Toast.makeText(this, "Zgjidhni nje foto", Toast.LENGTH_SHORT).show();
+            } else {
+                isNewPost = true;
+                Bundle args = new Bundle();
+                args.putSerializable("filePath", (Serializable) mSession.getFilesToUpload());
+                newPostFragment = NewPostFragment.newInstance(args);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fr_fragment_container, newPostFragment)
+                        .commit();
+                fr_fragment_container = findViewById(R.id.fr_fragment_container);
+                fr_fragment_container.setVisibility(View.VISIBLE);
+                mMainTabLayout.setVisibility(View.GONE);
+                mMainViewPager.setVisibility(View.GONE);
+            }
         }
         else {
             // Fetch file to upload

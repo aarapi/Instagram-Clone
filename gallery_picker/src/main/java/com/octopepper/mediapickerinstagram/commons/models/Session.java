@@ -5,11 +5,13 @@ package com.octopepper.mediapickerinstagram.commons.models;
  */
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Session {
 
     private static Session sInstance = null;
-    private File mFileToUpload;
+    private List<File> mFileToUpload = new ArrayList<>();
 
     private Session() {
     }
@@ -21,11 +23,11 @@ public class Session {
         return sInstance;
     }
 
-    public File getFileToUpload() {
+    public List<File> getFilesToUpload() {
         return mFileToUpload;
     }
 
-    public void setFileToUpload(File fileToUpload) {
+    public void setFileToUpload(List<File> fileToUpload) {
         mFileToUpload = fileToUpload;
     }
 

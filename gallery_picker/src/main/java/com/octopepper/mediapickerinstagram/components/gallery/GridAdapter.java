@@ -15,10 +15,12 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 
 class GridAdapter extends RecyclerViewAdapterBase<File, MediaItemView> implements MediaItemViewListener {
+    public static int imagesCounter;
 
     private final Context context;
 
     GridAdapter(Context context) {
+        imagesCounter = 0;
         this.context = context;
     }
 
@@ -46,7 +48,7 @@ class GridAdapter extends RecyclerViewAdapterBase<File, MediaItemView> implement
     }
 
     @Override
-    public void onClickItem(File file) {
-        mWrListener.get().onClickMediaItem(file);
+    public void onClickItem(File file, boolean isImageClicked) {
+        mWrListener.get().onClickMediaItem(file, isImageClicked);
     }
 }

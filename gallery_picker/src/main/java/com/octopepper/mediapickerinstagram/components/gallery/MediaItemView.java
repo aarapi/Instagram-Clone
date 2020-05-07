@@ -4,8 +4,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.octopepper.mediapickerinstagram.R;
 import com.octopepper.mediapickerinstagram.R2;
@@ -24,6 +26,11 @@ public class MediaItemView extends RelativeLayout implements ReboundModuleDelega
 
     @BindView(R2.id.mMediaThumb)
     ImageView mMediaThumb;
+    private CheckBox ch_image;
+
+    private boolean isImageChecked;
+
+    private Context context;
 
     private File mCurrentFile;
     private ReboundModule mReboundModule = ReboundModule.getInstance(this);
@@ -35,7 +42,11 @@ public class MediaItemView extends RelativeLayout implements ReboundModuleDelega
 
     public MediaItemView(Context context) {
         super(context);
+        this.context = context;
+        isImageChecked = false;
         View v = View.inflate(context, R.layout.media_item_view, this);
+        ch_image = v.findViewById(R.id.ch_image);
+        ch_image.setClickable(false);
         ButterKnife.bind(this, v);
     }
 
@@ -59,6 +70,23 @@ public class MediaItemView extends RelativeLayout implements ReboundModuleDelega
 
     @Override
     public void onTouchActionUp() {
-        mWrListener.get().onClickItem(mCurrentFile);
+        if (!isImageChecked) {
+            if (GridAdapter.imagesCounter < 4) {
+                ch_image.setChecked(true);
+                isImageChecked = true;
+                GridAdapter.imagesCounter++;
+                ch_image.setVisibility(VISIBLE);
+                mWrListener.get().onClickItem(mCurrentFile, !isImageChecked);
+            } else
+                Toast.makeText(context, "Keni arritur limitin", Toast.LENGTH_SHORT).show();
+
+        } else {
+            ch_image.setChecked(false);
+            isImageChecked = false;
+            GridAdapter.imagesCounter--;
+            ch_image.setVisibility(GONE);
+            mWrListener.get().onClickItem(mCurrentFile, !isImageChecked);
+        }
+
     }
 }

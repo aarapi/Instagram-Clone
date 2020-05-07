@@ -1,19 +1,12 @@
 package com.example.annoyingprojects.mobile.ui.afterlogin.home;
 
-import android.media.Image;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.NumberPicker;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -38,15 +31,21 @@ import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivit
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static String HOME_FRAMGENT_DATA_LIST = "HOME_FRAMGENT_DATA_LIST";
+    private int postNumbers;
+
+    private List<PostModel> postModelList;
+    StoryRecyclerViewAdapter mStoryRVAdapter = new StoryRecyclerViewAdapter();
     private RecyclerView rv_stories;
+
     private ListView mainListView;
     private ListViewAdapterPost adapter;
+
     private ImageView iv_send_message;
-    private int postNumbers;
-    StoryRecyclerViewAdapter mStoryRVAdapter = new StoryRecyclerViewAdapter();
-    private List<PostModel> postModelList;
+    private ImageView iv_upload;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout rl_upload_post;
+    private ProgressBar progress;
 
 
     public static HomeFragment newInstance(Bundle args){
@@ -55,26 +54,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         return homeFragment;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initViews();
-        bindEvents();
-        setViews();
-
-        List<Object> homeData = (List<Object>) getArguments().getSerializable(HOME_FRAMGENT_DATA_LIST);
-        setFragmentView(homeData);
-
-    }
 
     @Override
     public void initViews() {
         rv_stories = containerView.findViewById(R.id.rv_stories);
         mainListView = containerView.findViewById(R.id.mainListView);
+
         iv_send_message = containerView.findViewById(R.id.iv_send_message);
+        iv_upload = containerView.findViewById(R.id.iv_upload);
 
         swipeRefreshLayout = containerView.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
+        rl_upload_post = containerView.findViewById(R.id.rl_upload_post);
+        progress = containerView.findViewById(R.id.progress);
 
 
     }
@@ -86,6 +78,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void setViews() {
+        List<Object> homeData = (List<Object>) getArguments().getSerializable(HOME_FRAMGENT_DATA_LIST);
+        setFragmentView(homeData);
     }
 
     @Override
@@ -112,8 +106,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (mainListView != null)
             mainListView.setAdapter(adapter);
 
-
-
         adapter.setOnLoadMoreListener(() -> {
             adapter.getDataSet().add(null);
             adapter.notifyDataSetChanged();
@@ -132,6 +124,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onDataReceive(int action, List<Object> data) {
+        Gson gson = new Gson();
         if (action == CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA){
 
             if (swipeRefreshLayout.isRefreshing()) {
@@ -139,8 +132,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 adapter.getDataSet().clear();
                 scrollTime = 1;
             }
-
-            Gson gson = new Gson();
             Type founderListType = new TypeToken<ArrayList<Posts>>(){}.getType();
 
             ArrayList<Posts> posts = gson.fromJson(gson.toJson(data.get(0)),
@@ -153,6 +144,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 
             adapter.notifyDataSetChanged();
+        } else if (action == CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_POST) {
+            Posts posts = gson.fromJson(gson.toJson(data.get(0)), Posts.class);
+            posts.setLinkUserImg(((HomeActivity) getContext()).getUser().userImage);
+            adapter.createNewPost(posts);
+            ((HomeActivity) getContext()).getBitmapTask().onProgressUpdate("100");
+            rl_upload_post.setVisibility(View.GONE);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -163,4 +161,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
 
+    public LinearLayout getRl_upload_post() {
+        return rl_upload_post;
+    }
+
+    public ImageView getIv_upload() {
+        return iv_upload;
+    }
+
+    public ProgressBar getProgress() {
+        return progress;
+    }
 }

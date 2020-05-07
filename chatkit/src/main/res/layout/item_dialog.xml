@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@id/dialogRootLayout"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/dialogRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@id/dialogContainer"
@@ -9,11 +10,19 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground">
 
-        <com.stfalcon.chatkit.utils.ShapeImageView
+        <androidx.cardview.widget.CardView
             android:id="@id/dialogAvatar"
-            android:layout_width="@dimen/dialog_avatar_width"
-            android:layout_height="@dimen/dialog_avatar_height"
-            android:layout_margin="16dp"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="16dp">
+
+            <ImageView
+                android:id="@+id/iv_user_from"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@id/dialogName"
@@ -43,51 +52,33 @@
             android:ellipsize="end"
             android:maxLines="1"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dialogName"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="7dp"
-            android:layout_toEndOf="@id/dialogAvatar"
-            android:layout_toRightOf="@id/dialogAvatar">
-
-            <com.stfalcon.chatkit.utils.ShapeImageView
-                android:id="@id/dialogLastMessageUserAvatar"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginRight="7dp"/>
 
 
             <TextView
                 android:id="@id/dialogLastMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/dialogLastMessageUserAvatar"
-                android:layout_toRightOf="@id/dialogLastMessageUserAvatar"
+                android:layout_below="@+id/dialogName"
+                android:layout_toRightOf="@+id/dialogAvatar"
                 android:ellipsize="end"
                 android:gravity="top"
                 android:maxLines="1"/>
 
-        </RelativeLayout>
-
         <TextView
             android:id="@id/dialogUnreadBubble"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_alignEnd="@id/dialogAvatar"
             android:layout_alignRight="@id/dialogAvatar"
             android:layout_alignTop="@id/dialogAvatar"
-            android:layout_marginEnd="-5dp"
-            android:layout_marginRight="-5dp"
-            android:layout_marginTop="-5dp"
+
             android:background="@drawable/bubble_circle"
+            android:backgroundTint="@color/dialog_unread_bubble"
             android:ellipsize="end"
             android:fontFamily="@string/font_fontFamily_medium"
             android:gravity="center"
+            android:elevation="100dp"
+            android:outlineProvider="none"
             android:lines="1"/>
 
         <FrameLayout
@@ -98,13 +89,6 @@
             android:layout_marginTop="16dp"
             android:paddingLeft="@dimen/dialog_divider_margin_left"
             android:paddingStart="@dimen/dialog_divider_margin_left">
-
-            <View
-                android:id="@id/dialogDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/dialog_divider"/>
-
         </FrameLayout>
 
     </RelativeLayout>

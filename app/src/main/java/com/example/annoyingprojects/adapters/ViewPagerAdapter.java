@@ -1,9 +1,14 @@
 package com.example.annoyingprojects.adapters;
 
 import android.content.Context;
+import android.os.Handler;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -11,8 +16,11 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.data.PostModel;
+import com.octopepper.mediapickerinstagram.commons.models.Post;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
 
@@ -22,10 +30,14 @@ public class ViewPagerAdapter extends PagerAdapter {
     private LayoutInflater layoutInflater;
 
     private ArrayList<String> postImages;
+    private List<Object> likeData;
 
-    public ViewPagerAdapter(Context context, ArrayList<String> postImages) {
+    boolean doubleBackToExitPressedOnce = false;
+
+    public ViewPagerAdapter(Context context, List<Object> likeData, ArrayList<String> postImages) {
         this.context = context;
         this.postImages = postImages;
+        this.likeData = likeData;
     }
 
     @Override
@@ -44,19 +56,48 @@ public class ViewPagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.viewpager_post_item_layout, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        ImageView heartAnim = (ImageView) view.findViewById(R.id.heart_anim);
         setUserImageRes(context,postImages.get(position), imageView);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ListViewAdapterPost adapterPost = (ListViewAdapterPost) likeData.get(0);
+                PostModel postModel = (PostModel) likeData.get(1);
+                ListViewAdapterPost.ViewHolder viewHolder = (ListViewAdapterPost.ViewHolder) likeData.get(2);
+                int position = (Integer) likeData.get(3);
 
-                if(position == 0){
-                    Toast.makeText(context, "Slide 1 Clicked", Toast.LENGTH_SHORT).show();
-                } else if(position == 1){
-                    Toast.makeText(context, "Slide 2 Clicked", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Slide 3 Clicked", Toast.LENGTH_SHORT).show();
+                if (doubleBackToExitPressedOnce) {
+
+                    Animation pulse_fade = AnimationUtils.loadAnimation(context, R.anim.pulse_fade_in);
+                    pulse_fade.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            heartAnim.setVisibility(View.VISIBLE);
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            heartAnim.setVisibility(View.GONE);
+                            adapterPost.setLike(postModel, viewHolder, position);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    });
+                    heartAnim.startAnimation(pulse_fade);
                 }
+
+                doubleBackToExitPressedOnce = true;
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
 
             }
         });

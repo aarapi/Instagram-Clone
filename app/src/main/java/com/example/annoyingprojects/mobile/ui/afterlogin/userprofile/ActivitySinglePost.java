@@ -1,20 +1,23 @@
 package com.example.annoyingprojects.mobile.ui.afterlogin.userprofile;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.adapters.GridAdapter;
 import com.example.annoyingprojects.adapters.ListViewAdapterPost;
 import com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
-import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
+import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivitySinglePost extends BaseActivity {
@@ -22,8 +25,11 @@ public class ActivitySinglePost extends BaseActivity {
     private ListView mainListView;
     private ListViewAdapterPost adapter;
     private ImageView iv_backbtn;
-    StoryRecyclerViewAdapter mStoryRVAdapter = new StoryRecyclerViewAdapter();
 
+    private List<PostModel> postModelList;
+    private StoryRecyclerViewAdapter mStoryRVAdapter = new StoryRecyclerViewAdapter();
+
+    private boolean isRefreshed = false;
 
 
     @Override
@@ -40,9 +46,9 @@ public class ActivitySinglePost extends BaseActivity {
 
     @Override
     public void setViews() {
-       List<Object> data = (List<Object>) getIntent().getSerializableExtra(SINGLE_POST_DATA);
-       int position = getIntent().getIntExtra("position", 0);
-       setActivityView(data, position);
+        List<Object> data = (List<Object>) getIntent().getSerializableExtra(SINGLE_POST_DATA);
+        int position = getIntent().getIntExtra("position", 0);
+        setActivityView(data, position);
     }
 
     @Override
@@ -61,7 +67,7 @@ public class ActivitySinglePost extends BaseActivity {
     }
 
     public void setActivityView(List<Object> data, int position){
-        List<PostModel> postModelList = (List<PostModel>) data.get(0);
+        postModelList = (List<PostModel>) data.get(0);
         adapter = new ListViewAdapterPost(postModelList, this, fragmentManager, true, mainListView);
         if (mainListView != null) {
             mainListView.setAdapter(adapter);
@@ -75,4 +81,47 @@ public class ActivitySinglePost extends BaseActivity {
             finish();
         }
     }
+
+    @Override
+    public void onDataReceive(int action, List<Object> data) {
+        if (action == CheckSetup.ServerActions.INSTA_COMMERCE_DELETE_POST) {
+            int postId = ((Double) data.get(0)).intValue();
+            adapter.updatePostList(deletePost(postId));
+            isRefreshed = true;
+            if (deletePost(postId).size() == 0) {
+                onBackPressed();
+            }
+        }
+
+    }
+
+    private List<PostModel> deletePost(int postId) {
+        int size = postModelList.size();
+        List<PostModel> temp = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            if (postModelList.get(i).getPostId() == postId) {
+                continue;
+            } else {
+                temp.add(postModelList.get(i));
+            }
+        }
+        postModelList.clear();
+        postModelList.addAll(temp);
+
+        return temp;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isRefreshed) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("postData", (Serializable) postModelList);
+            setResult(Activity.RESULT_OK, returnIntent);
+        }
+        super.onBackPressed();
+
+    }
+
+
 }

@@ -2,7 +2,10 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,38 +23,43 @@ import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.SettingFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment;
 import com.example.annoyingprojects.repository.LocalServer;
+import com.example.annoyingprojects.tasks.BitmapTask;
 import com.example.annoyingprojects.utilities.CheckSetup;
-import com.example.annoyingprojects.utilities.ClassType;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
-import com.example.connectionframework.requestframework.languageData.SavedInformation;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.octopepper.mediapickerinstagram.MainActivity;
-import com.octopepper.mediapickerinstagram.commons.models.Post;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import yalantis.com.sidemenu.util.ViewAnimator;
-
-import static com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment.USER_PROFILE_DATA;
 import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
 
 public class HomeActivity extends BaseActivity implements ViewAnimator.ViewAnimatorListener, SettingFragment.ItemClickListener{
-    private ImageView iv_search_button, cv_user_img, iv_home_button, iv_add_post;
+    public static int scrollTime = 1;
+    private User user;
+
+    private ImageView iv_search_button;
+    private ImageView cv_user_img;
+    private ImageView iv_home_button;
+    private ImageView iv_add_post;
+
+
     private RelativeLayout rl_user_img;
     private HomeFragment homeFragment;
     private UserProfileFragment userProfileFragment;
-    public static int scrollTime = 1;
-    private User user;
+
+    private BitmapTask bitmapTask;
+
     private HashMap<ImageView, ImageView> bottomMenus = new HashMap<>();
     private HashMap<ImageView, Integer> bottomMenusClicked = new HashMap<>();
     private HashMap<ImageView, Integer> bottomMenusNotClicked = new HashMap<>();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,14 +143,18 @@ public class HomeActivity extends BaseActivity implements ViewAnimator.ViewAnima
                     this,
                     FragmentUtil.AnimationType.SLIDE_RIGHT);
         }else if (v == cv_user_img){
-            FragmentUtil.switchContent(R.id.fl_fragment_container,
-                    FragmentUtil.USER_PROFILE_FRAGMENT,
-                    this,
-                   FragmentUtil.AnimationType.SLIDE_LEFT);
+            if (rl_user_img.getBackground() == null) {
+                userProfileFragment = new UserProfileFragment();
+                FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container,
+                        userProfileFragment,
+                        this,
+                        FragmentUtil.USER_PROFILE_FRAGMENT,
+                        FragmentUtil.AnimationType.SLIDE_LEFT);
+            }
 
         }else if (v == iv_add_post){
             Intent intent = new Intent(this, MainActivity.class);
-            startActivityForResult(intent, 1213);
+            startActivityForResult(intent, CheckSetup.Activities.ADD_NEW_POST_ACTIVITY);
         }
 
         setCheckedMenu((ImageView) v);
@@ -161,11 +173,22 @@ public class HomeActivity extends BaseActivity implements ViewAnimator.ViewAnima
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1213 && resultCode == Activity.RESULT_OK) {
-            List<String> postData = (List<String>) data.getSerializableExtra("result");
 
-            sendRequest(RequestFunction.createNewPost(getActivityId(), postData));
+        if (requestCode == CheckSetup.Activities.ADD_NEW_POST_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            List<Object> newPost = (ArrayList) data.getSerializableExtra("result");
+
+            homeFragment.getRl_upload_post().setVisibility(View.VISIBLE);
+            bitmapTask = new BitmapTask(homeFragment, newPost);
+            bitmapTask.execute();
+
+        } else if (requestCode == CheckSetup.Activities.SINGLE_POST_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            List<PostModel> postModels = (List<PostModel>) data.getSerializableExtra("postData");
+            userProfileFragment.getTv_posts_value().setText(postModels.size() + "");
+            userProfileFragment.updateUserPosts(postModels);
+
+            return;
         }
+        setHomeIcon();
     }
 
     private void setCheckedMenu(ImageView imageView){
@@ -188,4 +211,19 @@ public class HomeActivity extends BaseActivity implements ViewAnimator.ViewAnima
         }
     }
 
+    public void setHomeIcon() {
+        setCheckedMenu(iv_home_button);
+    }
+
+    public UserProfileFragment getUserProfileFragment() {
+        return userProfileFragment;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public BitmapTask getBitmapTask() {
+        return bitmapTask;
+    }
 }

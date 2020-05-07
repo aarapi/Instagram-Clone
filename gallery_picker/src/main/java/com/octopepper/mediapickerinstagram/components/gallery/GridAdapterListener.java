@@ -4,6 +4,6 @@ import java.io.File;
 
 interface GridAdapterListener {
 
-    void onClickMediaItem(File file);
+    void onClickMediaItem(File file, boolean isImageClicked);
 
 }

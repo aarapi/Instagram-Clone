@@ -9,12 +9,16 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.utilities.RequestFunction;
+import com.example.connectionframework.requestframework.sender.Request;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MoreBottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
     private RelativeLayout rl_cancel, rl_copy_link;
     private RelativeLayout rl_report_home, rl_unfollow_home, rl_delete_user, rl_edit_user;
+
     private boolean isUserPost;
+    private int postId;
 
     public static MoreBottomSheetFragment newInstance(Bundle args) {
         MoreBottomSheetFragment fragment = new MoreBottomSheetFragment();
@@ -30,6 +34,7 @@ public class MoreBottomSheetFragment extends BottomSheetDialogFragment implement
     @Override
     public void setupDialog(Dialog dialog, int style) {
         isUserPost = (Boolean) getArguments().getSerializable("isUserPost");
+        postId = (Integer) getArguments().getSerializable("postId");
         View contentView = null;
         if (isUserPost) {
              contentView = View.inflate(getContext(), R.layout.more_bottomsheet_userpost_layout, null);
@@ -74,7 +79,7 @@ public class MoreBottomSheetFragment extends BottomSheetDialogFragment implement
 
         if(isUserPost){
             if (view == rl_delete_user){
-                Toast.makeText(getContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+                ((ActivitySinglePost) getContext()).sendRequest(RequestFunction.deletePost(0, postId));
             }else if (view == rl_edit_user){
                 Toast.makeText(getContext(), "Post Edited", Toast.LENGTH_SHORT).show();
             }

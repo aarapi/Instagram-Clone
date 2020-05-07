@@ -3,21 +3,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_one"
     android:orientation="vertical">
 
-<androidx.cardview.widget.CardView
-    android:id="@+id/cv_post_container"
-    android:layout_width="match_parent"
-    android:layout_height="100dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:padding="10dp">
     <ImageView
         android:id="@+id/iv_post_img"
         android:layout_width="100dp"
-        android:layout_height="match_parent"
+        android:layout_height="100dp"
         android:src="@drawable/btn_capture_photo"
+        android:layout_centerVertical="true"
         android:padding="10dp"/>
+
+        <EditText
+            android:id="@+id/et_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginLeft="110dp"
+            android:hint="Name ....."></EditText>
 
         <EditText
             android:id="@+id/et_write_caption"
@@ -26,12 +35,28 @@
             android:background="@color/white"
             android:layout_centerInParent="true"
             android:hint="Write a Caption ....."></EditText>
+
+        <EditText
+            android:id="@+id/et_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="110dp"
+            android:inputType="number"
+            android:hint="Price ....."></EditText>
+
+        <Spinner
+            android:id="@+id/sp_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/et_product_price"></Spinner>
     </RelativeLayout>
-</androidx.cardview.widget.CardView>
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/dark_grey"
+        android:layout_height="0.05dp"
+        android:background="@color/white_five"
         android:layout_below="@+id/cv_post_container" />
 
 </LinearLayout>

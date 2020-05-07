@@ -26,5 +26,6 @@
     <item name="dialogLastMessageUserAvatar" type="id" />
     <item name="dialogDividerContainer" type="id" />
     <item name="dialogDivider" type="id" />
+    <item name="iv_user_from" type="id" />
 
 </resources>

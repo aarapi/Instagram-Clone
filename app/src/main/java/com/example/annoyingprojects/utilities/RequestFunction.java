@@ -64,6 +64,12 @@ public class RequestFunction {
         List<Object> params = new ArrayList<>();
         params.add(postData);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_POST, params);
+    }
+
+    public static Request deletePost(int activityId, int postID) {
+        List<Object> params = new ArrayList<>();
+        params.add(postID);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_DELETE_POST, params);
 
     }
 

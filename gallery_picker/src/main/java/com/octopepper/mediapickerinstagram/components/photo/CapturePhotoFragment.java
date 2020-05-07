@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -191,7 +192,7 @@ public class CapturePhotoFragment extends Fragment {
                                 }
                             }
                         }
-                        mSession.setFileToUpload(file);
+                        mSession.setFileToUpload(new ArrayList<File>());
                     }
                 }
             });

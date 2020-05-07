@@ -74,7 +74,6 @@
                 android:layout_gravity="bottom|right"
                 android:elevation="100dp"
                 android:outlineProvider="none"
-
                 ></ImageView>
         </FrameLayout>
 
@@ -90,10 +89,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tv_posts_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="980"
+                android:text=""
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:layout_gravity="center"></TextView>
@@ -115,7 +115,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.194"
             app:layout_constraintStart_toEndOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,7 +142,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.393"
             app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -159,6 +161,16 @@
                 android:text="Following"></TextView>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="email"></TextView>
    <RelativeLayout
        android:id="@+id/rl_edit_profile"
        android:layout_width="match_parent"
@@ -179,7 +191,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.05dp"
-        android:background="@android:color/darker_gray"
+        android:background="@color/white_five"
         android:layout_marginTop="20dp"/>
 
         <GridView
