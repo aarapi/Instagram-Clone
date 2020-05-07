@@ -1,7 +1,6 @@
 package com.example.annoyingprojects.utilities;
 
 import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
-import com.example.annoyingprojects.mobile.ui.afterlogin.DashboardActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.messages.MessagesActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.personaldata.CourseExampleActivity;
@@ -43,7 +42,6 @@ public class CheckSetup {
     public static void initializeApplicationActivity() {
         applicationActivityMap = new HashMap<>();
         addApplicationActivityToConfigurationMap(Activities.LOG_IN_ACTIVITY, LoginActivity.class);
-        addApplicationActivityToConfigurationMap(Activities.DASHBOARD_ACTIVITY, DashboardActivity.class);
         addApplicationActivityToConfigurationMap(Activities.COURSE_EXAMPLE_ACTIVITY, CourseExampleActivity.class);
         addApplicationActivityToConfigurationMap(Activities.HOME_ACTIVITY, HomeActivity.class);
         addApplicationActivityToConfigurationMap(Activities.MESSAGES_ACTIVITY, MessagesActivity.class);

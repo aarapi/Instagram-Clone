@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@mipmap/back_ground"
-    tools:context=".mobile.ui.beforelogin.LoginActivity">
+    android:background="#79a209df"
+    android:padding="30dp">
 
     <ImageView
         android:id="@+id/iv_language"
@@ -13,152 +11,120 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_global"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:foreground="@drawable/ripple_background_transparent"
-        android:layout_marginRight="20dp"
-        >
+        android:foreground="@drawable/ripple_background_transparent">
 
     </ImageView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Instacommerce"
+        android:textColor="@color/white"
+        android:fontFamily="@font/pacifico"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/ll_login"
+        android:textSize="25sp"
+        android:textStyle="bold"></TextView>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/ll_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
 
-        >
+        <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColorHint="#cccccc">
 
-
-        <LinearLayout
+            <EditText
+                android:id="@+id/atvEmailLog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp">
-
-
-            <ImageView
-                android:id="@+id/ivLogLogo"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginBottom="55dp"
-                android:layout_marginTop="18dp"
-                android:scaleType="fitCenter"
-                android:transitionName="logo_transition"
-                android:src="@drawable/logo" />
-
-
-            <ImageView
-                android:id="@+id/ivSignIn"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginBottom="15dp"
-                android:contentDescription="Sign in text on registration activity"
-                android:src="@drawable/sign_in" />
-
-
-            <AutoCompleteTextView
-                android:id="@+id/atvEmailLog"
-                android:inputType="textEmailAddress"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rounded_rect"
+                android:backgroundTint="#ffff"
                 android:drawableLeft="@drawable/icon_person"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/icon_person"
-                android:hint="@string/emailReg"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/gray"
-                android:singleLine="true"
-                android:text="albi"
-                android:imeOptions="actionNext"
-                android:textSize="15sp" />
+                android:hint="   Username"
+                android:inputType="textPersonName"
+                android:textColor="#cccccc"
+                android:textSize="20sp" />
 
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <AutoCompleteTextView
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#cccccc">
+
+            <EditText
                 android:id="@+id/atvPasswordLog"
-                android:inputType="textPassword"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rounded_rect"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#ffff"
                 android:drawableLeft="@drawable/icon_password"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/icon_password"
-                android:hint="@string/passwordReg"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:text="123"
+                android:hint="   Passwoard"
+                android:inputType="textPassword"
+                android:textColor="#cccccc"
+                android:textSize="20sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvForgotPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="16dp"
+            android:text="Forgot Password?"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:id="@+id/btnSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btnsignin_gradient"
+            android:textColor="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
                 android:textColor="@color/white"
-                android:textColorHint="@color/gray"
-                android:textSize="15sp" />
+                android:layout_centerInParent="true"></TextView>
+
+            <ProgressBar
+                android:id="@+id/progressbar"
+                style="@style/CustomProgressBar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"></ProgressBar>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="error"
+            android:textColor="@color/colorRed"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
 
 
-            <TextView
-                android:id="@+id/tvForgotPass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:text="forgtoPasswordText"
-                android:textColor="@color/white" />
-
-
-
-            <RelativeLayout
-                android:id="@+id/btnSignIn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/btnsignin_gradient"
-                android:textColor="#FFFFFF" >
-                <TextView
-                    android:id="@+id/tv_signin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sign In"
-                    android:textColor="@color/white"
-                    android:layout_centerInParent="true"></TextView>
-                <ProgressBar
-                    android:id="@+id/progressbar"
-                    style="@style/CustomProgressBar"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone"></ProgressBar>
-            </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/tv_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="error"
-                android:textColor="@color/colorRed"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
-
-
-            <TextView
-                android:id="@+id/tvSignIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:text="@string/signup_redirect"
-                android:textColor="@color/white" />
-
-
-        </LinearLayout>
-
-
-    </ScrollView>
+        <TextView
+            android:id="@+id/tvSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="@string/signup_redirect"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </RelativeLayout>

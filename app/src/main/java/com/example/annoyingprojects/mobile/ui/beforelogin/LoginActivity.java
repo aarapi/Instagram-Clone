@@ -2,7 +2,6 @@ package com.example.annoyingprojects.mobile.ui.beforelogin;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 
@@ -10,25 +9,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.PostModel;
-import com.example.annoyingprojects.data.Posts;
-import com.example.annoyingprojects.data.StoryInfo;
-import com.example.annoyingprojects.data.User;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
-import com.example.annoyingprojects.utilities.ClassType;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity.scrollTime;
 import static com.example.annoyingprojects.utilities.CheckSetup.initializeApplicationActivity;
 
 public class LoginActivity extends BaseActivity {
@@ -70,7 +59,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public int getLayoutContent() {
-        return R.layout.activity_dashboard_layout;
+        return R.layout.activity_sign_in_layout;
     }
 
     @Override

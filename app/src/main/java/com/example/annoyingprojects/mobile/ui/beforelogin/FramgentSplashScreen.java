@@ -58,7 +58,7 @@ public class FramgentSplashScreen extends BaseFragment {
                         logoWhite.setVisibility(View.VISIBLE);
                         chmaraTech.setVisibility(View.VISIBLE);
 
-                        changeFragment("logo_transition", R.id.ivLogoWhite, new FragmentLogIn());
+                        changeFragment(new FragmentLogIn());
 
                     }
 

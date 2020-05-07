@@ -133,30 +133,16 @@ public abstract class BaseFragment extends Fragment {
 
         }
     }
-    protected void changeFragment(String tagTransition, int viewId, Fragment nextFragment) {
+
+    protected void changeFragment(Fragment nextFragment) {
 
         FragmentTransaction fragmentTransaction = activity.fragmentManager.beginTransaction();
 
-
-        // 2. Shared Elements Transition
-        TransitionSet enterTransitionSet = new TransitionSet();
-        enterTransitionSet.addTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-        enterTransitionSet.setDuration(MOVE_DEFAULT_TIME);
-        nextFragment.setSharedElementEnterTransition(enterTransitionSet);
-
-
-        if (tagTransition != null || viewId != -1) {
-            View logo = containerView.findViewById(viewId);
-            fragmentTransaction.addSharedElement(logo, tagTransition);
-        }
         fragmentTransaction.replace(android.R.id.content, nextFragment);
         fragmentTransaction
                 .commit();
     }
 
-    protected void changeFragment(Fragment nextFragment) {
-        changeFragment(null, -1, nextFragment);
-    }
 
     public void sendRequest(Request request) {
 
