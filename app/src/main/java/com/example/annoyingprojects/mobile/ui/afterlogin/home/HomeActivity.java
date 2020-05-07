@@ -42,7 +42,7 @@ import yalantis.com.sidemenu.util.ViewAnimator;
 import static com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment.USER_PROFILE_DATA;
 import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
 
-public class HomeActivity extends BaseActivity implements ViewAnimator.ViewAnimatorListener, SettingFragment.ItemClickListener{
+public class HomeActivity extends BaseActivity implements SettingFragment.ItemClickListener {
     private ImageView iv_search_button, cv_user_img, iv_home_button, iv_add_post;
     private RelativeLayout rl_user_img;
     private HomeFragment homeFragment;

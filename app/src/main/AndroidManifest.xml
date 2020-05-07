@@ -20,9 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mobile.ui.afterlogin.DashboardActivity"></activity>
-        <activity android:name=".mobile.ui.afterlogin.personaldata.CourseExampleActivity"></activity>
-<!--        <activity android:name=".mobile.ui.afterlogin.home.HomeActivity"></activity>-->
         <activity android:name=".mobile.ui.afterlogin.home.StoryActivity"></activity>
         <activity android:name=".mobile.ui.afterlogin.home.HomeActivity"></activity>
         <activity android:name=".mobile.ui.afterlogin.userprofile.ActivitySinglePost"></activity>

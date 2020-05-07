@@ -7,6 +7,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,7 +36,7 @@ import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivit
 
 public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
     private ImageView iv_language;
-    private AutoCompleteTextView email, password;
+    private EditText email, password;
     private TextView forgotPass, signUp, tvForgotPass, tv_signin, tv_error;
     private RelativeLayout btnSignIn;
     private Fragment fragmentLogIn;
@@ -83,10 +84,6 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if (v == btnSignIn) {
-            btnSignIn.setClickable(false);
-            progressBar.setVisibility(View.VISIBLE);
-            tv_signin.setVisibility(View.GONE);
-            tv_error.setVisibility(View.GONE);
             String inEmail = email.getText().toString();
             String inPassword = password.getText().toString();
 
@@ -95,10 +92,15 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
                 user.username = inEmail;
                 user.password = inPassword;
 
+                btnSignIn.setClickable(false);
+                progressBar.setVisibility(View.VISIBLE);
+                tv_signin.setVisibility(View.GONE);
+                tv_error.setVisibility(View.GONE);
+
                 signUser(user);
             }
         } else if (v == signUp) {
-            changeFragment("logo_transition", R.id.ivLogLogo, FragmentSignUp.newInstance(new Bundle()));
+            changeFragment(FragmentSignUp.newInstance(new Bundle()));
         } else if (v == forgotPass) {
 
         }else if (v == iv_language){

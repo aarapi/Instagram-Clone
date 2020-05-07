@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.annoyingprojects.R;
@@ -17,8 +19,8 @@ import java.util.List;
 
 public class FragmentSignUp extends BaseFragment implements View.OnClickListener {
     private ImageView logo, joinus;
-    private AutoCompleteTextView username, email, password;
-    private Button signup;
+    private EditText username, email, password;
+    private RelativeLayout signup;
     private TextView signin;
     private ProgressDialog progressDialog;
 
@@ -30,8 +32,6 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     }
     @Override
     public void initViews() {
-        logo = containerView.findViewById(R.id.ivRegLogo);
-        joinus = containerView.findViewById(R.id.ivJoinUs);
         username = containerView.findViewById(R.id.atvUsernameReg);
         email = containerView.findViewById(R.id.atvEmailReg);
         password = containerView.findViewById(R.id.atvPasswordReg);
@@ -88,7 +88,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                 sendRequest(RequestFunction.signUp(0, user));
             }
         } else if (v == signin) {
-            changeFragment("logo_transition", R.id.ivRegLogo, FragmentLogIn.newInstance(new Bundle()));
+            changeFragment(FragmentLogIn.newInstance(new Bundle()));
         }
     }
 
