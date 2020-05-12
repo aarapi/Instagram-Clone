@@ -23,7 +23,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
-import com.example.annoyingprojects.mobile.ui.afterlogin.personaldata.FragmentMenu;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.connectionframework.requestframework.receiver.RequestReceived;
 import com.example.connectionframework.requestframework.sender.Request;
@@ -107,23 +106,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public void onErrorDataReceive(int action, List<Object> data) {}
 
 
-    protected void changeFragment(String tagTransition, int viewId, Fragment nextFragment) {
+    protected void switchFragment(int fragmentContainerId, Fragment nextFragment) {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-
-        // 2. Shared Elements Transition
-        TransitionSet enterTransitionSet = new TransitionSet();
-        enterTransitionSet.addTransition(TransitionInflater.from(getApplicationContext()).inflateTransition(android.R.transition.move));
-        enterTransitionSet.setDuration(MOVE_DEFAULT_TIME);
-        nextFragment.setSharedElementEnterTransition(enterTransitionSet);
-
-
-        if (tagTransition != null || viewId != -1) {
-            View logo = findViewById(viewId);
-            fragmentTransaction.addSharedElement(logo, tagTransition);
-        }
-        fragmentTransaction.replace(android.R.id.content, nextFragment);
+        fragmentTransaction.replace(fragmentContainerId, nextFragment);
         fragmentTransaction
                 .commit();
     }

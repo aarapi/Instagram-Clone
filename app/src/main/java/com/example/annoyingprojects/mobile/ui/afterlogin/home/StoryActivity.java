@@ -7,13 +7,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.StoryInfo;
+import com.example.annoyingprojects.data.StoryModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +21,12 @@ import static com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter.STO
 
 public class StoryActivity extends AppCompatActivity implements StoriesProgressView.StoriesListener {
 
-    private static final int PROGRESS_COUNT = 6;
+    private static int PROGRESS_COUNT;
 
 
     private StoriesProgressView storiesProgressView;
     private ImageView image;
-    List<StoryInfo> storyInfoList;
+    List<StoryModel> storyModelList;
     private int counter = 0;
 
     long pressTime = 0L;
@@ -70,7 +66,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
         image = (ImageView) findViewById(R.id.image);
 
-       setImageResource(counter);
+        setImageResource(counter);
 
         // bind reverse view
         View reverse = findViewById(R.id.reverse);
@@ -118,25 +114,25 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     public void setPositionClicked(){
         Bundle bundle = getIntent().getBundleExtra("data");
 
-        ArrayList<StoryInfo> list = (ArrayList) bundle.getSerializable(STORY_LIST_INFO);
-        if (list != null && list.size() > 0) {
-            storyInfoList = list;
-        }
-        StoryInfo storyInfo = (StoryInfo) bundle.getSerializable(SELECTED_ITEM_INFO);
+        ArrayList<StoryModel> list = (ArrayList) bundle.getSerializable(STORY_LIST_INFO);
+        PROGRESS_COUNT = list.size();
 
-        for (int i=0; i< storyInfoList.size(); i++){
-            if (storyInfo.ID.equals(storyInfoList.get(i).ID)){
+        if (list != null && list.size() > 0) {
+            storyModelList = list;
+        }
+        StoryModel storyModel = (StoryModel) bundle.getSerializable(SELECTED_ITEM_INFO);
+
+        for (int i = 0; i < storyModelList.size(); i++) {
+            if (storyModel.ID.equals(storyModelList.get(i).ID)) {
                 counter = i;
                 break;
             }
         }
     }
     public void setImageResource(int counter){
-        Glide.with(getApplicationContext())
-                .load(storyInfoList.get(counter).getLink())
-                .transition(DrawableTransitionOptions.withCrossFade(400))
-                .apply(new RequestOptions().override(Target.SIZE_ORIGINAL))
-                .into(image);
+        Picasso.with(getApplicationContext()).load(storyModelList.get(counter).getLink())
+                .placeholder(R.drawable.placeholder_error_media).error(R.drawable.placeholder_error_media).fit()
+                .centerCrop().into(image);
 
     }
 }

@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.StoryInfo;
+import com.example.annoyingprojects.data.StoryModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.StoryActivity;
 
@@ -29,13 +29,13 @@ public class StoryRecyclerViewAdapter
 
     public static String STORY_LIST_INFO = "STORY_LIST_INFO";
     public static String SELECTED_ITEM_INFO = "SELECTED_ITEM_INFO";
-    private ArrayList<StoryInfo> mList = new ArrayList<>();
+    private ArrayList<StoryModel> mList = new ArrayList<>();
 
-    public List<StoryInfo> getList() {
+    public List<StoryModel> getList() {
         return mList;
     }
 
-    public void setList(ArrayList<StoryInfo> mList) {
+    public void setList(ArrayList<StoryModel> mList) {
         this.mList = mList;
         notifyDataSetChanged();
     }
@@ -44,17 +44,17 @@ public class StoryRecyclerViewAdapter
     @Override
     @SuppressLint("InflateParams")
     public StoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.story_cell_layout, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_story_layout, null);
         return new StoryViewHolder(view, this);
     }
 
     @Override
     public void onBindViewHolder(@NonNull StoryViewHolder holder, int position) {
-        StoryInfo item = getItem(position);
+        StoryModel item = getItem(position);
         holder.bind(item);
     }
 
-    public StoryInfo getItem(int position) {
+    public StoryModel getItem(int position) {
         return mList.size() > position ? mList.get(position) : null;
     }
 
@@ -65,15 +65,15 @@ public class StoryRecyclerViewAdapter
 
     @Override
     public void onClick(View itemView) {
-        StoryInfo clickedItem = (StoryInfo) itemView.getTag();
+        StoryModel clickedItem = (StoryModel) itemView.getTag();
         showCampaign(clickedItem, (BaseActivity) itemView.getContext(), itemView);
     }
 
-    private void showCampaign(StoryInfo storyInfo, BaseActivity mActivity, @Nullable View itemView) {
+    private void showCampaign(StoryModel storyModel, BaseActivity mActivity, @Nullable View itemView) {
 
         Bundle bundleParams = new Bundle();
         bundleParams.putSerializable(STORY_LIST_INFO, mList);
-        bundleParams.putSerializable(SELECTED_ITEM_INFO, storyInfo);
+        bundleParams.putSerializable(SELECTED_ITEM_INFO, storyModel);
         Intent intent = new Intent(itemView.getContext(), StoryActivity.class);
         intent.putExtra("data", bundleParams);
         mActivity.startActivity(intent);
@@ -100,7 +100,7 @@ class StoryViewHolder extends RecyclerView.ViewHolder {
      *
      * @param item to bind
      */
-    void bind(StoryInfo item) {
+    void bind(StoryModel item) {
 
         boolean animateSeen = (itemView.getTag() == item);
 

@@ -3,7 +3,6 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.search;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -13,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.RecyclerViewAdapterSearch;
-import com.example.annoyingprojects.data.User;
+import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment;
+import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
-import com.example.annoyingprojects.utilities.Util;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,7 +28,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFragment extends BaseFragment implements TextWatcher {
+public class SearchFragment extends BaseFragment implements TextWatcher, RecyclerViewAdapterSearch.OnItemClickListener {
     private ProgressBar progressBar;
 
     private EditText serchInput;
@@ -39,7 +38,7 @@ public class SearchFragment extends BaseFragment implements TextWatcher {
 
     private ShimmerFrameLayout shimmer_view_container;
 
-    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<UserModel> userModels = new ArrayList<>();
 
     @Override
     public void initViews() {
@@ -47,11 +46,14 @@ public class SearchFragment extends BaseFragment implements TextWatcher {
         serchInput = containerView.findViewById(R.id.edt_search_input);
         rv_user_list = containerView.findViewById(R.id.rv_user_list);
         shimmer_view_container = containerView.findViewById(R.id.shimmer_view_container);
+
+        userModels = LocalServer.newInstance().getUserModels();
     }
 
     @Override
     public void bindEvents() {
         serchInput.addTextChangedListener(this);
+        recyclerViewAdapterSearch.SetOnItemClickListener(this);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class SearchFragment extends BaseFragment implements TextWatcher {
         rv_user_list.setLayoutManager(linearLayoutManager);
         rv_user_list.setHasFixedSize(true);
 
-        recyclerViewAdapterSearch = new RecyclerViewAdapterSearch(getContext(), users);
+        recyclerViewAdapterSearch = new RecyclerViewAdapterSearch(getContext(), userModels);
         rv_user_list.setAdapter(recyclerViewAdapterSearch);
         recyclerViewAdapterSearch.notifyDataSetChanged();
     }
@@ -99,35 +101,14 @@ public class SearchFragment extends BaseFragment implements TextWatcher {
 
     @Override
     public void onDataReceive(int action, List<Object> data) {
-        Type userSeearchedType = new TypeToken<ArrayList<User>>() {
+        Type userSeearchedType = new TypeToken<ArrayList<UserModel>>() {
         }.getType();
         Gson gson = new Gson();
-
-        ArrayList<User> users = gson.fromJson(gson.toJson(data.get(0)), userSeearchedType);
-
-        recyclerViewAdapterSearch.setUsers(users);
-        recyclerViewAdapterSearch.SetOnItemClickListener(new RecyclerViewAdapterSearch.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                User user = users.get(position);
-                Bundle args = new Bundle();
-                args.putSerializable(UserProfileFragment.USER_PROFILE_DATA, (Serializable) user);
-
-                UserProfileFragment userProfileFragment = UserProfileFragment.newInstance(args);
-
-                FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container,
-                        userProfileFragment,
-                        (HomeActivity) getContext(),
-                        FragmentUtil.USER_PROFILE_FRAGMENT,
-                        null);
-            }
-        });
-
+        ArrayList<UserModel> userModels = gson.fromJson(gson.toJson(data.get(0)), userSeearchedType);
+        recyclerViewAdapterSearch.setUserModels(userModels);
         shimmer_view_container.setVisibility(View.GONE);
         rv_user_list.setVisibility(View.VISIBLE);
-        recyclerViewAdapterSearch.notifyDataSetChanged();
     }
-
     @Override
     public void onBackClicked() {
         FragmentUtil
@@ -136,5 +117,22 @@ public class SearchFragment extends BaseFragment implements TextWatcher {
                         (HomeActivity) getContext(),
                         null);
         ((HomeActivity) getContext()).setHomeIcon();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        UserModel userModel;
+        userModel = userModels.get(position);
+        LocalServer.newInstance().setUserModels(userModel);
+
+        Bundle args = new Bundle();
+        args.putSerializable(UserProfileFragment.USER_PROFILE_DATA, (Serializable) userModel);
+        UserProfileFragment userProfileFragment = UserProfileFragment.newInstance(args);
+
+        FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container,
+                userProfileFragment,
+                (HomeActivity) getContext(),
+                FragmentUtil.USER_PROFILE_FRAGMENT,
+                null);
     }
 }

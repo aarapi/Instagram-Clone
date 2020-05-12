@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/dialogRootLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_outcoming">
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:text="Tes aneasddasdad" />
+
+        <TextView
+            android:id="@+id/tv_sent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/gray_dark"
+            android:textSize="10sp"
+            android:layout_below="@+id/tv_message"></TextView>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20:30"
+            android:textColor="@color/gray_dark"
+            android:layout_toRightOf="@+id/tv_sent"
+            android:textSize="10sp"
+            android:layout_below="@+id/tv_message"></TextView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

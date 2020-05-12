@@ -1,6 +1,5 @@
 package com.example.annoyingprojects.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,24 +16,26 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.Posts;
+import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.MoreBottomSheetFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.SettingFragment;
+import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment;
+import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.skyhope.showmoretextview.ShowMoreTextView;
+import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View.OnClickListener {
@@ -55,7 +56,8 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
     public static class ViewHolder {
         TextView tv_user_name, tv_product_name, product_price, tv_likedby_value;
         ShowMoreTextView tv_product_description_value;
-        ImageView iv_post_img,iv_send_message, cv_user_img;
+        ImageView iv_post_img, iv_send_message;
+        CircleImageView cv_user_img;
         CheckBox iv_like;
         ViewPager viewPager;
         ImageView iv_more;
@@ -65,7 +67,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
 
     public ListViewAdapterPost(List<PostModel> data, Context context, FragmentManager fragmentManager,
                                boolean isUserPost, ListView listView) {
-        super(context, R.layout.post_cell_layout, data);
+        super(context, R.layout.cell_post_layout, data);
         this.dataSet = data;
         this.mContext = context;
         adapterPost = this;
@@ -141,8 +143,8 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
         viewHolder = new ViewHolder();
         LayoutInflater inflater = LayoutInflater.from(getContext());
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
-            convertView = inflater.inflate(R.layout.post_cell_layout, parent, false);
-            viewHolder.cv_user_img = (ImageView) convertView.findViewById(R.id.cv_user_img);
+            convertView = inflater.inflate(R.layout.cell_post_layout, parent, false);
+            viewHolder.cv_user_img = (CircleImageView) convertView.findViewById(R.id.cv_user_img);
             viewHolder.tv_user_name = (TextView) convertView.findViewById(R.id.tv_user_name);
             viewHolder.iv_post_img = (ImageView) convertView.findViewById(R.id.iv_post_img);
             viewHolder.tv_product_name = (TextView) convertView.findViewById(R.id.tv_product_name);
@@ -166,12 +168,37 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
                     viewHolder.tv_likedby_value.setText(getItem(position).getLikedByNo() + "");
                 }
             });
-
-
             viewHolder.iv_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     showBottomSheet(isUserPost, position);
+                }
+            });
+            viewHolder.iv_send_message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            viewHolder.tv_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!isUserPost) {
+                        UserModel userModel = new UserModel();
+                        userModel.email = "";
+                        userModel.userImage = dataModel.getLinkUserImg();
+                        userModel.username = dataModel.getUserName();
+
+                        Bundle args = new Bundle();
+                        args.putSerializable(UserProfileFragment.USER_PROFILE_DATA, (Serializable) userModel);
+                        UserProfileFragment userProfileFragment = UserProfileFragment.newInstance(args);
+
+                        FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container,
+                                userProfileFragment,
+                                (HomeActivity) getContext(),
+                                FragmentUtil.USER_PROFILE_FRAGMENT,
+                                null);
+                    }
                 }
             });
 
@@ -275,11 +302,9 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
         this.notifyDataSetChanged();
     }
     private void setimageresource(String url, ImageView img){
-        Glide.with(mContext)
-                .load(url)
-                .transition(DrawableTransitionOptions.withCrossFade(400))
-                .apply(new RequestOptions().override(Target.SIZE_ORIGINAL))
-                .into(img);
+        Picasso.with(mContext).load(url)
+                .placeholder(R.drawable.placeholder_error_media).error(R.drawable.placeholder_error_media).fit()
+                .centerCrop().into(img);
     }
 
     public void showBottomSheet(boolean isUserPost, int position) {

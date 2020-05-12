@@ -16,7 +16,7 @@ import java.util.Set;
 import static com.example.connectionframework.requestframework.constants.Constants.ANNOYING_PROJECTS_STORY_PREF;
 
 
-public class StoryInfo extends BaseModel {
+public class StoryModel extends BaseModel {
 
     @SerializedName("ID")
     public String ID;
@@ -112,7 +112,7 @@ public class StoryInfo extends BaseModel {
      * @param seen    to set
      * @return model instance, useful in chains
      */
-    public StoryInfo setIsSeen(@NonNull Context context, boolean seen) {
+    public StoryModel setIsSeen(@NonNull Context context, boolean seen) {
         Set<String> seenSet = getSeenSet(context);
         if (seen) {
             seenSet.add(ID);
@@ -171,11 +171,11 @@ public class StoryInfo extends BaseModel {
      * @return found item, or null if not present in given array
      */
     @Nullable
-    public static StoryInfo findCampaignWithId(@Nullable ArrayList<StoryInfo> list, @Nullable String id) {
+    public static StoryModel findCampaignWithId(@Nullable ArrayList<StoryModel> list, @Nullable String id) {
         if (list == null || id == null) {
             return null;
         }
-        for (StoryInfo item : list) {
+        for (StoryModel item : list) {
             if (item.ID.equals(id)) {
                 return item;
             }

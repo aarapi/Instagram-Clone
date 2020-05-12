@@ -6,24 +6,18 @@
     android:foreground="?android:attr/selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_image"
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_user"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        app:cardCornerRadius="18dp">
-
-        <ImageView
-            android:id="@+id/iv_user"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"></ImageView>
-    </androidx.cardview.widget.CardView>
+        android:scaleType="centerCrop"></de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/cv_image"
+        android:layout_toRightOf="@+id/iv_user"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -34,7 +28,7 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/cv_image"
+        android:layout_toRightOf="@+id/iv_user"
         android:layout_below="@+id/tv_username"
         android:layout_marginLeft="10dp"
         android:textSize="12sp"

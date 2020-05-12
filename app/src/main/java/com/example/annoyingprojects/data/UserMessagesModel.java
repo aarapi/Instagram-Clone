@@ -1,50 +1,53 @@
 package com.example.annoyingprojects.data;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 public class UserMessagesModel {
 
-    private int id;
-    private String username_from;
-    private String username_to;
-    private boolean online;
-    private String avatar;
+    private int userMessagesId;
+    private String usernamFrom;
+    private String usernameTo;
+    private String message;
+    private Timestamp messageTime;
 
-    public int getId() {
-        return id;
+    public int getUserMessagesId() {
+        return userMessagesId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserMessagesId(int userMessagesId) {
+        this.userMessagesId = userMessagesId;
     }
 
-    public String getUsername_from() {
-        return username_from;
+    public String getUsernamFrom() {
+        return usernamFrom;
     }
 
-    public void setUsername_from(String username_from) {
-        this.username_from = username_from;
+    public void setUsernamFrom(String usernamFrom) {
+        this.usernamFrom = usernamFrom;
     }
 
-    public String getUsername_to() {
-        return username_to;
+    public String getUsernameTo() {
+        return usernameTo;
     }
 
-    public void setUsername_to(String username_to) {
-        this.username_to = username_to;
+    public void setUsernameTo(String usernameTo) {
+        this.usernameTo = usernameTo;
     }
 
-    public boolean isOnline() {
-        return online;
+    public String getMessage() {
+        return message;
     }
 
-    public void setOnline(boolean online) {
-        this.online = online;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public Timestamp getMessageTime() {
+        return messageTime;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setMessageTime(Timestamp messageTime) {
+        this.messageTime = messageTime;
     }
 }

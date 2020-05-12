@@ -16,7 +16,7 @@ import com.example.annoyingprojects.adapters.ListViewAdapterPost;
 import com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.Posts;
-import com.example.annoyingprojects.data.StoryInfo;
+import com.example.annoyingprojects.data.StoryModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.RequestFunction;
@@ -90,11 +90,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void setFragmentView(List<Object> data) {
 
-        ArrayList<StoryInfo> storyInfoArrayList = (ArrayList<StoryInfo>) data.get(0);
+        ArrayList<StoryModel> storyModelArrayList = (ArrayList<StoryModel>) data.get(0);
         postModelList = (List<PostModel>) data.get(1);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        mStoryRVAdapter.setList(storyInfoArrayList);
+        mStoryRVAdapter.setList(storyModelArrayList);
         rv_stories.setLayoutManager(layoutManager);
         rv_stories.setAdapter(mStoryRVAdapter);
         mStoryRVAdapter.notifyDataSetChanged();
@@ -146,7 +146,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             adapter.notifyDataSetChanged();
         } else if (action == CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_POST) {
             Posts posts = gson.fromJson(gson.toJson(data.get(0)), Posts.class);
-            posts.setLinkUserImg(((HomeActivity) getContext()).getUser().userImage);
+            posts.setLinkUserImg(((HomeActivity) getContext()).getUserModel().userImage);
             adapter.createNewPost(posts);
             ((HomeActivity) getContext()).getBitmapTask().onProgressUpdate("100");
             rl_upload_post.setVisibility(View.GONE);

@@ -2,6 +2,7 @@ package com.octopepper.mediapickerinstagram;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -18,11 +19,11 @@ import com.octopepper.mediapickerinstagram.commons.adapters.ViewPagerAdapter;
 import com.octopepper.mediapickerinstagram.commons.models.Session;
 import com.octopepper.mediapickerinstagram.commons.models.enums.SourceType;
 import com.octopepper.mediapickerinstagram.commons.modules.PermissionModule;
+import com.octopepper.mediapickerinstagram.commons.tasks.FetchGalleryTask;
 import com.octopepper.mediapickerinstagram.commons.ui.ToolbarView;
 import com.octopepper.mediapickerinstagram.components.NewPostFragment;
 import com.octopepper.mediapickerinstagram.components.gallery.GalleryPickerFragment;
 import com.octopepper.mediapickerinstagram.components.photo.CapturePhotoFragment;
-import com.octopepper.mediapickerinstagram.components.video.CaptureVideoFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,7 +54,12 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
     private boolean isNewPost = false;
     private Session mSession = Session.getInstance();
     private HashSet<SourceType> mSourceTypeSet = new HashSet<>();
+
     private NewPostFragment newPostFragment;
+    private GalleryPickerFragment galleryPickerFragment;
+
+    private ViewPagerAdapter pagerAdapter;
+
     private void initViews() {
         PermissionModule permissionModule = new PermissionModule(this);
         permissionModule.checkPermissions();
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
                 .setOnClickNextListener(this);
 
 
-        final ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getListFragment());
+        pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getListFragment());
         mMainViewPager.setAdapter(pagerAdapter);
 
         mMainTabLayout.addOnTabSelectedListener(getViewPagerOnTabSelectedListener());
@@ -111,13 +117,10 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
         ArrayList<Fragment> fragments = new ArrayList<>();
 
         if (mSourceTypeSet.contains(SourceType.Gallery)) {
-            fragments.add(GalleryPickerFragment.newInstance());
-            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(_tabGallery));
-        }
+            galleryPickerFragment = GalleryPickerFragment.newInstance();
+            fragments.add(galleryPickerFragment);
 
-        if (mSourceTypeSet.contains(SourceType.Photo)) {
-            fragments.add(CapturePhotoFragment.newInstance());
-            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(_tabPhoto));
+            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(_tabGallery));
         }
 
         return fragments;
@@ -131,15 +134,34 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
 
         // If you want to start activity with custom Tab
         mSourceTypeSet.add(SourceType.Gallery);
-        mSourceTypeSet.add(SourceType.Photo);
-        mSourceTypeSet.add(SourceType.Video);
-
         initViews();
+
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (arePermissionsGranted(grantResults)) {
+//            pagerAdapter.setFragments(getListFragment());
+//            mMainViewPager.setAdapter(pagerAdapter);
+//
+//            mMainTabLayout.addOnTabSelectedListener(getViewPagerOnTabSelectedListener());
+//            mMainViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mMainTabLayout));
+//            mMainViewPager.setCurrentItem(0);
+//            pagerAdapter.notifyDataSetChanged();
+        } else {
+            finish();
+        }
+    }
+
+    private boolean arePermissionsGranted(int[] grantResults) {
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == -1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -177,10 +199,12 @@ public class MainActivity extends AppCompatActivity implements ToolbarView.OnCli
         }
         else {
             // Fetch file to upload
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("result", (Serializable) newPostFragment.getPostData());
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();
+            if (newPostFragment.validateInputs()) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", (Serializable) newPostFragment.getPostData());
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
         }
 
 

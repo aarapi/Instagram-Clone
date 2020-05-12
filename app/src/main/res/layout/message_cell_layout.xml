@@ -13,22 +13,15 @@
             android:layout_marginTop="10dp"
 
             >
-            <androidx.cardview.widget.CardView
-                android:id="@+id/myCardView"
+            =
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cv_user_img"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:cardCornerRadius="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                >
-                <ImageView
-                    android:id="@+id/cv_user_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
                     />
-            </androidx.cardview.widget.CardView>
         </RelativeLayout>
     <TextView
         android:id="@+id/tv_user_name"

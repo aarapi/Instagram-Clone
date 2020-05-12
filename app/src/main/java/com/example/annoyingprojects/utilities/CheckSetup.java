@@ -3,7 +3,6 @@ package com.example.annoyingprojects.utilities;
 import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.messages.MessagesActivity;
-import com.example.annoyingprojects.mobile.ui.afterlogin.personaldata.CourseExampleActivity;
 import com.example.annoyingprojects.mobile.ui.beforelogin.LoginActivity;
 
 import java.util.HashMap;
@@ -26,6 +25,8 @@ public class CheckSetup {
         public final static int INSTA_COMMERCE_SET_POST_LIKE = 9;
         public final static int INSTA_COMMERCE_GET_SEARCHED_USERS = 10;
         public final static int INSTA_COMMERCE_DELETE_POST = 11;
+        public final static int INSTA_COMMERCE_USER_MESSAGES = 12;
+        public final static int INSTA_COMMERCE_SEND_NEW_MESSAGE = 13;
     }
 
     public static class Activities {
@@ -42,7 +43,6 @@ public class CheckSetup {
     public static void initializeApplicationActivity() {
         applicationActivityMap = new HashMap<>();
         addApplicationActivityToConfigurationMap(Activities.LOG_IN_ACTIVITY, LoginActivity.class);
-        addApplicationActivityToConfigurationMap(Activities.COURSE_EXAMPLE_ACTIVITY, CourseExampleActivity.class);
         addApplicationActivityToConfigurationMap(Activities.HOME_ACTIVITY, HomeActivity.class);
         addApplicationActivityToConfigurationMap(Activities.MESSAGES_ACTIVITY, MessagesActivity.class);
     }

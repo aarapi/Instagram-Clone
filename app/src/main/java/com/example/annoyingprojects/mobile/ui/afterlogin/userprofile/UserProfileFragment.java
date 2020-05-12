@@ -8,44 +8,48 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.GridAdapter;
+import com.example.annoyingprojects.data.MessageUsersModel;
 import com.example.annoyingprojects.data.Posts;
-import com.example.annoyingprojects.data.User;
+import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentUserMessages;
 import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
 
 public class UserProfileFragment extends BaseFragment implements View.OnClickListener {
     public static String USER_PROFILE_DATA = "USER_PROFILE_DATA";
-    private User user;
+    private UserModel userModel;
     private List<PostModel> postModels;
 
     private GridView gv_user_post;
     private GridAdapter gridAdapter;
     private ProgressBar progressBar;
     private RelativeLayout rl_edit_profile;
+    private TextView tv_user_action;
 
-    private ImageView iv_user_profile;
+    private CircleImageView iv_user_profile;
     private ImageView iv_menu_settings;
 
     private TextView tv_posts_value;
     private TextView tv_email;
+
+    private boolean isUser = true;
 
     public static UserProfileFragment newInstance(Bundle args) {
         UserProfileFragment userProfileFragment = new UserProfileFragment();
@@ -56,12 +60,19 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void initViews() {
         rl_edit_profile = containerView.findViewById(R.id.rl_edit_profile);
+        tv_user_action = containerView.findViewById(R.id.tv_user_action);
+
 
         if (getArguments() != null) {
-            user = (User) getArguments().getSerializable(USER_PROFILE_DATA);
-            rl_edit_profile.setVisibility(View.GONE);
+            userModel = (UserModel) getArguments().getSerializable(USER_PROFILE_DATA);
         } else {
-            user = LocalServer.getInstance(getContext()).getUser();
+            userModel = LocalServer.getInstance(getContext()).getUser();
+        }
+
+        if (!userModel.username.equals(LocalServer
+                .getInstance(getContext()).getUser().username)) {
+            tv_user_action.setText("Send Message");
+            isUser = false;
         }
 
         progressBar = containerView.findViewById(R.id.progressbar);
@@ -82,11 +93,11 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void setViews() {
-        setUserImageRes(getContext(), user.userImage, iv_user_profile);
-        tv_email.setText(user.email);
+        setUserImageRes(getContext(), userModel.userImage, iv_user_profile);
+        tv_email.setText(userModel.email);
 
         progressBar.setVisibility(View.VISIBLE);
-        sendRequest(RequestFunction.getUserProfileData(0, user.username));
+        sendRequest(RequestFunction.getUserProfileData(0, userModel.username));
     }
 
     @Override
@@ -110,6 +121,24 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     public void onClick(View v) {
         if(v == iv_menu_settings){
             showBottomSheet();
+        } else if (v == rl_edit_profile) {
+            if (isUser) {
+
+            } else {
+                MessageUsersModel messageUsersModel = new MessageUsersModel();
+                messageUsersModel.setUsername_from(LocalServer.getInstance(getContext()).getUser().username);
+                messageUsersModel.setUsername_to(userModel.username);
+                Bundle args = new Bundle();
+                args.putSerializable("USER_MESSAGES", (Serializable) messageUsersModel);
+                args.putSerializable("IS_FROM_MAIN_ACTIVITY", (Serializable) true);
+                FragmentUserMessages fragmentUserMessages = FragmentUserMessages.newInstance(args);
+
+                FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container
+                        , fragmentUserMessages
+                        , activity
+                        , FragmentUtil.USER_MESSAGES_FRAGMENT
+                        , null);
+            }
         }
     }
 

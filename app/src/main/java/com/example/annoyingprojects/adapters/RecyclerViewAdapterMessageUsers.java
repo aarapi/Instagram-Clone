@@ -4,89 +4,127 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.PostModel;
-import com.example.annoyingprojects.data.UserMessagesModel;
+import com.example.annoyingprojects.data.MessageUsersModel;
+import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.Util;
-import com.stfalcon.chatkit.utils.ShapeImageView;
+import com.example.connectionframework.requestframework.sender.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RecyclerViewAdapterMessageUsers extends RecyclerView.Adapter<RecyclerViewAdapterMessageUsersViewHolder> {
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    private ArrayList<UserMessagesModel> userMessagesModels;
+public class RecyclerViewAdapterMessageUsers extends RecyclerView.Adapter<RecyclerViewAdapterMessageUsers.RecyclerViewAdapterMessageUsersViewHolder> {
+
+    private ArrayList<MessageUsersModel> messageUsersModels;
     private Context context;
+    private OnItemClickListener clickListener;
 
-
-    public RecyclerViewAdapterMessageUsers(Context context, ArrayList<UserMessagesModel> userMessagesModels) {
-        this.userMessagesModels = userMessagesModels;
+    public RecyclerViewAdapterMessageUsers(Context context, ArrayList<MessageUsersModel> messageUsersModels) {
+        this.messageUsersModels = messageUsersModels;
         this.context = context;
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListener(
+            final OnItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
+    }
+
+    public void setMessageUsersModels(ArrayList<MessageUsersModel> messageUsersModels) {
+        this.messageUsersModels.clear();
+        this.messageUsersModels.addAll(messageUsersModels);
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public RecyclerViewAdapterMessageUsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dialog, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_messsage_users_layout, null);
         return new RecyclerViewAdapterMessageUsersViewHolder(view, context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapterMessageUsersViewHolder holder, int position) {
-        UserMessagesModel userMessagesModel = getItem(position);
-        holder.bind(userMessagesModel);
+        MessageUsersModel messageUsersModel = getItem(position);
+        holder.bind(messageUsersModel);
     }
 
     @Override
     public int getItemCount() {
-        return userMessagesModels.size();
+        return messageUsersModels.size();
     }
 
-    public UserMessagesModel getItem(int position) {
-        return userMessagesModels.size() > position ? userMessagesModels.get(position) : null;
+    public MessageUsersModel getItem(int position) {
+        return messageUsersModels.size() > position ? messageUsersModels.get(position) : null;
     }
 
+    class RecyclerViewAdapterMessageUsersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-}
+        private Context context;
+        private CircleImageView iv_user_from;
 
-class RecyclerViewAdapterMessageUsersViewHolder extends RecyclerView.ViewHolder {
+        private TextView dialogName;
+        private TextView dialogLastMessage;
+        private TextView dialogUnreadBubble;
 
-    private Context context;
-    private ImageView iv_user_from;
+        public RecyclerViewAdapterMessageUsersViewHolder(@NonNull View itemView, Context context) {
+            super(itemView);
+            this.context = context;
 
-    private TextView dialogName;
-    private TextView dialogLastMessage;
-    private TextView dialogUnreadBubble;
+            iv_user_from = (CircleImageView) itemView.findViewById(R.id.iv_user_from);
 
-    public RecyclerViewAdapterMessageUsersViewHolder(@NonNull View itemView, Context context) {
-        super(itemView);
-        this.context = context;
+            dialogLastMessage = itemView.findViewById(R.id.dialogLastMessage);
+            dialogName = itemView.findViewById(R.id.dialogName);
+            dialogUnreadBubble = itemView.findViewById(R.id.dialogUnreadBubble);
 
-        iv_user_from = itemView.findViewById(R.id.iv_user_from);
+            itemView.setOnClickListener(this);
 
-        dialogLastMessage = itemView.findViewById(R.id.dialogLastMessage);
-        dialogName = itemView.findViewById(R.id.dialogName);
-        dialogUnreadBubble = itemView.findViewById(R.id.dialogUnreadBubble);
-    }
-
-    void bind(UserMessagesModel userMessagesModel) {
-        Util.setUserImageRes(context, userMessagesModel.getAvatar(), iv_user_from);
-
-        dialogName.setText(userMessagesModel.getUsername_to());
-        dialogLastMessage.setText(userMessagesModel.getAvatar());
-
-        if (userMessagesModel.isOnline()) {
-            dialogUnreadBubble.setBackgroundTintList(context.getResources().getColorStateList(R.color.dialog_unread_bubble));
-        } else {
-            dialogUnreadBubble.setBackgroundTintList(context.getResources().getColorStateList(R.color.red_record));
         }
 
+        void bind(MessageUsersModel messageUsersModel) {
+            List<String> data = getMessageUsersData(messageUsersModel);
+            Util.setUserImageRes(context, data.get(1), iv_user_from);
+
+            dialogName.setText(data.get(0));
+            dialogLastMessage.setText(data.get(1));
+
+            if (messageUsersModel.isOnline()) {
+                dialogUnreadBubble.setBackgroundTintList(context.getResources().getColorStateList(R.color.dialog_unread_bubble));
+            } else {
+                dialogUnreadBubble.setBackgroundTintList(context.getResources().getColorStateList(R.color.red_record));
+            }
+
+        }
+
+        private List<String> getMessageUsersData(MessageUsersModel messageUsersModel) {
+            List<String> data = new ArrayList<>();
+            if (messageUsersModel.getUsernameFrom().equals(LocalServer.getInstance(context).getUser().username)) {
+                data.add(messageUsersModel.getUsernameTo());
+                data.add(messageUsersModel.getAvatarTo());
+            } else {
+                data.add(messageUsersModel.getUsernameFrom());
+                data.add(messageUsersModel.getAvatarFrom());
+            }
+
+            return data;
+        }
+
+        @Override
+        public void onClick(View view) {
+            clickListener.onItemClick(view, getAdapterPosition());
+        }
     }
+
 }
+
+

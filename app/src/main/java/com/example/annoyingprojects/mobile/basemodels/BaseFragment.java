@@ -134,11 +134,11 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    protected void changeFragment(Fragment nextFragment) {
+    protected void switchFragment(int fragmentContainerId, Fragment nextFragment) {
 
         FragmentTransaction fragmentTransaction = activity.fragmentManager.beginTransaction();
 
-        fragmentTransaction.replace(android.R.id.content, nextFragment);
+        fragmentTransaction.replace(fragmentContainerId, nextFragment);
         fragmentTransaction
                 .commit();
     }

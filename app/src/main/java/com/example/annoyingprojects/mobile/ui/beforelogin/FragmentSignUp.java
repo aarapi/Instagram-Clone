@@ -3,27 +3,30 @@ package com.example.annoyingprojects.mobile.ui.beforelogin;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.User;
+import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
+import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 
 import java.util.List;
 
 public class FragmentSignUp extends BaseFragment implements View.OnClickListener {
-    private ImageView logo, joinus;
     private EditText username, email, password;
-    private RelativeLayout signup;
-    private TextView signin;
-    private ProgressDialog progressDialog;
 
+    private TextView signin;
+    private TextView tv_sign_up;
+    private TextView tv_error;
+    private TextView tv_success;
+
+    private RelativeLayout signup;
+    private ProgressBar progressbar;
 
     public static FragmentSignUp newInstance(Bundle args){
         FragmentSignUp fragmentSignUp = new FragmentSignUp();
@@ -35,9 +38,15 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
         username = containerView.findViewById(R.id.atvUsernameReg);
         email = containerView.findViewById(R.id.atvEmailReg);
         password = containerView.findViewById(R.id.atvPasswordReg);
-        signin = containerView.findViewById(R.id.tvSignIn);
+
+        signin = containerView.findViewById(R.id.tv_sign_in);
+        tv_sign_up = containerView.findViewById(R.id.tv_sign_up);
+        tv_error = containerView.findViewById(R.id.tv_error);
+        tv_success = containerView.findViewById(R.id.tv_success);
+
         signup = containerView.findViewById(R.id.btnSignUp);
-        progressDialog = new ProgressDialog(getContext());
+        progressbar = containerView.findViewById(R.id.progressbar);
+
     }
 
     @Override
@@ -78,24 +87,48 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             final String inputPw = password.getText().toString().trim();
             final String inputEmail = email.getText().toString().trim();
 
+            tv_error.setVisibility(View.GONE);
+
             if (validateInput(inputName, inputPw, inputEmail)) {
 
-                User user = new User();
-                user.email = inputEmail;
-                user.password = inputPw;
-                user.username = inputName;
+                UserModel userModel = new UserModel();
 
-                sendRequest(RequestFunction.signUp(0, user));
+                userModel.email = inputEmail;
+                userModel.password = inputPw;
+                userModel.username = inputName;
+
+                progressbar.setVisibility(View.VISIBLE);
+                tv_sign_up.setVisibility(View.GONE);
+                sendRequest(RequestFunction.signUp(0, userModel));
             }
         } else if (v == signin) {
-            changeFragment(FragmentLogIn.newInstance(new Bundle()));
+            FragmentUtil.switchContent(R.id.container_frame, FragmentUtil.LOG_IN_FRAGMENT, activity, null);
         }
+        tv_success.setVisibility(View.GONE);
+        tv_error.setVisibility(View.GONE);
     }
 
 
     @Override
     public void onDataReceive(int action, List<Object> data) {
-        System.out.println(data);
+        progressbar.setVisibility(View.GONE);
+        tv_sign_up.setVisibility(View.VISIBLE);
+        tv_success.setVisibility(View.VISIBLE);
+
+        tv_success.setText((String) data.get(0));
+        username.setText("");
+        email.setText("");
+        password.setText("");
+    }
+
+    @Override
+    public void onErrorDataReceive(int action, List<Object> data) {
+        tv_error.setVisibility(View.VISIBLE);
+        progressbar.setVisibility(View.GONE);
+        tv_sign_up.setVisibility(View.VISIBLE);
+
+        String errorString = (String) data.get(0);
+        tv_error.setText(errorString);
     }
 
     @Override

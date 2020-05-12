@@ -8,8 +8,13 @@
         android:id="@+id/mToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="4dp"/>
+        android:background="@color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/mToolbar"
+        android:background="@color/white_five" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/mMainTabLayout"
@@ -17,6 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#FFF"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:layout_above="@+id/mMainTabLayout"
+        android:background="@color/white_five" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/mMainViewPager"

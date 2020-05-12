@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/dialogRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@id/dialogName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:fontFamily="@string/font_fontFamily_medium"
+        android:includeFontPadding="false"
+        android:text="lacinia, sit amet placerat ante venenatis. Vestibulum feugiat dui magna, a luctus nunc suscipit et. In vitae malesuada lectus. Phasellus quis velit nibh. Aenean facilisis tempus quam sit amet tempus. Aenean luctus ultricies neque ultrices sagittis. Maecenas nulla libero, facilisis eget tincidunt in, posuere ut urna. Etiam posuere, risus eget laoreet volutpat, mi sem faucibus nisl, eget consequat arcu nunc in urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        android:background="@drawable/bg_custom_outcoming_message" />
+
+
+</FrameLayout>

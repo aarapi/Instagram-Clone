@@ -16,6 +16,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         this.fragments = fragments;
     }
 
+    public void setFragments(ArrayList<Fragment> fragments) {
+        this.fragments.clear();
+        this.fragments.addAll(fragments);
+    }
+
     @Override
     public Fragment getItem(int position) {
         return fragments.get(position);

@@ -1,9 +1,9 @@
 package com.example.annoyingprojects.utilities;
 
-import com.example.connectionframework.requestframework.languageData.SavedInformation;
+import com.example.annoyingprojects.data.UserMessagesModel;
 import com.example.connectionframework.requestframework.sender.Request;
 import com.example.connectionframework.requestframework.sender.RequestFunctions;
-import com.example.annoyingprojects.data.User;
+import com.example.annoyingprojects.data.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +16,16 @@ public class RequestFunction {
         params.add(languageData);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_LANGUAGE_DATA, params);
     }
-    public static Request signUp(int activityId, User user) {
+
+    public static Request signUp(int activityId, UserModel userModel) {
         List<Object> params = new ArrayList<>();
-        params.add(user);
+        params.add(userModel);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_SIGN_UP, params);
     }
-    public static Request loginValidate(int activityId, User user) {
+
+    public static Request loginValidate(int activityId, UserModel userModel) {
         List<Object> params = new ArrayList<>();
-        params.add(user);
+        params.add(userModel);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_LOG_IN, params);
     }
     public static Request getPostData(int activityId, int scrollTime){
@@ -72,10 +74,29 @@ public class RequestFunction {
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_DELETE_POST, params);
 
     }
-
     public static Request getMessageUsers(int activityId) {
         List<Object> params = new ArrayList<>();
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_MESSAGE_USERS, params);
 
     }
+
+    public static Request getUserMessages(int activityId, String usernameTo, String usernameFrom) {
+        List<Object> params = new ArrayList<>();
+        params.add(usernameTo);
+        params.add(usernameFrom);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_USER_MESSAGES, params);
+
+    }
+
+    public static Request sendNewMessage(int activityId, UserMessagesModel userMessagesModel) {
+        List<Object> params = new ArrayList<>();
+
+        params.add(userMessagesModel.getUsernamFrom());
+        params.add(userMessagesModel.getUsernameTo());
+        params.add(userMessagesModel.getMessage());
+
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_SEND_NEW_MESSAGE, params);
+
+    }
+
 }

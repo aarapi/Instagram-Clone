@@ -16,15 +16,15 @@
         android:id="@+id/iv_lock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tv_username"
+        android:layout_marginRight="3dp"
         android:src="@drawable/ic_lock"/>
     <TextView
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_lock"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="3dp"
         android:text="aarapi"
         android:textStyle="bold"
         ></TextView>
@@ -39,7 +39,7 @@
             android:layout_marginRight="15dp"></ImageView>
     </RelativeLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -51,19 +51,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/myCardView"
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_user_profile"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                app:cardCornerRadius="35dp">
-                <ImageView
-                    android:id="@+id/iv_user_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
-            </androidx.cardview.widget.CardView>
+                android:scaleType="centerCrop"></de.hdodenhof.circleimageview.CircleImageView>
 
             <ImageView
                 android:layout_width="20dp"
@@ -82,11 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.258"
-            app:layout_constraintStart_toEndOf="@+id/shape_layout"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_centerInParent="true">
 
             <TextView
                 android:id="@+id/tv_posts_value"
@@ -102,7 +91,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_chocolate"
-                android:textSize="12sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:text="Posts"></TextView>
         </LinearLayout>
 
@@ -160,7 +150,7 @@
                 android:textSize="12sp"
                 android:text="Following"></TextView>
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_email"
@@ -181,6 +171,7 @@
        android:foreground="@drawable/custom_riple"
        android:background="@drawable/rounded_background">
        <TextView
+           android:id="@+id/tv_user_action"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_centerInParent="true"

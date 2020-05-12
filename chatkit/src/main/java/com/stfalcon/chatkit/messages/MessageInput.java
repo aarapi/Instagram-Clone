@@ -40,29 +40,16 @@ import java.lang.reflect.Field;
  * Component for input outcoming messages
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class MessageInput extends RelativeLayout
-        implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
+public class MessageInput extends RelativeLayout {
 
     protected EditText messageInput;
     protected ImageButton messageSendButton;
     protected ImageButton attachmentButton;
     protected Space sendButtonSpace, attachmentButtonSpace;
-
-    private CharSequence input;
     private InputListener inputListener;
     private AttachmentsListener attachmentsListener;
     private boolean isTyping;
     private TypingListener typingListener;
-    private int delayTypingStatusMillis;
-    private Runnable typingTimerRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (isTyping) {
-                isTyping = false;
-                if (typingListener != null) typingListener.onStopTyping();
-            }
-        }
-    };
     private boolean lastFocus;
 
     public MessageInput(Context context) {
@@ -116,67 +103,33 @@ public class MessageInput extends RelativeLayout
         return messageSendButton;
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.messageSendButton) {
-            boolean isSubmitted = onSubmit();
-            if (isSubmitted) {
-                messageInput.setText("");
-            }
-            removeCallbacks(typingTimerRunnable);
-            post(typingTimerRunnable);
-        } else if (id == R.id.attachmentButton) {
-            onAddAttachments();
-        }
-    }
+//    @Override
+//    public void onClick(View view) {
+//        int id = view.getId();
+//        if (id == R.id.messageSendButton) {
+//            boolean isSubmitted = onSubmit();
+//            if (isSubmitted) {
+//                messageInput.setText("");
+//            }
+////            removeCallbacks(typingTimerRunnable);
+////            post(typingTimerRunnable);
+//        } else if (id == R.id.attachmentButton) {
+//            onAddAttachments();
+//        }
+//    }
 
     /**
      * This method is called to notify you that, within s,
      * the count characters beginning at start have just replaced old text that had length before
      */
-    @Override
-    public void onTextChanged(CharSequence s, int start, int count, int after) {
-        input = s;
-        messageSendButton.setEnabled(input.length() > 0);
-        if (s.length() > 0) {
-            if (!isTyping) {
-                isTyping = true;
-                if (typingListener != null) typingListener.onStartTyping();
-            }
-            removeCallbacks(typingTimerRunnable);
-            postDelayed(typingTimerRunnable, delayTypingStatusMillis);
-        }
-    }
+
 
     /**
      * This method is called to notify you that, within s,
      * the count characters beginning at start are about to be replaced by new text with length after.
      */
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        //do nothing
-    }
 
-    /**
-     * This method is called to notify you that, somewhere within s, the text has been changed.
-     */
-    @Override
-    public void afterTextChanged(Editable editable) {
-        //do nothing
-    }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (lastFocus && !hasFocus && typingListener != null) {
-            typingListener.onStopTyping();
-        }
-        lastFocus = hasFocus;
-    }
-
-    private boolean onSubmit() {
-        return inputListener != null && inputListener.onSubmit(input);
-    }
 
     private void onAddAttachments() {
         if (attachmentsListener != null) attachmentsListener.onAddAttachments();
@@ -221,7 +174,6 @@ public class MessageInput extends RelativeLayout
                     style.getInputDefaultPaddingBottom()
             );
         }
-        this.delayTypingStatusMillis = style.getDelayTypingStatus();
     }
 
     private void init(Context context) {
@@ -232,12 +184,7 @@ public class MessageInput extends RelativeLayout
         attachmentButton = (ImageButton) findViewById(R.id.attachmentButton);
         sendButtonSpace = (Space) findViewById(R.id.sendButtonSpace);
         attachmentButtonSpace = (Space) findViewById(R.id.attachmentButtonSpace);
-
-        messageSendButton.setOnClickListener(this);
-        attachmentButton.setOnClickListener(this);
-        messageInput.addTextChangedListener(this);
         messageInput.setText("");
-        messageInput.setOnFocusChangeListener(this);
     }
 
     private void setCursor(Drawable drawable) {

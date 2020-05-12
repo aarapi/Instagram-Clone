@@ -57,7 +57,13 @@ public class BitmapTask extends AsyncTask<String, String, String> {
 
             Bitmap selectedImage = BitmapFactory.decodeFile(imageFiles.get(i).getAbsolutePath());
             publishProgress("0");
-            homeFragment.getIv_upload().setImageBitmap(selectedImage);
+            ((HomeActivity) homeFragment.getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    homeFragment.getIv_upload().setImageBitmap(selectedImage);
+                }
+            });
+
             publishProgress("2");
             publishProgress("10");
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

@@ -95,6 +95,24 @@ public class NewPostFragment extends Fragment {
         return postData;
     }
 
+    public boolean validateInputs() {
+
+        if (et_product_price.getText().toString().isEmpty()) {
+            et_product_price.setError("Shkruani cmimin!");
+            return false;
+        }
+        if (et_write_caption.getText().toString().isEmpty()) {
+            et_write_caption.setError("Shkruani nje pershkrim!");
+            return false;
+        }
+        if (et_product_name.getText().toString().isEmpty()) {
+            et_product_name.setError("Shkruani emrin e produktit!");
+            return false;
+        }
+
+        return true;
+    }
+
     protected class MyAdapterSpinner extends ArrayAdapter {
 
         int[] Image;

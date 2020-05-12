@@ -1,12 +1,9 @@
 package com.example.annoyingprojects.mobile.ui.beforelogin;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,11 +15,12 @@ import androidx.fragment.app.Fragment;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.Posts;
-import com.example.annoyingprojects.data.StoryInfo;
-import com.example.annoyingprojects.data.User;
+import com.example.annoyingprojects.data.StoryModel;
+import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.ClassType;
+import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
 import com.google.gson.Gson;
@@ -31,8 +29,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity.scrollTime;
 
 public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
     private ImageView iv_language;
@@ -56,7 +52,7 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
         email = containerView.findViewById(R.id.atvEmailLog);
         password = containerView.findViewById(R.id.atvPasswordLog);
         forgotPass = containerView.findViewById(R.id.tvForgotPass);
-        signUp = containerView.findViewById(R.id.tvSignIn);
+        signUp = containerView.findViewById(R.id.tv_sign_up);
         btnSignIn = containerView.findViewById(R.id.btnSignIn);
         tv_signin = containerView.findViewById(R.id.tv_signin);
         tv_error = containerView.findViewById(R.id.tv_error);
@@ -88,19 +84,19 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             String inPassword = password.getText().toString();
 
             if (validateInput(inEmail, inPassword)) {
-                User user = new User();
-                user.username = inEmail;
-                user.password = inPassword;
+                UserModel userModel = new UserModel();
+                userModel.username = inEmail;
+                userModel.password = inPassword;
 
                 btnSignIn.setClickable(false);
                 progressBar.setVisibility(View.VISIBLE);
                 tv_signin.setVisibility(View.GONE);
                 tv_error.setVisibility(View.GONE);
 
-                signUser(user);
+                signUser(userModel);
             }
         } else if (v == signUp) {
-            changeFragment(FragmentSignUp.newInstance(new Bundle()));
+            FragmentUtil.switchContent(R.id.container_frame, FragmentUtil.SIGN_UP_FRAGMENT, activity, null);
         } else if (v == forgotPass) {
 
         }else if (v == iv_language){
@@ -111,8 +107,8 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
     }
 
 
-    public void signUser(User user) {
-       sendRequest(RequestFunction.loginValidate(activity.getActivityId(), user));
+    public void signUser(UserModel userModel) {
+        sendRequest(RequestFunction.loginValidate(activity.getActivityId(), userModel));
     }
 
 
@@ -178,15 +174,17 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
     @Override
     public void onDataReceive(int action, List<Object> data) {
         if (action == CheckSetup.ServerActions.INSTA_COMMERCE_LOG_IN){
-            User user = new ClassType<User>(){}.fromJson(data.get(0));
-            SavedInformation.getInstance().setPreferenceData(getContext(),user, "user");
+            UserModel userModel = new ClassType<UserModel>() {
+            }.fromJson(data.get(0));
+            SavedInformation.getInstance().setPreferenceData(getContext(), userModel, "user");
 
             Gson gson = new Gson();
             Type postsType = new TypeToken<ArrayList<Posts>>() {}.getType();
-            Type storiesType = new TypeToken<ArrayList<StoryInfo>>() {}.getType();
+            Type storiesType = new TypeToken<ArrayList<StoryModel>>() {
+            }.getType();
 
             ArrayList<Posts> posts = gson.fromJson(gson.toJson(data.get(1)),postsType);
-            ArrayList<StoryInfo> stories = gson.fromJson(gson.toJson(data.get(2)),storiesType);
+            ArrayList<StoryModel> stories = gson.fromJson(gson.toJson(data.get(2)), storiesType);
 
             ArrayList<PostModel> postModels = new ArrayList<>();
             int postsSize = posts.size();

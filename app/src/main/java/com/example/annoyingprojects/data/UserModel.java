@@ -3,7 +3,7 @@ package com.example.annoyingprojects.data;
 
 import com.example.annoyingprojects.mobile.basemodels.BaseModel;
 
-public class User extends BaseModel {
+public class UserModel extends BaseModel {
 
 
     public String email;

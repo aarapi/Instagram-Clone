@@ -4,16 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.adapters.RecyclerViewAdapterMessageUsers;
-import com.example.annoyingprojects.data.Posts;
-import com.example.annoyingprojects.data.UserMessagesModel;
+import com.example.annoyingprojects.data.MessageUsersModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
-import com.example.annoyingprojects.utilities.RequestFunction;
+import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mancj.materialsearchbar.MaterialSearchBar;
@@ -25,19 +21,22 @@ import java.util.List;
 
 public class MessagesActivity extends BaseActivity implements  MaterialSearchBar.OnSearchActionListener {
 
-    RecyclerViewAdapterMessageUsers recyclerViewAdapterMessageUsers;
-    private RecyclerView rv_message_users;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sendRequest(RequestFunction.getMessageUsers(getActivityId()));
+        FragmentUtil.switchFragmentWithAnimation(R.id.fr_fragment_container
+                , new FragmentMessageUsers()
+                , activity
+                , FragmentUtil.MESSAGE_USERS_FRAGMENT
+                , null);
     }
 
     @Override
     public void initViews() {
-        rv_message_users = findViewById(R.id.rv_message_users);
+
     }
 
     @Override
@@ -84,20 +83,16 @@ public class MessagesActivity extends BaseActivity implements  MaterialSearchBar
 
     @Override
     public void onDataReceive(int action, List<Object> data) {
-        Gson gson = new Gson();
-        Type founderListType = new TypeToken<ArrayList<UserMessagesModel>>() {
-        }.getType();
+        if (action == CheckSetup.ServerActions.INSTA_COMMERCE_MESSAGE_USERS) {
+            Gson gson = new Gson();
+            Type founderListType = new TypeToken<ArrayList<MessageUsersModel>>() {
+            }.getType();
 
-        ArrayList<UserMessagesModel> userMessagesModels = gson.fromJson(gson.toJson(data.get(0)),
-                founderListType);
+            ArrayList<MessageUsersModel> messageUsersModels = gson.fromJson(gson.toJson(data.get(0)),
+                    founderListType);
 
-        LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(getActivity().getBaseContext());
-        rv_message_users.setLayoutManager(linearLayoutManager);
-        rv_message_users.setHasFixedSize(true);
+        } else if (action == CheckSetup.ServerActions.INSTA_COMMERCE_USER_MESSAGES) {
 
-        recyclerViewAdapterMessageUsers = new RecyclerViewAdapterMessageUsers(getApplicationContext(), userMessagesModels);
-        rv_message_users.setAdapter(recyclerViewAdapterMessageUsers);
-
+        }
     }
 }

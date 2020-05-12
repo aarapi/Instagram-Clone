@@ -67,6 +67,19 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5">
 
+            <ImageView
+                android:id="@+id/iv_likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_heart"
+                android:layout_centerInParent="true"></ImageView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5">
+
 
             <RelativeLayout
                 android:id="@+id/rl_user_img"
@@ -74,20 +87,14 @@
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true">
-                <androidx.cardview.widget.CardView
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/cv_user_img"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:cardCornerRadius="13dp"
                     android:layout_centerInParent="true"
-                    >
-                    <ImageView
-                        android:id="@+id/cv_user_img"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:adjustViewBounds="true"
-                        />
-                </androidx.cardview.widget.CardView>
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:scaleType="centerCrop" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>

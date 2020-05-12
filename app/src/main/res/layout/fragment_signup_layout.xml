@@ -2,14 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#79a209df"
-    android:padding="30dp">
+    android:background="@color/white"
+    android:paddingTop="30dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingBottom="10dp">
 
     <ImageView
         android:id="@+id/iv_language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_global"
+        android:tint="@color/black"
         android:layout_alignParentEnd="true"
         android:foreground="@drawable/ripple_background_transparent">
 
@@ -19,10 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Instacommerce"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:fontFamily="@font/pacifico"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/ll_login"
+        android:layout_marginBottom="30dp"
         android:textSize="25sp"
         android:textStyle="bold"></TextView>
 
@@ -33,63 +38,49 @@
         android:orientation="vertical"
         android:layout_centerInParent="true">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:textColorHint="#cccccc">
 
             <EditText
                 android:id="@+id/atvUsernameReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#ffff"
+                android:background="@drawable/edit_text_roubded_background"
                 android:drawableLeft="@drawable/ic_person"
                 android:hint="   Username"
-                android:paddingLeft="10dp"
+                android:padding="10dp"
+                android:drawablePadding="10dp"
                 android:inputType="textPersonName"
                 android:textColor="#cccccc"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColorHint="#cccccc">
 
             <EditText
                 android:id="@+id/atvEmailReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#ffff"
-                android:drawableLeft="@drawable/ic_multimedia"
-                android:paddingLeft="10dp"
+                android:background="@drawable/edit_text_roubded_background"
+                android:drawableLeft="@drawable/ic_email"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
                 android:hint="   Email"
                 android:inputType="textPassword"
                 android:textColor="#cccccc"
-                android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:textSize="12sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColorHint="#cccccc">
 
             <EditText
                 android:id="@+id/atvPasswordReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#ffff"
+                android:background="@drawable/edit_text_roubded_background"
                 android:drawableLeft="@drawable/ic_password"
-                android:hint="   Passwoard"
+                android:hint="   Password"
+                android:drawablePadding="10dp"
                 android:inputType="textPassword"
-                android:paddingLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
                 android:textColor="#cccccc"
-                android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tvForgotPass"
@@ -110,7 +101,7 @@
             android:textColor="#FFFFFF">
 
             <TextView
-                android:id="@+id/tv_signin"
+                android:id="@+id/tv_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sign Up"
@@ -137,15 +128,41 @@
             android:layout_gravity="center_horizontal"
             android:visibility="gone" />
 
-
         <TextView
-            android:id="@+id/tvSignIn"
+            android:id="@+id/tv_success"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="@string/signin_redirect"
-            android:textColor="@color/white" />
+            android:layout_marginTop="10dp"
+            android:text="error"
+            android:textColor="@color/green"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:background="@color/white_five"
+        android:layout_above="@+id/tvSignIn" />
+
+    <TextView
+        android:id="@+id/tvSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Already a member?"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvSignIn"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/main_color"
+        android:text=" Sign In"></TextView>
 </RelativeLayout>

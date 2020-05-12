@@ -22,8 +22,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeFragment;
+import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentMessageUsers;
+import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentUserMessages;
 import com.example.annoyingprojects.mobile.ui.afterlogin.search.SearchFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment;
+import com.example.annoyingprojects.mobile.ui.beforelogin.FragmentLogIn;
+import com.example.annoyingprojects.mobile.ui.beforelogin.FragmentSignUp;
 
 import java.io.File;
 import java.util.HashMap;
@@ -36,6 +40,10 @@ public class FragmentUtil {
     public static final String HOME_FRAGMENT = "HOME_FRAMGNET";
     public static final String USER_PROFILE_FRAGMENT = "USER_PROFILE_FRAGMENT";
     public static final String SEARCH_FRAGMENT = "SEARCH_FRAGMENT";
+    public static final String LOG_IN_FRAGMENT = "LOG_IN_FRAGMENT";
+    public static final String SIGN_UP_FRAGMENT = "SIGN_UP_FRAGMENT";
+    public static final String MESSAGE_USERS_FRAGMENT = "MESSAGE_USERS_FRAGMENT";
+    public static final String USER_MESSAGES_FRAGMENT = "USER_MESSAGES_FRAGMENT";
 
 
     public static int getToolbarHeight(Context context) {
@@ -294,6 +302,14 @@ public class FragmentUtil {
                     fragmentToReplace = new UserProfileFragment();
                 } else if (TAG.equals(SEARCH_FRAGMENT)) {
                     fragmentToReplace = new SearchFragment();
+                } else if (TAG.equals(LOG_IN_FRAGMENT)) {
+                    fragmentToReplace = new FragmentLogIn();
+                } else if (TAG.equals(SIGN_UP_FRAGMENT)) {
+                    fragmentToReplace = new FragmentSignUp();
+                } else if (TAG.equals(MESSAGE_USERS_FRAGMENT)) {
+                    fragmentToReplace = new FragmentMessageUsers();
+                } else if (TAG.equals(USER_MESSAGES_FRAGMENT)) {
+                    fragmentToReplace = new FragmentUserMessages();
                 }
 
             } else{
@@ -303,6 +319,14 @@ public class FragmentUtil {
                     fragmentToReplace = (UserProfileFragment) fragment;
                 } else if (TAG.equals(SEARCH_FRAGMENT)) {
                     fragmentToReplace = (SearchFragment) fragment;
+                } else if (TAG.equals(LOG_IN_FRAGMENT)) {
+                    fragmentToReplace = (FragmentLogIn) fragment;
+                } else if (TAG.equals(SIGN_UP_FRAGMENT)) {
+                    fragmentToReplace = (FragmentSignUp) fragment;
+                } else if (TAG.equals(MESSAGE_USERS_FRAGMENT)) {
+                    fragmentToReplace = (FragmentMessageUsers) fragment;
+                } else if (TAG.equals(USER_MESSAGES_FRAGMENT)) {
+                    fragmentToReplace = (FragmentUserMessages) fragment;
                 }
             }
 

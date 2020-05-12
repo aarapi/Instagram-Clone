@@ -1,8 +1,9 @@
 package com.octopepper.mediapickerinstagram.components.gallery;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -53,14 +54,8 @@ public class MediaItemView extends RelativeLayout implements ReboundModuleDelega
     public void bind(File file) {
         mCurrentFile = file;
         mReboundModule.init(mMediaThumb);
-        Picasso.with(getContext())
-                .load(Uri.fromFile(file))
-                .resize(350, 350)
-                .centerCrop()
-                .placeholder(R.drawable.placeholder_media)
-                .error(R.drawable.placeholder_error_media)
-                .noFade()
-                .into(mMediaThumb);
+        Bitmap currentImageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        mMediaThumb.setImageBitmap(currentImageBitmap);
     }
 
     @Override

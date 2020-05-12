@@ -1,5 +1,7 @@
 package com.octopepper.mediapickerinstagram.components.gallery;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,6 +23,7 @@ import com.octopepper.mediapickerinstagram.R2;
 import com.octopepper.mediapickerinstagram.commons.models.Session;
 import com.octopepper.mediapickerinstagram.commons.modules.LoadMoreModule;
 import com.octopepper.mediapickerinstagram.commons.modules.LoadMoreModuleDelegate;
+import com.octopepper.mediapickerinstagram.commons.tasks.FetchGalleryTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -28,6 +33,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.os.AsyncTask.THREAD_POOL_EXECUTOR;
+
 
 public class GalleryPickerFragment extends Fragment implements GridAdapterListener, LoadMoreModuleDelegate {
 
@@ -36,11 +43,11 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     @BindView(R2.id.mPreview)
     ImageView mPreview;
     @BindView(R2.id.mAppBarContainer)
-    AppBarLayout mAppBarContainer;
+    LinearLayout mAppBarContainer;
 
-    private static final String EXTENSION_JPG = ".jpg";
-    private static final String EXTENSION_JPEG = ".jpeg";
-    private static final String EXTENSION_PNG = ".png";
+    public static final String EXTENSION_JPG = ".jpg";
+    public static final String EXTENSION_JPEG = ".jpeg";
+    public static final String EXTENSION_PNG = ".png";
     private static final int PREVIEW_SIZE = 800;
     private static final int MARGING_GRID = 2;
     private static final int RANGE = 20;
@@ -54,6 +61,8 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     private boolean isLoading = false;
     private int mOffset;
     private boolean isFirstLoad = true;
+
+    private ProgressBar progress;
 
     public static GalleryPickerFragment newInstance() {
         return new GalleryPickerFragment();
@@ -70,7 +79,9 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
         mGalleryRecyclerView.addItemDecoration(addItemDecoration());
         mLoadMoreModule.LoadMoreUtils(mGalleryRecyclerView, this, getContext());
         mOffset = 0;
-        fetchMedia();
+
+        FetchGalleryTask fetchGalleryTask = new FetchGalleryTask(this);
+        fetchGalleryTask.executeOnExecutor(THREAD_POOL_EXECUTOR);
     }
 
     private RecyclerView.ItemDecoration addItemDecoration() {
@@ -89,7 +100,6 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     }
 
     private void fetchMedia() {
-        mFiles = new ArrayList<>();
         File dirDownloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         parseDir(dirDownloads);
         File dirDcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
@@ -100,12 +110,16 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
             File dirDocuments = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
             parseDir(dirDocuments);
         }
+    }
 
+    public void setFetchedImages(ArrayList<File> files) {
+        this.mFiles = files;
         if (mFiles.size() > 0) {
             displayPreview(mFiles.get(0));
             mGridAdapter.setItems(getRangePets());
         }
         isFirstLoad = false;
+        progress.setVisibility(View.GONE);
     }
 
     private List<File> getRangePets() {
@@ -159,13 +173,8 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     }
 
     private void displayPreview(File file) {
-        Picasso.with(getContext())
-                .load(Uri.fromFile(file))
-                .noFade()
-                .noPlaceholder()
-                .resize(PREVIEW_SIZE, PREVIEW_SIZE)
-                .centerCrop()
-                .into(mPreview);
+        Bitmap currentImageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        mPreview.setImageBitmap(currentImageBitmap);
     }
 
     @Override
@@ -176,6 +185,7 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.gallery_picker_view, container, false);
+        progress = v.findViewById(R.id.progress);
         ButterKnife.bind(this, v);
         initViews();
         return v;
@@ -196,11 +206,14 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
             files.add(file);
         }
         mSession.setFileToUpload(files);
-        mAppBarContainer.setExpanded(true, true);
     }
 
     @Override
     public void shouldLoadMore() {
         loadNext();
+    }
+
+    public ProgressBar getProgress() {
+        return progress;
     }
 }

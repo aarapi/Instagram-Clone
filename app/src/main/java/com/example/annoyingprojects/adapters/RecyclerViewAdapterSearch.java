@@ -11,20 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.User;
-import com.example.annoyingprojects.data.UserMessagesModel;
+import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.utilities.Util;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerViewAdapterSearch.RecyclerViewAdapterSearchViewHolder> {
-    private ArrayList<User> users;
+    private ArrayList<UserModel> userModels;
     private Context context;
     private OnItemClickListener clickListener;
 
-    public RecyclerViewAdapterSearch(Context context, ArrayList<User> users) {
+    public RecyclerViewAdapterSearch(Context context, ArrayList<UserModel> userModels) {
         this.context = context;
-        this.users = users;
+        this.userModels = userModels;
     }
 
     @NonNull
@@ -36,27 +37,29 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapterSearchViewHolder holder, int position) {
-        User user = getItem(position);
-        holder.bind(user);
+        UserModel userModel = getItem(position);
+        holder.bind(userModel);
     }
 
-    public User getItem(int position) {
-        return users.size() > position ? users.get(position) : null;
+    public UserModel getItem(int position) {
+        return userModels.size() > position ? userModels.get(position) : null;
     }
 
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return userModels.size();
     }
 
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public ArrayList<UserModel> getUserModels() {
+        return userModels;
     }
 
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
+    public void setUserModels(ArrayList<UserModel> userModels) {
+        this.userModels.clear();
+        this.userModels.addAll(userModels);
+        this.notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {
@@ -73,7 +76,7 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
         Context context;
 
         TextView tv_username, tv_name;
-        ImageView iv_user;
+        CircleImageView iv_user;
 
 
         public RecyclerViewAdapterSearchViewHolder(@NonNull View itemView, Context context) {
@@ -89,17 +92,17 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
             itemView.setOnClickListener(this);
         }
 
-        void bind(User user) {
-            tv_username.setText(user.username);
-            tv_name.setText(user.email);
+        void bind(UserModel userModel) {
+            tv_username.setText(userModel.username);
+            tv_name.setText(userModel.email);
 
-            Util.setUserImageRes(context, user.userImage, iv_user);
+            Util.setUserImageRes(context, userModel.userImage, iv_user);
         }
 
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(itemView, getPosition());
+            clickListener.onItemClick(itemView, getAdapterPosition());
         }
     }
 }

@@ -3,8 +3,11 @@ package com.example.annoyingprojects.mobile.ui.beforelogin;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -13,7 +16,12 @@ import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.internal.LinkedTreeMap;
+import com.octopepper.mediapickerinstagram.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,23 +30,34 @@ import static com.example.annoyingprojects.utilities.CheckSetup.initializeApplic
 
 public class LoginActivity extends BaseActivity {
     private Fragment fragmentSplash, fragmentSignIn, fragmentSignUp, fragmentDashboard;
-
+    private static final String TAG = "LoginActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeApplicationActivity();
 
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = token;
+                        Log.d(TAG, msg);
+//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         sendRequest(RequestFunction.getLanguageData(getActivityId(),
                 SavedInformation.getInstance().
                         getPreferenceData(getApplicationContext(), "languageData")));
 
-
-
-
-        fragmentSplash = FramgentSplashScreen.newInstance();
-        fragmentManager.beginTransaction()
-                .add(android.R.id.content, fragmentSplash).commit();
+        switchFragment(R.id.container_frame, new FragmentLogIn());
 
     }
 
@@ -78,7 +97,7 @@ public class LoginActivity extends BaseActivity {
            LinkedTreeMap<String, String> resourceList = (LinkedTreeMap<String, String>) data.get(0);
            SavedInformation.getInstance().setResourceList(resourceList);
 
-           Fragment currentFragment = fragmentManager.findFragmentById(android.R.id.content);
+           Fragment currentFragment = fragmentManager.findFragmentById(R.id.container_frame);
            fragmentManager.beginTransaction()
                    .detach(currentFragment)
                    .attach(currentFragment)

@@ -25,8 +25,7 @@
         android:layout_toEndOf="@id/attachmentButtonSpace"
         android:layout_toLeftOf="@id/sendButtonSpace"
         android:layout_toRightOf="@id/attachmentButtonSpace"
-        android:layout_toStartOf="@id/sendButtonSpace"
-        android:inputType="textAutoCorrect|textAutoComplete|textMultiLine|textCapSentences"/>
+        android:layout_toStartOf="@id/sendButtonSpace" />
 
     <android.widget.Space
         android:id="@id/sendButtonSpace"
