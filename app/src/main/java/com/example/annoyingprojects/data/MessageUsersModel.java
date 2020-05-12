@@ -10,7 +10,6 @@ public class MessageUsersModel implements Serializable {
     private String username_from;
     private String username_to;
     private boolean online;
-    private String avatar;
     private String avatarFrom;
     private String avatarTo;
 
@@ -25,10 +24,6 @@ public class MessageUsersModel implements Serializable {
 
     public String getUsernameFrom() {
         return username_from;
-    }
-
-    public String getAvatar() {
-        return avatar;
     }
 
     public boolean isOnline() {

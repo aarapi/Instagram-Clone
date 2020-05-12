@@ -8,11 +8,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.GridAdapter;
 import com.example.annoyingprojects.data.MessageUsersModel;
 import com.example.annoyingprojects.data.Posts;
 import com.example.annoyingprojects.data.UserModel;
+import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
@@ -60,7 +63,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void initViews() {
         rl_edit_profile = containerView.findViewById(R.id.rl_edit_profile);
-        tv_user_action = containerView.findViewById(R.id.tv_user_action);
+        tv_user_action= containerView.findViewById(R.id.tv_user_action);
 
 
         if (getArguments() != null) {
@@ -121,10 +124,10 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     public void onClick(View v) {
         if(v == iv_menu_settings){
             showBottomSheet();
-        } else if (v == rl_edit_profile) {
-            if (isUser) {
+        }else if (v == rl_edit_profile){
+            if (isUser){
 
-            } else {
+            }else {
                 MessageUsersModel messageUsersModel = new MessageUsersModel();
                 messageUsersModel.setUsername_from(LocalServer.getInstance(getContext()).getUser().username);
                 messageUsersModel.setUsername_to(userModel.username);
@@ -136,8 +139,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
                 FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container
                         , fragmentUserMessages
                         , activity
-                        , FragmentUtil.USER_MESSAGES_FRAGMENT
-                        , null);
+                        ,FragmentUtil.USER_MESSAGES_FRAGMENT
+                        ,null);
             }
         }
     }
@@ -153,7 +156,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     public void showBottomSheet() {
         SettingFragment addPhotoBottomDialogFragment =
                 SettingFragment.newInstance();
-        addPhotoBottomDialogFragment.show(getFragmentManager(),
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        addPhotoBottomDialogFragment.show(fragmentManager,
                 SettingFragment.TAG);
     }
 

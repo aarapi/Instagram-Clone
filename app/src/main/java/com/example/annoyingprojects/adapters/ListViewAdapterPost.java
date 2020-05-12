@@ -22,6 +22,7 @@ import com.example.annoyingprojects.data.Posts;
 import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentBottomPostMessage;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.MoreBottomSheetFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.SettingFragment;
@@ -157,10 +158,6 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
             viewHolder.sliderDotspanel = (LinearLayout) convertView.findViewById(R.id.SliderDots);
             viewHolder.iv_more = (ImageView) convertView.findViewById(R.id.iv_more);
 
-            if (isUserPost) {
-                viewHolder.iv_send_message.setVisibility(View.GONE);
-            }
-
             viewHolder.iv_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -177,7 +174,9 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
             viewHolder.iv_send_message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    FragmentBottomPostMessage fragmentBottomPostMessage = new FragmentBottomPostMessage();
+                    BaseActivity activity = (BaseActivity) getContext();
+                    fragmentBottomPostMessage.show(activity.getSupportFragmentManager(), FragmentBottomPostMessage.TAG);
                 }
             });
             viewHolder.tv_user_name.setOnClickListener(new View.OnClickListener() {

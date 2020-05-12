@@ -20,6 +20,7 @@ public class LocalServer {
 
     private ArrayList<MessageUsersModel> messageUsersModels;
     private ArrayList<UserModel> userModels = new ArrayList<>();
+    private boolean sendNewMessage = false;
 
     public static LocalServer getInstance(Context context){
         if (localServer == null){
@@ -56,5 +57,13 @@ public class LocalServer {
         if (!userModels.contains(userModel)) {
             userModels.add(userModel);
         }
+    }
+
+    public boolean isSendNewMessage() {
+        return sendNewMessage;
+    }
+
+    public void setSendNewMessage(boolean sendNewMessage) {
+        this.sendNewMessage = sendNewMessage;
     }
 }

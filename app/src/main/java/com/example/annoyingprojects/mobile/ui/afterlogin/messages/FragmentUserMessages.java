@@ -13,6 +13,7 @@ import com.example.annoyingprojects.adapters.RecyclerViewAdapterUserMessages;
 import com.example.annoyingprojects.data.MessageUsersModel;
 import com.example.annoyingprojects.data.UserMessagesModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
+import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
@@ -120,8 +121,9 @@ public class FragmentUserMessages extends BaseFragment implements View.OnClickLi
         userMessagesModel.setMessageTime(date);
 
         recyclerViewAdapterUserMessages.addNewMessage(userMessagesModel);
-
         input.getInputEditText().setText("");
+
+        LocalServer.newInstance().setSendNewMessage(true);
         sendRequest(RequestFunction.sendNewMessage(0, userMessagesModel));
 
     }

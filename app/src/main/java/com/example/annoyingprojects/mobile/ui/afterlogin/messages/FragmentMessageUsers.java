@@ -43,8 +43,10 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
         progress = containerView.findViewById(R.id.progress);
         swipe_refresh = containerView.findViewById(R.id.swipe_refresh);
 
-        if (LocalServer.newInstance().getMessageUsersModels() == null) {
+        if (LocalServer.newInstance().getMessageUsersModels() == null ||
+        LocalServer.newInstance().isSendNewMessage()) {
             progress.setVisibility(View.VISIBLE);
+            LocalServer.newInstance().setSendNewMessage(false);
             sendRequest(RequestFunction.getMessageUsers(0));
         } else {
             setMessageUsersList();
