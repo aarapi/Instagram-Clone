@@ -18,6 +18,7 @@ import com.example.annoyingprojects.data.Posts;
 import com.example.annoyingprojects.data.StoryModel;
 import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
+import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.ClassType;
 import com.example.annoyingprojects.utilities.FragmentUtil;
@@ -182,9 +183,12 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             Type postsType = new TypeToken<ArrayList<Posts>>() {}.getType();
             Type storiesType = new TypeToken<ArrayList<StoryModel>>() {
             }.getType();
+            Type usersType = new TypeToken<ArrayList<UserModel>>() {
+            }.getType();
 
             ArrayList<Posts> posts = gson.fromJson(gson.toJson(data.get(1)),postsType);
             ArrayList<StoryModel> stories = gson.fromJson(gson.toJson(data.get(2)), storiesType);
+            LocalServer.newInstance().setUserList(gson.fromJson(gson.toJson(data.get(3)), usersType));
 
             ArrayList<PostModel> postModels = new ArrayList<>();
             int postsSize = posts.size();

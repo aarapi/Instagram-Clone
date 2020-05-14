@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -47,7 +48,7 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
         rv_user_list = containerView.findViewById(R.id.rv_user_list);
         shimmer_view_container = containerView.findViewById(R.id.shimmer_view_container);
 
-        userModels = LocalServer.newInstance().getUserModels();
+        userModels = LocalServer.newInstance().getLastRecentSearchedUsers();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
         rv_user_list.setLayoutManager(linearLayoutManager);
         rv_user_list.setHasFixedSize(true);
 
-        recyclerViewAdapterSearch = new RecyclerViewAdapterSearch(getContext(), userModels);
+        recyclerViewAdapterSearch = new RecyclerViewAdapterSearch(getContext(), userModels, false);
         rv_user_list.setAdapter(recyclerViewAdapterSearch);
         recyclerViewAdapterSearch.notifyDataSetChanged();
     }
@@ -123,7 +124,7 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
     public void onItemClick(View view, int position) {
         UserModel userModel;
         userModel = userModels.get(position);
-        LocalServer.newInstance().setUserModels(userModel);
+        LocalServer.newInstance().setLastRecentSearchedUsers(userModel);
 
         Bundle args = new Bundle();
         args.putSerializable(UserProfileFragment.USER_PROFILE_DATA, (Serializable) userModel);
@@ -134,5 +135,10 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
                 (HomeActivity) getContext(),
                 FragmentUtil.USER_PROFILE_FRAGMENT,
                 null);
+    }
+
+    @Override
+    public void onRadioButtonClicked(CheckBox checkBox, int position, int selectedNr) {
+
     }
 }

@@ -21,7 +21,7 @@
         android:layout_toLeftOf="@+id/tv_cancel"
         android:background="@drawable/edit_text_search_backround"
         android:hapticFeedbackEnabled="true"
-        android:hint="Kerko produktin"
+        android:hint="Kerko user"
         android:drawableLeft="@drawable/ic_search_icon"
         android:drawablePadding="5dp"
         android:marqueeRepeatLimit="marquee_forever"
@@ -31,38 +31,13 @@
         android:textColorHint="@color/color_gray_light"
         android:textSize="15dp" />
 
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_message_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/edt_search_input"
-        android:layout_above="@+id/btn_send"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"></androidx.recyclerview.widget.RecyclerView>
-
-    <RelativeLayout
-        android:id="@+id/btn_send"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/btnsignin_gradient"
-        android:layout_alignParentBottom="true"
-        android:textColor="#FFFFFF">
-
-        <TextView
-            android:id="@+id/tv_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send Message"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"></TextView>
-
-        <ProgressBar
-            android:id="@+id/progressbar"
-            style="@style/CustomProgressBar"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerInParent="true"
-            android:visibility="gone"></ProgressBar>
-    </RelativeLayout>
+        android:layout_below="@+id/edt_search_input"></androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

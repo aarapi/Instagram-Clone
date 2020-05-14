@@ -99,4 +99,15 @@ public class RequestFunction {
 
     }
 
+    public static Request sendPostMessage(int activityId, List<UserModel> userModels, String messageString, int postId) {
+        List<Object> params = new ArrayList<>();
+
+        params.add(userModels);
+        params.add(messageString);
+        params.add(postId);
+
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_SEND_POST_MESSAGE, params);
+
+    }
+
 }

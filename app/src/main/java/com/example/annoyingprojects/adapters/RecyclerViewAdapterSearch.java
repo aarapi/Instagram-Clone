@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,9 +24,14 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
     private Context context;
     private OnItemClickListener clickListener;
 
-    public RecyclerViewAdapterSearch(Context context, ArrayList<UserModel> userModels) {
+    private int selectedNr = 0;
+
+    private boolean isSendMessage;
+
+    public RecyclerViewAdapterSearch(Context context, ArrayList<UserModel> userModels, boolean isSendMessage) {
         this.context = context;
         this.userModels = userModels;
+        this.isSendMessage = isSendMessage;
     }
 
     @NonNull
@@ -42,7 +48,7 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
     }
 
     public UserModel getItem(int position) {
-        return userModels.size() > position ? userModels.get(position) : null;
+        return userModels.get(position);
     }
 
 
@@ -64,11 +70,21 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
 
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
+
+        public void onRadioButtonClicked(CheckBox checkBox, int position, int selectedNr);
     }
 
     public void SetOnItemClickListener(
             final OnItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
+    }
+
+    public int getSelectedNr() {
+        return selectedNr;
+    }
+
+    public void setSelectedNr(int selectedNr) {
+        this.selectedNr = selectedNr;
     }
 
     class RecyclerViewAdapterSearchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -77,6 +93,7 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
 
         TextView tv_username, tv_name;
         CircleImageView iv_user;
+        CheckBox chb_choose_user;
 
 
         public RecyclerViewAdapterSearchViewHolder(@NonNull View itemView, Context context) {
@@ -88,8 +105,14 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
             tv_name = itemView.findViewById(R.id.tv_name);
 
             iv_user = itemView.findViewById(R.id.iv_user);
+            chb_choose_user = itemView.findViewById(R.id.chb_choose_user);
 
             itemView.setOnClickListener(this);
+            chb_choose_user.setOnClickListener(this);
+
+            if (!isSendMessage) {
+                chb_choose_user.setVisibility(View.GONE);
+            }
         }
 
         void bind(UserModel userModel) {
@@ -102,7 +125,16 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(itemView, getAdapterPosition());
+            if (view == itemView) {
+                clickListener.onItemClick(itemView, getAdapterPosition());
+            } else if (view == chb_choose_user) {
+                if (chb_choose_user.isChecked()) {
+                    selectedNr += 1;
+                } else {
+                    selectedNr -= 1;
+                }
+                clickListener.onRadioButtonClicked(chb_choose_user, getAdapterPosition(), selectedNr);
+            }
         }
     }
 }

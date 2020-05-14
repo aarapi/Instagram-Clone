@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class LocalServer {
     private  Context context;
+    private static LocalServer localServerContext;
     private static LocalServer localServer;
     private LocalServer(Context context) {
         this.context = context;
@@ -19,15 +20,18 @@ public class LocalServer {
     }
 
     private ArrayList<MessageUsersModel> messageUsersModels;
-    private ArrayList<UserModel> userModels = new ArrayList<>();
+    private ArrayList<UserModel> lastRecentSearchedUsers = new ArrayList<>();
+    private ArrayList<UserModel> userList = new ArrayList<>();
+
+
     private boolean sendNewMessage = false;
 
     public static LocalServer getInstance(Context context){
-        if (localServer == null){
-            localServer = new LocalServer(context);
+        if (localServerContext == null) {
+            localServerContext = new LocalServer(context);
         }
 
-        return localServer;
+        return localServerContext;
     }
 
     public static LocalServer newInstance() {
@@ -49,13 +53,13 @@ public class LocalServer {
         this.messageUsersModels = messageUsersModels;
     }
 
-    public ArrayList<UserModel> getUserModels() {
-        return userModels;
+    public ArrayList<UserModel> getLastRecentSearchedUsers() {
+        return lastRecentSearchedUsers;
     }
 
-    public void setUserModels(UserModel userModel) {
-        if (!userModels.contains(userModel)) {
-            userModels.add(userModel);
+    public void setLastRecentSearchedUsers(UserModel userModel) {
+        if (!lastRecentSearchedUsers.contains(userModel)) {
+            lastRecentSearchedUsers.add(userModel);
         }
     }
 
@@ -66,4 +70,13 @@ public class LocalServer {
     public void setSendNewMessage(boolean sendNewMessage) {
         this.sendNewMessage = sendNewMessage;
     }
+
+    public void setUserList(ArrayList<UserModel> userList) {
+        this.userList = userList;
+    }
+
+    public ArrayList<UserModel> getUserList() {
+        return userList;
+    }
+
 }

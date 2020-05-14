@@ -10,6 +10,7 @@ public class UserMessagesModel {
     private String usernameTo;
     private String message;
     private Timestamp messageTime;
+    private boolean isPostMessage;
 
     public int getUserMessagesId() {
         return userMessagesId;
@@ -49,5 +50,13 @@ public class UserMessagesModel {
 
     public void setMessageTime(Timestamp messageTime) {
         this.messageTime = messageTime;
+    }
+
+    public boolean isPostMessage() {
+        return isPostMessage;
+    }
+
+    public void setPostMessage(boolean postMessage) {
+        isPostMessage = postMessage;
     }
 }

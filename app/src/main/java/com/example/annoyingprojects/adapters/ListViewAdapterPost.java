@@ -174,7 +174,9 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
             viewHolder.iv_send_message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentBottomPostMessage fragmentBottomPostMessage = new FragmentBottomPostMessage();
+                    Bundle args = new Bundle();
+                    args.putInt("POST_ID", dataModel.getPostId());
+                    FragmentBottomPostMessage fragmentBottomPostMessage = FragmentBottomPostMessage.newInstance(args);
                     BaseActivity activity = (BaseActivity) getContext();
                     fragmentBottomPostMessage.show(activity.getSupportFragmentManager(), FragmentBottomPostMessage.TAG);
                 }

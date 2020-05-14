@@ -27,6 +27,8 @@ public class CheckSetup {
         public final static int INSTA_COMMERCE_DELETE_POST = 11;
         public final static int INSTA_COMMERCE_USER_MESSAGES = 12;
         public final static int INSTA_COMMERCE_SEND_NEW_MESSAGE = 13;
+        public final static int INSTA_COMMERCE_SEND_POST_MESSAGE = 14;
+        public final static int INSTA_COMMERCE_GET_USER_LIST = 15;
     }
 
     public static class Activities {
