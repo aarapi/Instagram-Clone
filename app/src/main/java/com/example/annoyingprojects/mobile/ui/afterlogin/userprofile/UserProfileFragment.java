@@ -8,14 +8,15 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.GridAdapter;
 import com.example.annoyingprojects.data.MessageUsersModel;
 import com.example.annoyingprojects.data.Posts;
 import com.example.annoyingprojects.data.UserModel;
-import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
@@ -23,6 +24,8 @@ import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentUserMe
 import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
+import com.example.annoyingprojects.utilities.Util;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,15 +47,20 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     private GridAdapter gridAdapter;
     private ProgressBar progressBar;
     private RelativeLayout rl_edit_profile;
-    private TextView tv_user_action;
 
     private CircleImageView iv_user_profile;
     private ImageView iv_menu_settings;
 
     private TextView tv_posts_value;
     private TextView tv_email;
+    private TextView tv_username;
+    private TextView tv_user_action;
 
     private boolean isUser = true;
+
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private AppBarConfiguration mAppBarConfiguration;
 
     public static UserProfileFragment newInstance(Bundle args) {
         UserProfileFragment userProfileFragment = new UserProfileFragment();
@@ -65,6 +73,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         rl_edit_profile = containerView.findViewById(R.id.rl_edit_profile);
         tv_user_action= containerView.findViewById(R.id.tv_user_action);
 
+        drawer = containerView.findViewById(R.id.drawer_layout);
+        navigationView = containerView.findViewById(R.id.nav_view);
 
         if (getArguments() != null) {
             userModel = (UserModel) getArguments().getSerializable(USER_PROFILE_DATA);
@@ -86,6 +96,13 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
         tv_posts_value = containerView.findViewById(R.id.tv_posts_value);
         tv_email = containerView.findViewById(R.id.tv_email);
+        tv_username = containerView.findViewById(R.id.tv_username);
+
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                .setDrawerLayout(drawer)
+                .build();
+
     }
 
     @Override
@@ -98,6 +115,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     public void setViews() {
         setUserImageRes(getContext(), userModel.userImage, iv_user_profile);
         tv_email.setText(userModel.email);
+        tv_username.setText(userModel.username);
 
         progressBar.setVisibility(View.VISIBLE);
         sendRequest(RequestFunction.getUserProfileData(0, userModel.username));
@@ -105,7 +123,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_userprofile_layout;
+        return R.layout.settings_drawer_menu_layout;
     }
 
     @Override
@@ -126,7 +144,13 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
             showBottomSheet();
         }else if (v == rl_edit_profile){
             if (isUser){
-
+                EditProfileFragment editProfileFragment = new EditProfileFragment();
+                FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container,
+                        editProfileFragment,
+                        getActivity(),
+                        FragmentUtil.EDIT_PROFILE_FRAGMENT,
+                        FragmentUtil.AnimationType.SLIDE_UP
+                        );
             }else {
                 MessageUsersModel messageUsersModel = new MessageUsersModel();
                 messageUsersModel.setUsername_from(LocalServer.getInstance(getContext()).getUser().username);
@@ -199,7 +223,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         gridAdapter.updatePosts(modelList);
     }
 
-    public TextView getTv_posts_value() {
-        return tv_posts_value;
-    }
+    public CircleImageView getIv_user_profile(){return iv_user_profile;}
+    public TextView getTv_posts_value() { return tv_posts_value;}
+    public TextView getTv_email(){return tv_email;}
+    public TextView getTv_username(){return tv_username;}
 }

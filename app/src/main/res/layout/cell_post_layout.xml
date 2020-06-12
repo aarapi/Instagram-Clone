@@ -41,18 +41,35 @@
         android:layout_alignParentEnd="true"
         android:scaleType="centerCrop"
         ></ImageView>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+    <RelativeLayout
+        android:id="@+id/rl_viewPager"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/cv_user_img"></androidx.viewpager.widget.ViewPager>
+        android:layout_below="@+id/cv_user_img">
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.viewpager.widget.ViewPager>
+        <ImageView
+            android:id="@+id/iv_location"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentBottom="true"
+            android:padding="5dp"
+            android:layout_margin="15dp"
+            android:tint="@color/white"
+            android:background="@drawable/round_checkbox"
+            android:backgroundTint="@color/gray_dark"
+            android:src="@drawable/ic_location"></ImageView>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/ll_actions_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewPager"
+        android:layout_below="@+id/rl_viewPager"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <LinearLayout

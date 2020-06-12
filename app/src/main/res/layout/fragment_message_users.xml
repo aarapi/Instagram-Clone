@@ -83,7 +83,7 @@
         android:layout_centerInParent="true"
         android:visibility="gone"></ProgressBar>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.baoyz.widget.PullRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -95,5 +95,5 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/et_search"
             android:divider="@null"></androidx.recyclerview.widget.RecyclerView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.baoyz.widget.PullRefreshLayout>
 </RelativeLayout>

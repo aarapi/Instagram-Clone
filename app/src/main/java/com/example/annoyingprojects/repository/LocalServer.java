@@ -2,6 +2,7 @@ package com.example.annoyingprojects.repository;
 
 import android.content.Context;
 
+import com.example.annoyingprojects.data.CategoryModel;
 import com.example.annoyingprojects.data.MessageUsersModel;
 import com.example.annoyingprojects.data.UserModel;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
@@ -22,6 +23,7 @@ public class LocalServer {
     private ArrayList<MessageUsersModel> messageUsersModels;
     private ArrayList<UserModel> lastRecentSearchedUsers = new ArrayList<>();
     private ArrayList<UserModel> userList = new ArrayList<>();
+    private ArrayList<CategoryModel> categoryModels = new ArrayList<>();
 
 
     private boolean sendNewMessage = false;
@@ -79,4 +81,11 @@ public class LocalServer {
         return userList;
     }
 
+    public ArrayList<CategoryModel> getCategoryModels() {
+        return categoryModels;
+    }
+
+    public void setCategoryModels(ArrayList<CategoryModel> categoryModels) {
+        this.categoryModels = categoryModels;
+    }
 }

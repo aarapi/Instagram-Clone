@@ -16,20 +16,32 @@
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config">
         <activity
+            android:name=".mobile.ui.beforelogin.SplashScreenActivity"
+            android:noHistory="true"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
             android:name=".mobile.ui.beforelogin.LoginActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="stateVisible|adjustResize|adjustPan"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".mobile.ui.afterlogin.home.StoryActivity"></activity>
-        <activity android:name=".mobile.ui.afterlogin.home.HomeActivity"></activity>
-        <activity android:name=".mobile.ui.afterlogin.userprofile.ActivitySinglePost"></activity>
+        <activity android:name=".mobile.ui.afterlogin.home.StoryActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".mobile.ui.afterlogin.home.HomeActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".mobile.ui.afterlogin.userprofile.ActivitySinglePost"
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".mobile.ui.afterlogin.messages.MessagesActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateVisible|adjustResize|adjustPan"
+            ></activity>
 
         <service
             android:name="com.example.annoyingprojects.services.MyFirebaseMessagingService"

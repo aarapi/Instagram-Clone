@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.StoryModel;
 import com.squareup.picasso.Picasso;
@@ -26,6 +29,8 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
     private StoriesProgressView storiesProgressView;
     private ImageView image;
+    private EditText et_send_message;
+
     List<StoryModel> storyModelList;
     private int counter = 0;
 
@@ -46,6 +51,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                     return limit < now - pressTime;
             }
             return false;
+
         }
     };
 
@@ -58,15 +64,28 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
         setPositionClicked();
 
-        storiesProgressView = (StoriesProgressView) findViewById(R.id.stories);
+
+        storiesProgressView = findViewById(R.id.stories);
         storiesProgressView.setStoriesCount(PROGRESS_COUNT);
         storiesProgressView.setStoryDuration(3000L);
         storiesProgressView.setStoriesListener(this);
         storiesProgressView.startStories(counter);
 
-        image = (ImageView) findViewById(R.id.image);
+        image = findViewById(R.id.image);
+        et_send_message = findViewById(R.id.et_send_message);
 
         setImageResource(counter);
+
+        et_send_message.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Toast.makeText(StoryActivity.this, "Has", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(StoryActivity.this, "Lost", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // bind reverse view
         View reverse = findViewById(R.id.reverse);
@@ -110,6 +129,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         // Very important !
         storiesProgressView.destroy();
         super.onDestroy();
+
     }
     public void setPositionClicked(){
         Bundle bundle = getIntent().getBundleExtra("data");
@@ -135,4 +155,6 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                 .centerCrop().into(image);
 
     }
+
+
 }

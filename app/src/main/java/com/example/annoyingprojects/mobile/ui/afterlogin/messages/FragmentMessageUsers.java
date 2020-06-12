@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.RecyclerViewAdapterMessageUsers;
 import com.example.annoyingprojects.data.MessageUsersModel;
@@ -26,14 +27,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentMessageUsers extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class FragmentMessageUsers extends BaseFragment implements View.OnClickListener, PullRefreshLayout.OnRefreshListener {
 
     private RecyclerViewAdapterMessageUsers recyclerViewAdapterMessageUsers;
     private RecyclerView rv_message_users;
-    private SwipeRefreshLayout swipe_refresh;
+    private PullRefreshLayout swipe_refresh;
 
     private ProgressBar progress;
     private ImageView iv_backbtn;
+
+    private boolean isLoading = false;
 
     @Override
     public void initViews() {
@@ -80,8 +83,9 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
             LocalServer.newInstance().setMessageUsersModels(gson.fromJson(gson.toJson(data.get(0)),
                     founderListType));
 
-            if (swipe_refresh.isRefreshing()) {
+            if (isLoading) {
                 refreshData();
+                isLoading = false;
             } else {
                 setMessageUsersList();
             }
@@ -90,8 +94,9 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onErrorDataReceive(int action, List<Object> data) {
-        if (swipe_refresh.isRefreshing()) {
+        if (isLoading) {
             swipe_refresh.setRefreshing(false);
+            isLoading = false;
         }
 
         progress.setVisibility(View.GONE);
@@ -129,8 +134,9 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
     }
 
     private void refreshData() {
-        if (swipe_refresh.isRefreshing()) {
+        if (isLoading) {
             swipe_refresh.setRefreshing(false);
+            isLoading = false;
         }
         recyclerViewAdapterMessageUsers.setMessageUsersModels(LocalServer.newInstance().getMessageUsersModels());
         recyclerViewAdapterMessageUsers.SetOnItemClickListener(new RecyclerViewAdapterMessageUsers.OnItemClickListener() {
@@ -166,6 +172,7 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onRefresh() {
+        isLoading = true;
         sendRequest(RequestFunction.getMessageUsers(0));
     }
 }

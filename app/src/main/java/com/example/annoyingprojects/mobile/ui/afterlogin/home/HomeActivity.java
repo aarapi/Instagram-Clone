@@ -19,7 +19,7 @@ import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.tasks.BitmapTask;
 import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.FragmentUtil;
-import com.octopepper.mediapickerinstagram.MainActivity;
+import com.octopepper.mediapickerinstagram.PostPickerActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -149,7 +149,7 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
             }
 
         }else if (v == iv_add_post){
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, PostPickerActivity.class);
             startActivityForResult(intent, CheckSetup.Activities.ADD_NEW_POST_ACTIVITY);
         }
 
@@ -221,5 +221,9 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
 
     public BitmapTask getBitmapTask() {
         return bitmapTask;
+    }
+
+    public CircleImageView getCv_user_img(){
+        return cv_user_img;
     }
 }

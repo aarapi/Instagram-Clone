@@ -68,7 +68,7 @@ public class BitmapTask extends AsyncTask<String, String, String> {
             publishProgress("10");
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             publishProgress("15");
-            selectedImage.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+            selectedImage.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
             publishProgress("30");
             byte[] byteArrayImage = byteArrayOutputStream.toByteArray();
             publishProgress("60");

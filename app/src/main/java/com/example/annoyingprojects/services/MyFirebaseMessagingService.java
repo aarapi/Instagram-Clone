@@ -19,7 +19,6 @@ import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.mobile.ui.beforelogin.LoginActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.octopepper.mediapickerinstagram.MainActivity;
 
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple

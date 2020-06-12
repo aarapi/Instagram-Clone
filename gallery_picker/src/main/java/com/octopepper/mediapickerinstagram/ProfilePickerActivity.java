@@ -2,12 +2,10 @@ package com.octopepper.mediapickerinstagram;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +17,9 @@ import com.octopepper.mediapickerinstagram.commons.adapters.ViewPagerAdapter;
 import com.octopepper.mediapickerinstagram.commons.models.Session;
 import com.octopepper.mediapickerinstagram.commons.models.enums.SourceType;
 import com.octopepper.mediapickerinstagram.commons.modules.PermissionModule;
-import com.octopepper.mediapickerinstagram.commons.tasks.FetchGalleryTask;
 import com.octopepper.mediapickerinstagram.commons.ui.ToolbarView;
 import com.octopepper.mediapickerinstagram.components.NewPostFragment;
 import com.octopepper.mediapickerinstagram.components.gallery.GalleryPickerFragment;
-import com.octopepper.mediapickerinstagram.components.photo.CapturePhotoFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,7 +29,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements ToolbarView.OnClickTitleListener,
+public class ProfilePickerActivity extends AppCompatActivity implements ToolbarView.OnClickTitleListener,
         ToolbarView.OnClickNextListener, ToolbarView.OnClickBackListener {
 
     @BindView(R2.id.mMainTabLayout)

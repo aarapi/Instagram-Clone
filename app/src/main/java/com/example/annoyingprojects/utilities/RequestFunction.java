@@ -1,5 +1,6 @@
 package com.example.annoyingprojects.utilities;
 
+import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.UserMessagesModel;
 import com.example.connectionframework.requestframework.sender.Request;
 import com.example.connectionframework.requestframework.sender.RequestFunctions;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class RequestFunction {
 
+    public static String username;
 
     public static Request getLanguageData(int activityId, String languageData){
         List<Object> params = new ArrayList<>();
@@ -31,6 +33,7 @@ public class RequestFunction {
     public static Request getPostData(int activityId, int scrollTime){
         List<Object> params = new ArrayList<>();
         params.add(scrollTime);
+        params.add(username);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA, params);
     }
 
@@ -38,6 +41,7 @@ public class RequestFunction {
         List<Object> params = new ArrayList<>();
         params.add(postId);
         params.add(setChecked);
+        params.add(username);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_SET_POST_LIKE, params);
     }
     public static Request getUserProfileData(int activityId, String username){
@@ -65,6 +69,7 @@ public class RequestFunction {
     public static Request createNewPost(int activityId, List<String> postData){
         List<Object> params = new ArrayList<>();
         params.add(postData);
+        params.add(username);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_POST, params);
     }
 
@@ -76,6 +81,7 @@ public class RequestFunction {
     }
     public static Request getMessageUsers(int activityId) {
         List<Object> params = new ArrayList<>();
+        params.add(username);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_MESSAGE_USERS, params);
 
     }
@@ -99,14 +105,23 @@ public class RequestFunction {
 
     }
 
-    public static Request sendPostMessage(int activityId, List<UserModel> userModels, String messageString, int postId) {
+    public static Request sendPostMessage(int activityId, List<UserModel> userModels, String messageString, PostModel postModel) {
         List<Object> params = new ArrayList<>();
 
         params.add(userModels);
         params.add(messageString);
-        params.add(postId);
+        params.add(postModel);
+        params.add(username);
 
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_SEND_POST_MESSAGE, params);
+
+    }
+    public static Request editProfile(int activityId, UserModel userModel, String encodedImage) {
+        List<Object> params = new ArrayList<>();
+        params.add(userModel);
+        params.add(encodedImage);
+        params.add(username);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_EDIT_PROFILE, params);
 
     }
 

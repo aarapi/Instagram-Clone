@@ -10,6 +10,8 @@ public class UserModel extends BaseModel {
     public String password;
     public String username;
     public String userImage;
+    public String phoneNumber;
+
 
 
 

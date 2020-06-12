@@ -4,6 +4,7 @@ import com.example.annoyingprojects.appconfiguration.ApplicationActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.messages.MessagesActivity;
 import com.example.annoyingprojects.mobile.ui.beforelogin.LoginActivity;
+import com.octopepper.mediapickerinstagram.ProfilePickerActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class CheckSetup {
         public final static int INSTA_COMMERCE_SEND_NEW_MESSAGE = 13;
         public final static int INSTA_COMMERCE_SEND_POST_MESSAGE = 14;
         public final static int INSTA_COMMERCE_GET_USER_LIST = 15;
+        public final static int INSTA_COMMERCE_EDIT_PROFILE = 16;
     }
 
     public static class Activities {

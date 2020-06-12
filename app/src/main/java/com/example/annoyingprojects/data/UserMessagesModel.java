@@ -11,6 +11,10 @@ public class UserMessagesModel {
     private String message;
     private Timestamp messageTime;
     private boolean isPostMessage;
+    private String postUsername;
+    private String postImage;
+    private String postUserImg;
+    private String postId;
 
     public int getUserMessagesId() {
         return userMessagesId;
@@ -55,8 +59,39 @@ public class UserMessagesModel {
     public boolean isPostMessage() {
         return isPostMessage;
     }
-
     public void setPostMessage(boolean postMessage) {
         isPostMessage = postMessage;
+    }
+
+    public String getPostUsername() {
+        return postUsername;
+    }
+
+    public void setPostUsername(String postUsername) {
+        this.postUsername = postUsername;
+    }
+
+    public String getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(String postImage) {
+        this.postImage = postImage;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getPostUserImg() {
+        return postUserImg;
+    }
+
+    public void setPostUserImg(String postUserImg) {
+        this.postUserImg = postUserImg;
     }
 }

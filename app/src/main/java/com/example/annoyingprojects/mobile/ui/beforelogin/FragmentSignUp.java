@@ -3,10 +3,12 @@ package com.example.annoyingprojects.mobile.ui.beforelogin;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.annoyingprojects.R;
@@ -15,10 +17,13 @@ import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class FragmentSignUp extends BaseFragment implements View.OnClickListener {
-    private EditText username, email, password;
+    private EditText username, email, password, phoneNumber;
 
     private TextView signin;
     private TextView tv_sign_up;
@@ -27,6 +32,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
     private RelativeLayout signup;
     private ProgressBar progressbar;
+    private Spinner spCountries;
 
     public static FragmentSignUp newInstance(Bundle args){
         FragmentSignUp fragmentSignUp = new FragmentSignUp();
@@ -38,6 +44,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
         username = containerView.findViewById(R.id.atvUsernameReg);
         email = containerView.findViewById(R.id.atvEmailReg);
         password = containerView.findViewById(R.id.atvPasswordReg);
+        phoneNumber = containerView.findViewById(R.id.atv_phone);
 
         signin = containerView.findViewById(R.id.tv_sign_in);
         tv_sign_up = containerView.findViewById(R.id.tv_sign_up);
@@ -46,22 +53,44 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
         signup = containerView.findViewById(R.id.btnSignUp);
         progressbar = containerView.findViewById(R.id.progressbar);
+        spCountries = containerView.findViewById(R.id.sp_countries);
+
+
 
     }
 
     @Override
     public void bindEvents() {
         signup.setOnClickListener(this);
+        signin.setOnClickListener(this);
     }
 
     @Override
     public void setViews() {
-        signup.setOnClickListener(this);
-        signin.setOnClickListener(this);
+        Locale[] locales = Locale.getAvailableLocales();
+        ArrayList<String> countries = new ArrayList<String>();
+        for (Locale locale : locales) {
+            String country = locale.getDisplayCountry();
+            if (country.trim().length() > 0 && !countries.contains(country)) {
+                countries.add(country);
+            }
+        }
+
+        Collections.sort(countries);
+        for (String country : countries) {
+            System.out.println(country);
+        }
+
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, countries);
+
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the your spinner
+        spCountries.setAdapter(countryAdapter);
     }
 
 
-    private boolean validateInput(String inName, String inPw, String inEmail) {
+    private boolean validateInput(String inName, String inPw, String inEmail, String phoneNmbrString) {
 
         if (inName.isEmpty()) {
             username.setError("Username is empty.");
@@ -75,6 +104,10 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             email.setError("Email is empty.");
             return false;
         }
+        if (phoneNmbrString.isEmpty()){
+            phoneNumber.setError("Phone Number is empty.");
+            return false;
+        }
 
         return true;
     }
@@ -83,19 +116,21 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v == signup) {
-            final String inputName = username.getText().toString().trim();
-            final String inputPw = password.getText().toString().trim();
-            final String inputEmail = email.getText().toString().trim();
+            final String inputName = username.getText().toString();
+            final String inputPw = password.getText().toString();
+            final String inputEmail = email.getText().toString();
+            final String phoneNumberString = phoneNumber.getText().toString();
 
             tv_error.setVisibility(View.GONE);
 
-            if (validateInput(inputName, inputPw, inputEmail)) {
+            if (validateInput(inputName, inputPw, inputEmail, phoneNumberString)) {
 
                 UserModel userModel = new UserModel();
 
                 userModel.email = inputEmail;
                 userModel.password = inputPw;
                 userModel.username = inputName;
+                userModel.phoneNumber = phoneNumberString;
 
                 progressbar.setVisibility(View.VISIBLE);
                 tv_sign_up.setVisibility(View.GONE);
@@ -119,6 +154,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
         username.setText("");
         email.setText("");
         password.setText("");
+        phoneNumber.setText("");
     }
 
     @Override

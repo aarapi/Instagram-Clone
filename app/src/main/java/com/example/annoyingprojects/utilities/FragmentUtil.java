@@ -44,6 +44,7 @@ public class FragmentUtil {
     public static final String SIGN_UP_FRAGMENT = "SIGN_UP_FRAGMENT";
     public static final String MESSAGE_USERS_FRAGMENT = "MESSAGE_USERS_FRAGMENT";
     public static final String USER_MESSAGES_FRAGMENT = "USER_MESSAGES_FRAGMENT";
+    public static final String EDIT_PROFILE_FRAGMENT = "EDIT_PROFILE_FRAGMENT";
 
 
     public static int getToolbarHeight(Context context) {
@@ -114,7 +115,7 @@ public class FragmentUtil {
                 case SLIDE_DOWN:
 
                     // Exit from down
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_up,
+                    fragmentTransaction.setCustomAnimations(R.anim.donot_move,
                             R.anim.slide_down);
 
                     break;
@@ -254,7 +255,7 @@ public class FragmentUtil {
                 switch (transitionStyle) {
                     case SLIDE_DOWN:
                         // Exit from down
-                        transaction.setCustomAnimations(R.anim.slide_up,
+                        transaction.setCustomAnimations(R.anim.donot_move,
                                 R.anim.slide_down);
 
                         break;

@@ -7,6 +7,6 @@
   ~  Written by Albi Arapi <albiarapi1@gmail.com>, 2017.
   -->
 <translate xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="500"
+    android:duration="300"
     android:fromYDelta="100%p"
     android:toYDelta="0%p" />

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -22,6 +23,7 @@ import com.example.annoyingprojects.data.Posts;
 import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
+import com.example.annoyingprojects.mobile.ui.afterlogin.home.LocationBottomSheet;
 import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentBottomPostMessage;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.MoreBottomSheetFragment;
@@ -64,6 +66,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
         ImageView iv_more;
         LinearLayout sliderDotspanel;
         ImageView[] dots;
+        ImageView iv_location;
     }
 
     public ListViewAdapterPost(List<PostModel> data, Context context, FragmentManager fragmentManager,
@@ -157,6 +160,21 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
             viewHolder.viewPager = (ViewPager) convertView.findViewById(R.id.viewPager);
             viewHolder.sliderDotspanel = (LinearLayout) convertView.findViewById(R.id.SliderDots);
             viewHolder.iv_more = (ImageView) convertView.findViewById(R.id.iv_more);
+            viewHolder.iv_location = (ImageView) convertView.findViewById(R.id.iv_location);
+
+            viewHolder.iv_location.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle args = new Bundle();
+                    args.putSerializable("PRODUCT_DATA", dataModel);
+                    LocationBottomSheet locationBottomSheet = LocationBottomSheet.newInstance(args);
+                    locationBottomSheet.show(((BaseActivity) mContext).getSupportFragmentManager(), LocationBottomSheet.TAG);
+                }
+            });
+
+            if (!isUserPost){
+                viewHolder.iv_more.setVisibility(View.GONE);
+            }
 
             viewHolder.iv_like.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,7 +193,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
                 @Override
                 public void onClick(View view) {
                     Bundle args = new Bundle();
-                    args.putInt("POST_ID", dataModel.getPostId());
+                    args.putSerializable("POST", (Serializable) dataModel);
                     FragmentBottomPostMessage fragmentBottomPostMessage = FragmentBottomPostMessage.newInstance(args);
                     BaseActivity activity = (BaseActivity) getContext();
                     fragmentBottomPostMessage.show(activity.getSupportFragmentManager(), FragmentBottomPostMessage.TAG);

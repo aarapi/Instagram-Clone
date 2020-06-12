@@ -115,9 +115,13 @@ public class FragmentUserMessages extends BaseFragment implements View.OnClickLi
 
         Timestamp date = new Timestamp((new Date()).getTime());
 
+        String usernameFrm = LocalServer.getInstance(getContext()).getUser().username;
+        String usernameTo = usernameFrm.equals(messageUsersModel.getUsernameFrom()) ?
+                messageUsersModel.getUsernameTo():messageUsersModel.getUsernameFrom();
+
         userMessagesModel.setMessage(input.getInputEditText().getText().toString());
-        userMessagesModel.setUsernamFrom(messageUsersModel.getUsernameFrom());
-        userMessagesModel.setUsernameTo(messageUsersModel.getUsernameTo());
+        userMessagesModel.setUsernamFrom(usernameFrm);
+        userMessagesModel.setUsernameTo(usernameTo);
         userMessagesModel.setMessageTime(date);
 
         recyclerViewAdapterUserMessages.addNewMessage(userMessagesModel);

@@ -2,15 +2,19 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.home;
 
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.ListViewAdapterPost;
 import com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter;
@@ -27,9 +31,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.annoyingprojects.mobile.ui.afterlogin.home.FilterDialogFragment.FILTER_DIALOG_FRAGMENT;
 import static com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity.scrollTime;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, PullRefreshLayout.OnRefreshListener {
     public static String HOME_FRAMGENT_DATA_LIST = "HOME_FRAMGENT_DATA_LIST";
     private int postNumbers;
 
@@ -42,10 +47,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private ImageView iv_send_message;
     private ImageView iv_upload;
+    private ImageView iv_filter;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
+
+    private PullRefreshLayout swipeRefreshLayout;
     private LinearLayout rl_upload_post;
     private ProgressBar progress;
+
+    private boolean isLoading = false;
 
 
     public static HomeFragment newInstance(Bundle args){
@@ -62,9 +71,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         iv_send_message = containerView.findViewById(R.id.iv_send_message);
         iv_upload = containerView.findViewById(R.id.iv_upload);
+        iv_filter = containerView.findViewById(R.id.iv_filter);
 
         swipeRefreshLayout = containerView.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setEnabled(true);
         rl_upload_post = containerView.findViewById(R.id.rl_upload_post);
         progress = containerView.findViewById(R.id.progress);
 
@@ -74,6 +85,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void bindEvents() {
         iv_send_message.setOnClickListener(this);
+        iv_filter.setOnClickListener(this::onClick);
     }
 
     @Override
@@ -119,6 +131,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     public void onClick(View view) {
         if (view == iv_send_message){
             startActivity(CheckSetup.Activities.MESSAGES_ACTIVITY);
+        }else if (view == iv_filter){
+            getParentFragmentManager();
+                    FilterDialogFragment filterDialogFragment = new FilterDialogFragment();
+                    filterDialogFragment.show(getParentFragmentManager(), FILTER_DIALOG_FRAGMENT);
         }
     }
 
@@ -127,10 +143,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         Gson gson = new Gson();
         if (action == CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA){
 
-            if (swipeRefreshLayout.isRefreshing()) {
+            if (isLoading) {
                 swipeRefreshLayout.setRefreshing(false);
                 adapter.getDataSet().clear();
                 scrollTime = 1;
+                isLoading = false;
             }
             Type founderListType = new TypeToken<ArrayList<Posts>>(){}.getType();
 
@@ -156,7 +173,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
 
     @Override
+    public void onErrorDataReceive(int action, List<Object> data) {
+        rl_upload_post.setVisibility(View.GONE);
+
+            swipeRefreshLayout.setRefreshing(false);
+            isLoading = false;
+
+        Toast toast = Toast.makeText(activity, "Couldn't refresh feed", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
+    }
+
+    @Override
     public void onRefresh() {
+        isLoading = true;
         sendRequest(RequestFunction.getPostData(0, 0));
     }
 

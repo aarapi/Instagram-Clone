@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +30,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFragment extends BaseFragment implements TextWatcher, RecyclerViewAdapterSearch.OnItemClickListener {
+public class SearchFragment extends BaseFragment implements TextWatcher, RecyclerViewAdapterSearch.OnItemClickListener, View.OnClickListener {
     private ProgressBar progressBar;
 
     private EditText serchInput;
+    private TextView tv_cancel;
 
     private RecyclerViewAdapterSearch recyclerViewAdapterSearch;
     private RecyclerView rv_user_list;
@@ -45,6 +47,8 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
     public void initViews() {
         progressBar = containerView.findViewById(R.id.progress);
         serchInput = containerView.findViewById(R.id.edt_search_input);
+        tv_cancel = containerView.findViewById(R.id.tv_cancel);
+
         rv_user_list = containerView.findViewById(R.id.rv_user_list);
         shimmer_view_container = containerView.findViewById(R.id.shimmer_view_container);
 
@@ -55,6 +59,7 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
     public void bindEvents() {
         serchInput.addTextChangedListener(this);
         recyclerViewAdapterSearch.SetOnItemClickListener(this);
+        tv_cancel.setOnClickListener(this);
     }
 
     @Override
@@ -140,5 +145,10 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
     @Override
     public void onRadioButtonClicked(CheckBox checkBox, int position, int selectedNr) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        onBackClicked();
     }
 }

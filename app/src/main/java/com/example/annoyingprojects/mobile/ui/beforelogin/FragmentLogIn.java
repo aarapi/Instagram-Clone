@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.data.CategoryModel;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.Posts;
 import com.example.annoyingprojects.data.StoryModel;
@@ -178,6 +179,7 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             UserModel userModel = new ClassType<UserModel>() {
             }.fromJson(data.get(0));
             SavedInformation.getInstance().setPreferenceData(getContext(), userModel, "user");
+            RequestFunction.username = LocalServer.getInstance(getContext()).getUser().username;
 
             Gson gson = new Gson();
             Type postsType = new TypeToken<ArrayList<Posts>>() {}.getType();
@@ -185,10 +187,15 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             }.getType();
             Type usersType = new TypeToken<ArrayList<UserModel>>() {
             }.getType();
+            Type categoryType = new TypeToken<ArrayList<CategoryModel>>() {
+            }.getType();
 
             ArrayList<Posts> posts = gson.fromJson(gson.toJson(data.get(1)),postsType);
             ArrayList<StoryModel> stories = gson.fromJson(gson.toJson(data.get(2)), storiesType);
+            ArrayList<CategoryModel> categoryModels = gson.fromJson(gson.toJson(data.get(4)), categoryType);
+
             LocalServer.newInstance().setUserList(gson.fromJson(gson.toJson(data.get(3)), usersType));
+            LocalServer.newInstance().setCategoryModels(categoryModels);
 
             ArrayList<PostModel> postModels = new ArrayList<>();
             int postsSize = posts.size();
@@ -211,7 +218,11 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             homeData.add(stories);
             homeData.add(postModels);
 
+            email.setText("");
+            password.setText("");
+
             startActivity(CheckSetup.Activities.HOME_ACTIVITY, homeData);
+            enableLoginBtn();
         }
     }
 
@@ -222,14 +233,17 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
         ((LoginActivity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                btnSignIn.setClickable(true);
-                progressBar.setVisibility(View.GONE);
-                tv_signin.setVisibility(View.VISIBLE);
                 tv_error.setText(errorResponse);
                 tv_error.setVisibility(View.VISIBLE);
+                enableLoginBtn();
             }
         });
+    }
 
 
+    private void enableLoginBtn(){
+        btnSignIn.setClickable(true);
+        progressBar.setVisibility(View.GONE);
+        tv_signin.setVisibility(View.VISIBLE);
     }
 }

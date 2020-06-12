@@ -3,6 +3,8 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.messages;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.adapters.RecyclerViewAdapterSearch;
+import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.SettingFragment;
@@ -27,13 +30,14 @@ import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.octopepper.mediapickerinstagram.commons.models.Post;
 
 import java.util.ArrayList;
 
 import kotlin.TypeCastException;
 import kotlin.jvm.internal.Intrinsics;
 
-public class FragmentBottomPostMessage extends BottomSheetDialogFragment implements RecyclerViewAdapterSearch.OnItemClickListener {
+public class FragmentBottomPostMessage extends BottomSheetDialogFragment implements RecyclerViewAdapterSearch.OnItemClickListener, TextWatcher {
     public static final String TAG = "ActionBottomDialog";
     private SettingFragment.ItemClickListener mListener;
 
@@ -42,9 +46,11 @@ public class FragmentBottomPostMessage extends BottomSheetDialogFragment impleme
     private View sendMessageView;
 
     private EditText et_message;
+    private EditText edt_search_input;
     private RelativeLayout btn_send;
 
     private ArrayList<UserModel> usersToSendMessage = new ArrayList<>();
+    private ArrayList<UserModel> userSearched = new ArrayList<>();
 
 
     public static FragmentBottomPostMessage newInstance(Bundle args) {
@@ -62,11 +68,15 @@ public class FragmentBottomPostMessage extends BottomSheetDialogFragment impleme
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getContext());
 
+        edt_search_input = view.findViewById(R.id.edt_search_input);
+        edt_search_input.addTextChangedListener(this);
+
         rv_message_users = view.findViewById(R.id.rv_message_users);
         rv_message_users.setLayoutManager(linearLayoutManager);
         rv_message_users.setHasFixedSize(true);
 
-        recyclerViewAdapterSearch = new RecyclerViewAdapterSearch(getContext(), LocalServer.newInstance().getUserList(), true);
+        userSearched = (ArrayList<UserModel>) LocalServer.newInstance().getUserList().clone();
+        recyclerViewAdapterSearch = new RecyclerViewAdapterSearch(getContext(), userSearched, true);
         recyclerViewAdapterSearch.SetOnItemClickListener(this);
         rv_message_users.setAdapter(recyclerViewAdapterSearch);
         recyclerViewAdapterSearch.notifyDataSetChanged();
@@ -164,15 +174,42 @@ public class FragmentBottomPostMessage extends BottomSheetDialogFragment impleme
         @Override
         public void onClick(View view) {
             if (view == btn_send) {
-                int postId = getArguments().getInt("POST_ID");
+                PostModel postModel = (PostModel) getArguments().getSerializable("POST");
                 dismiss();
                 ((BaseActivity) getContext())
                         .sendRequest(RequestFunction
                                 .sendPostMessage(0,
                                         usersToSendMessage,
                                         et_message.getText().toString(),
-                                        postId));
+                                        postModel));
             }
         }
     };
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int j, int i1, int i2) {
+        String searchedString = charSequence.toString();
+        int size = LocalServer.newInstance().getUserList().size();
+        userSearched.clear();
+        ArrayList<UserModel> temp = LocalServer.newInstance().getUserList();
+
+        for(int i = 0; i<size; i++){
+            if (temp.get(i).username.contains(searchedString)){
+                userSearched.add(temp.get(i));
+                continue;
+            }
+        }
+
+        recyclerViewAdapterSearch.notifyDataSetChanged();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
 }

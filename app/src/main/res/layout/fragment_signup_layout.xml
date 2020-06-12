@@ -49,7 +49,7 @@
                 android:padding="10dp"
                 android:drawablePadding="10dp"
                 android:inputType="textPersonName"
-                android:textColor="#cccccc"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
 
@@ -63,8 +63,8 @@
                 android:padding="10dp"
                 android:layout_marginTop="10dp"
                 android:hint="   Email"
-                android:inputType="textPassword"
-                android:textColor="#cccccc"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
 
@@ -79,8 +79,28 @@
                 android:inputType="textPassword"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textColor="#cccccc"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
+        <EditText
+            android:id="@+id/atv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_roubded_background"
+            android:drawableLeft="@drawable/ic_phone"
+            android:hint="   Phone Number"
+            android:drawablePadding="10dp"
+            android:inputType="phone"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <Spinner
+            android:id="@+id/sp_countries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:visibility="gone"></Spinner>
 
         <TextView
             android:id="@+id/tvForgotPass"

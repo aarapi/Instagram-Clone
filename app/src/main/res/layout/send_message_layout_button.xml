@@ -11,8 +11,7 @@
         android:id="@+id/view_divider"
         android:layout_width="match_parent"
         android:layout_height="0.05dp"
-        android:background="@color/white_five"
-        android:visibility="gone" />
+        android:background="@color/white_five" />
 
     <EditText
         android:id="@+id/et_message"
