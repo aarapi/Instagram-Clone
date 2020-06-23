@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.CategoryModel;
+import com.example.annoyingprojects.data.FilterModel;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.Posts;
 import com.example.annoyingprojects.data.StoryModel;
@@ -27,6 +27,7 @@ import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.octopepper.mediapickerinstagram.commons.models.CategoryModel;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -178,6 +179,8 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
         if (action == CheckSetup.ServerActions.INSTA_COMMERCE_LOG_IN){
             UserModel userModel = new ClassType<UserModel>() {
             }.fromJson(data.get(0));
+
+
             SavedInformation.getInstance().setPreferenceData(getContext(), userModel, "user");
             RequestFunction.username = LocalServer.getInstance(getContext()).getUser().username;
 
@@ -196,6 +199,10 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
 
             LocalServer.newInstance().setUserList(gson.fromJson(gson.toJson(data.get(3)), usersType));
             LocalServer.newInstance().setCategoryModels(categoryModels);
+
+            FilterModel.newInstance().country = userModel.country;
+            FilterModel.newInstance().city = "";
+            FilterModel.newInstance().allCategories = true;
 
             ArrayList<PostModel> postModels = new ArrayList<>();
             int postsSize = posts.size();

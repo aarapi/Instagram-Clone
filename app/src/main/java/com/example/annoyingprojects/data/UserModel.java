@@ -11,6 +11,8 @@ public class UserModel extends BaseModel {
     public String username;
     public String userImage;
     public String phoneNumber;
+    public String country;
+    public String city;
 
 
 

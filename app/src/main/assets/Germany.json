@@ -1,4 +1,15 @@
 [
+  {
+    "city": "",
+    "admin": "Berlin",
+    "country": "Germany",
+    "population_proper": "3094014",
+    "iso2": "DE",
+    "capital": "primary",
+    "lat": "52.516667",
+    "lng": "13.4",
+    "population": "3406000"
+  },
     {
         "city": "Berlin", 
         "admin": "Berlin", 

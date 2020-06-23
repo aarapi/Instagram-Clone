@@ -21,29 +21,25 @@ import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.repository.LocalServer;
-import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.octopepper.mediapickerinstagram.PostPickerActivity;
-import com.octopepper.mediapickerinstagram.ProfilePickerActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.annoyingprojects.utilities.CheckSetup.ServerActions.INSTA_COMMERCE_EDIT_PROFILE;
-import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
+import static com.example.annoyingprojects.utilities.Util.setUserImageResPicasso;
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
 
@@ -92,7 +88,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void setViews() {
-        setUserImageRes(getContext(), userModel.userImage, iv_user_profile);
+        setUserImageResPicasso(getContext(), userModel.userImage, iv_user_profile);
         et_email.setText(userModel.email);
         et_username.setText(userModel.username);
         et_phone.setText(userModel.phoneNumber);
@@ -169,6 +165,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onBackClicked() {
+        super.onBackClicked();
         FragmentUtil
                 .switchContent(R.id.fl_fragment_container,
                         FragmentUtil.USER_PROFILE_FRAGMENT,
@@ -187,9 +184,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             SavedInformation.getInstance().setPreferenceData(getContext(), userModel, "user");
             RequestFunction.username = LocalServer.getInstance(getContext()).getUser().username;
 
-            setUserImageRes(getContext(), userModel.userImage,
+            setUserImageResPicasso(getContext(), userModel.userImage,
                     (ImageView) ((HomeActivity) getActivity()).getCv_user_img());
-            setUserImageRes(getContext(), userModel.userImage,
+            setUserImageResPicasso(getContext(), userModel.userImage,
                     (ImageView) ((HomeActivity) getActivity()).getUserProfileFragment().getIv_user_profile());
             ((HomeActivity) getActivity()).getUserProfileFragment().getTv_email().setText(userModel.email);
             ((HomeActivity) getActivity()).getUserProfileFragment().getTv_username().setText(userModel.username);

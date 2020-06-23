@@ -17,33 +17,54 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/btn_capture_photo"
+        android:layout_below="@+id/et_product_name"
         android:layout_centerVertical="true"
         android:padding="10dp"/>
 
         <EditText
             android:id="@+id/et_product_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:layout_marginLeft="110dp"
-            android:hint="Name ....."></EditText>
+            android:padding="5dp"
+            android:maxLines="2"
+            android:layout_toLeftOf="@+id/sp_categories"
+            android:scrollbars="vertical"
+            android:hint="Product Name ....."></EditText>
+
+        <Spinner
+            android:id="@+id/sp_categories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="5dp"></Spinner>
 
         <EditText
             android:id="@+id/et_write_caption"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:layout_centerInParent="true"
-            android:hint="Write a Caption ....."></EditText>
+            android:layout_toRightOf="@+id/iv_post_img"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:maxLines="3"
+            android:scrollbars="vertical"
+            android:hint="Product Description ....."></EditText>
 
         <EditText
             android:id="@+id/et_product_price"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="110dp"
+            android:layout_toRightOf="@+id/iv_post_img"
+            android:layout_marginLeft="10dp"
             android:inputType="number"
+            android:padding="5dp"
+            android:maxLines="2"
+            android:scrollbars="vertical"
+            android:layout_toLeftOf="@+id/sp_currency"
             android:hint="Price ....."></EditText>
 
         <Spinner
@@ -51,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/et_product_price"></Spinner>
+            android:layout_alignParentRight="true"></Spinner>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"

@@ -2,30 +2,25 @@ package com.example.annoyingprojects.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import androidx.fragment.app.FragmentManager;
-
 import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
-import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeFragment;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost;
 import com.example.annoyingprojects.utilities.CheckSetup;
-import com.octopepper.mediapickerinstagram.commons.models.Post;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost.SINGLE_POST_DATA;
-import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
+import static com.example.annoyingprojects.utilities.Util.setUserImageResPicasso;
 
 public class GridAdapter extends BaseAdapter
 {
@@ -90,7 +85,7 @@ public class GridAdapter extends BaseAdapter
                     intent.putExtra(SINGLE_POST_DATA, (Serializable) data);
                     intent.putExtra("position", position);
                     ((HomeActivity) context).startActivityForResult(intent, CheckSetup.Activities.SINGLE_POST_ACTIVITY);
-                    ((BaseActivity)context).overridePendingTransition(R.anim.enter, R.anim.exit);
+                    ((BaseActivity) context).overridePendingTransition(R.anim.enter, R.anim.enter_anim);
                 }
             });
 
@@ -98,7 +93,7 @@ public class GridAdapter extends BaseAdapter
                 viewHolder.iv_multiple.setVisibility(View.VISIBLE);
             }
 
-        setUserImageRes(context, postModel.getLinkImages().get(0), viewHolder.iv_post_image);
+        setUserImageResPicasso(context, postModel.getLinkImages().get(0), viewHolder.iv_post_image);
 
         return convertView;
     }

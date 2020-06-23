@@ -13,7 +13,7 @@ public class PostModel implements Serializable {
     private String productDescription;
     private boolean isLikeChecked;
     private int likedByNo;
-    private int categoryId;
+    private String categoryName;
     private String country;
     private String city;
 
@@ -90,8 +90,8 @@ public class PostModel implements Serializable {
         this.likedByNo = likedByNo;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
     public String getCountry() {

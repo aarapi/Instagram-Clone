@@ -15,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MoreBottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
     private RelativeLayout rl_cancel, rl_copy_link;
-    private RelativeLayout rl_report_home, rl_unfollow_home, rl_delete_user, rl_edit_user;
+    private RelativeLayout rl_report_home, rl_unfollow_home, rl_delete_user;
 
     private boolean isUserPost;
     private int postId;
@@ -41,7 +41,6 @@ public class MoreBottomSheetFragment extends BottomSheetDialogFragment implement
             dialog.setContentView(contentView);
             ((View) contentView.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
             rl_delete_user = (RelativeLayout) contentView.findViewById(R.id.rl_delete);
-            rl_edit_user = (RelativeLayout) contentView.findViewById(R.id.rl_edit);
 
         }else {
             contentView = View.inflate(getContext(), R.layout.more_bottomsheet_homeposts_layout, null);
@@ -61,7 +60,6 @@ public class MoreBottomSheetFragment extends BottomSheetDialogFragment implement
     private void bindViews(boolean isUserPost){
         if (isUserPost){
             rl_delete_user.setOnClickListener(this);
-            rl_edit_user.setOnClickListener(this);
         }else {
             rl_report_home.setOnClickListener(this);
             rl_unfollow_home.setOnClickListener(this);
@@ -80,8 +78,6 @@ public class MoreBottomSheetFragment extends BottomSheetDialogFragment implement
         if(isUserPost){
             if (view == rl_delete_user){
                 ((ActivitySinglePost) getContext()).sendRequest(RequestFunction.deletePost(0, postId));
-            }else if (view == rl_edit_user){
-                Toast.makeText(getContext(), "Post Edited", Toast.LENGTH_SHORT).show();
             }
 
         }else {

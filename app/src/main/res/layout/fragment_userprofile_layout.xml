@@ -33,15 +33,15 @@
         android:text="aarapi"
         android:textStyle="bold"
         ></TextView>
-        <ImageView
+
+        <TextView
             android:id="@+id/iv_menu_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_profile_menu"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:layout_marginRight="15dp"></ImageView>
+            android:layout_marginRight="15dp"></TextView>
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,12 +93,14 @@
                 android:layout_gravity="center"></TextView>
 
             <TextView
+                android:id="@+id/tv_posts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/dark_chocolate"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:text="Posts"></TextView>
+                android:text="Posts"
+                android:visibility="gone"></TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -157,15 +159,35 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_email"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:text="email"></TextView>
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="email@gmail.com"></TextView>
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_phone"
+            android:drawableTint="#03A9F4"
+            android:layout_centerHorizontal="true"
+            android:text="0699343132"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:drawablePadding="5dp"
+            android:gravity="center_horizontal"
+            android:visibility="gone"></TextView>
+    </RelativeLayout>
    <RelativeLayout
        android:id="@+id/rl_edit_profile"
        android:layout_width="match_parent"

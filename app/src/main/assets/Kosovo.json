@@ -1,5 +1,16 @@
 [
     {
+      "city": "",
+      "admin": "Gjakov\u00eb",
+      "country": "Kosovo",
+      "population_proper": "",
+      "iso2": "XK",
+      "capital": "admin",
+      "lat": "42.380278",
+      "lng": "20.430833",
+      "population": ""
+    },
+  {
         "city": "Gjakov\u00eb", 
         "admin": "Gjakov\u00eb", 
         "country": "Kosovo", 

@@ -178,7 +178,7 @@ public class ProfilePickerActivity extends AppCompatActivity implements ToolbarV
 
         if (!isNewPost) {
             if (mSession.getFilesToUpload().size() == 0) {
-                Toast.makeText(this, "Zgjidhni nje foto", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Choose an image", Toast.LENGTH_SHORT).show();
             } else {
                 isNewPost = true;
                 Bundle args = new Bundle();

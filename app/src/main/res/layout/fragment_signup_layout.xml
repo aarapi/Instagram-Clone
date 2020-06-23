@@ -94,13 +94,27 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textSize="12sp" />
-        <Spinner
-            android:id="@+id/sp_countries"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:visibility="gone"></Spinner>
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/sp_countries"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:padding="10dp"></Spinner>
+
+            <Spinner
+                android:id="@+id/sp_cities"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:padding="10dp"></Spinner>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvForgotPass"

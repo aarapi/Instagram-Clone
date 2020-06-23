@@ -1,12 +1,16 @@
 package com.example.annoyingprojects.mobile.ui.afterlogin.userprofile;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -24,7 +28,6 @@ import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentUserMe
 import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
-import com.example.annoyingprojects.utilities.Util;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,7 +39,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
+import static com.example.annoyingprojects.utilities.Util.setUserImageResPicasso;
 
 public class UserProfileFragment extends BaseFragment implements View.OnClickListener {
     public static String USER_PROFILE_DATA = "USER_PROFILE_DATA";
@@ -55,6 +58,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     private TextView tv_email;
     private TextView tv_username;
     private TextView tv_user_action;
+    private TextView tv_phone;
+    private TextView tv_posts;
 
     private boolean isUser = true;
 
@@ -97,6 +102,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         tv_posts_value = containerView.findViewById(R.id.tv_posts_value);
         tv_email = containerView.findViewById(R.id.tv_email);
         tv_username = containerView.findViewById(R.id.tv_username);
+        tv_phone = containerView.findViewById(R.id.tv_phone);
+        tv_posts = containerView.findViewById(R.id.tv_posts);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
@@ -109,13 +116,15 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     public void bindEvents() {
         iv_menu_settings.setOnClickListener(this::onClick);
         rl_edit_profile.setOnClickListener(this::onClick);
+        tv_phone.setOnClickListener(this::onClick);
     }
 
     @Override
     public void setViews() {
-        setUserImageRes(getContext(), userModel.userImage, iv_user_profile);
+        setUserImageResPicasso(getContext(), userModel.userImage, iv_user_profile);
         tv_email.setText(userModel.email);
         tv_username.setText(userModel.username);
+        tv_phone.setText(userModel.phoneNumber);
 
         progressBar.setVisibility(View.VISIBLE);
         sendRequest(RequestFunction.getUserProfileData(0, userModel.username));
@@ -131,11 +140,28 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         List<Object> profileData = new ArrayList<>();
         List<PostModel> postModels = getUserPosts(data);
         profileData.add(postModels);
-
+        tv_posts.setVisibility(View.VISIBLE);
+        if (!isUser) {
+            Gson gson = new Gson();
+            UserModel user = gson.fromJson(gson.toJson(data.get(1)), UserModel.class);
+            tv_email.setText(user.email);
+            tv_username.setText(user.username);
+            tv_phone.setText(user.phoneNumber);
+            userModel.phoneNumber = user.phoneNumber;
+            tv_phone.setVisibility(View.VISIBLE);
+        }
         progressBar.setVisibility(View.GONE);
         tv_posts_value.setText(postModels.size() + "");
 
         setFragmentView(profileData);
+    }
+
+    @Override
+    public void onErrorDataReceive(int action, List<Object> data) {
+        progressBar.setVisibility(View.GONE);
+        Toast toast = Toast.makeText(activity, "Couldn't retrieve data", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     @Override
@@ -150,7 +176,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
                         getActivity(),
                         FragmentUtil.EDIT_PROFILE_FRAGMENT,
                         FragmentUtil.AnimationType.SLIDE_UP
-                        );
+                );
             }else {
                 MessageUsersModel messageUsersModel = new MessageUsersModel();
                 messageUsersModel.setUsername_from(LocalServer.getInstance(getContext()).getUser().username);
@@ -166,6 +192,9 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
                         ,FragmentUtil.USER_MESSAGES_FRAGMENT
                         ,null);
             }
+        } else if (v == tv_phone) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", userModel.phoneNumber, null));
+            startActivity(intent);
         }
     }
 

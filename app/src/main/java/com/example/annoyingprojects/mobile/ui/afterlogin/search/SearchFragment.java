@@ -3,11 +3,14 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.search;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -115,8 +118,18 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
         shimmer_view_container.setVisibility(View.GONE);
         rv_user_list.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onErrorDataReceive(int action, List<Object> data) {
+        shimmer_view_container.setVisibility(View.GONE);
+        Toast toast = Toast.makeText(activity, "Couldn't retreive data", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
     @Override
     public void onBackClicked() {
+        super.onBackClicked();
         FragmentUtil
                 .switchContent(R.id.fl_fragment_container,
                         FragmentUtil.HOME_FRAGMENT,

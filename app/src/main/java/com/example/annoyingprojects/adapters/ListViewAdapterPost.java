@@ -2,7 +2,9 @@ package com.example.annoyingprojects.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -40,6 +42,9 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
+import static android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE;
+
 
 public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View.OnClickListener {
 
@@ -54,6 +59,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
     private final int VIEW_TYPE_LOADING = 1;
 
     private ListViewAdapterPost adapterPost;
+    private Picasso picasso;
 
     // View lookup cache
     public static class ViewHolder {
@@ -77,11 +83,17 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
         adapterPost = this;
         this.fragmentManager = fragmentManager;
         this.isUserPost = isUserPost;
-
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                if (picasso == null) {
+                    picasso = Picasso.with(context);
+                }
+                if (scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    picasso.resumeTag(context);
+                } else {
+                    picasso.pauseTag(context);
+                }
             }
 
             @Override
@@ -101,14 +113,9 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
                         onLoadMoreListener.onLoadMore();
                         isLoading = true;
                     }
-
-
-
-
                 }
             }
         });
-
     }
 
     @Override
@@ -250,7 +257,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
             likeData.add(position);
 
 
-            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getContext(), likeData, dataModel.getLinkImages());
+            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getContext(), likeData, dataModel.getLinkImages(), picasso);
             viewHolder.viewPager.setAdapter(viewPagerAdapter);
 
             viewHolder.dots = new ImageView[dataModel.getLinkImages().size()];

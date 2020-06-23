@@ -2,6 +2,7 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.messages;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
@@ -27,6 +28,8 @@ public class MessagesActivity extends BaseActivity implements  MaterialSearchBar
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         FragmentUtil.switchFragmentWithAnimation(R.id.fr_fragment_container
                 , new FragmentMessageUsers()
                 , activity
@@ -94,5 +97,11 @@ public class MessagesActivity extends BaseActivity implements  MaterialSearchBar
         } else if (action == CheckSetup.ServerActions.INSTA_COMMERCE_USER_MESSAGES) {
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.exit, R.anim.exit_anim);
     }
 }

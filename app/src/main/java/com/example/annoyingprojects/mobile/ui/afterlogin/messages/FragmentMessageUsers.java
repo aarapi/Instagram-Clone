@@ -70,6 +70,7 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onBackClicked() {
+        super.onBackClicked();
         ((MessagesActivity) getContext()).finish();
     }
 

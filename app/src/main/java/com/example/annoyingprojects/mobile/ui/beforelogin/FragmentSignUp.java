@@ -1,20 +1,21 @@
 package com.example.annoyingprojects.mobile.ui.beforelogin;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.annoyingprojects.R;
+import com.example.annoyingprojects.data.FilterModel;
 import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.utilities.FragmentUtil;
+import com.example.annoyingprojects.utilities.LocationUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class FragmentSignUp extends BaseFragment implements View.OnClickListener {
+public class FragmentSignUp extends BaseFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private EditText username, email, password, phoneNumber;
 
     private TextView signin;
@@ -32,7 +33,8 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
     private RelativeLayout signup;
     private ProgressBar progressbar;
-    private Spinner spCountries;
+    private Spinner sp_countries;
+    private Spinner sp_cities;
 
     public static FragmentSignUp newInstance(Bundle args){
         FragmentSignUp fragmentSignUp = new FragmentSignUp();
@@ -53,7 +55,8 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
         signup = containerView.findViewById(R.id.btnSignUp);
         progressbar = containerView.findViewById(R.id.progressbar);
-        spCountries = containerView.findViewById(R.id.sp_countries);
+        sp_countries = containerView.findViewById(R.id.sp_countries);
+        sp_cities = containerView.findViewById(R.id.sp_cities);
 
 
 
@@ -67,26 +70,32 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
     @Override
     public void setViews() {
-        Locale[] locales = Locale.getAvailableLocales();
-        ArrayList<String> countries = new ArrayList<String>();
-        for (Locale locale : locales) {
-            String country = locale.getDisplayCountry();
-            if (country.trim().length() > 0 && !countries.contains(country)) {
-                countries.add(country);
-            }
-        }
+        setCountriesList();
+    }
 
-        Collections.sort(countries);
-        for (String country : countries) {
-            System.out.println(country);
-        }
-
+    public void setCountriesList() {
+        String[] countries = LocationUtil.newInstance(getContext()).getCountries();
         ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, countries);
-
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the your spinner
-        spCountries.setAdapter(countryAdapter);
+        sp_countries.setAdapter(countryAdapter);
+        sp_countries.setOnItemSelectedListener(this);
+
+    }
+
+    public void setCityList(String countryName) {
+        ArrayList<String> cites = LocationUtil.newInstance(getContext())
+                .getListOfCities(countryName);
+
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, cites);
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the your spinner
+        sp_cities.setAdapter(cityAdapter);
+        sp_cities.setSelection(1);
+        cityAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -131,6 +140,8 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                 userModel.password = inputPw;
                 userModel.username = inputName;
                 userModel.phoneNumber = phoneNumberString;
+                userModel.country = sp_countries.getSelectedItem().toString();
+                userModel.city = sp_cities.getSelectedItem().toString();
 
                 progressbar.setVisibility(View.VISIBLE);
                 tv_sign_up.setVisibility(View.GONE);
@@ -173,4 +184,13 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        setCityList(LocationUtil.newInstance(getContext()).getCountries()[i]);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

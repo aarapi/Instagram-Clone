@@ -21,7 +21,7 @@ import com.example.annoyingprojects.mobile.ui.afterlogin.home.StoryActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
+import static com.example.annoyingprojects.utilities.Util.setUserImageResPicasso;
 
 public class StoryRecyclerViewAdapter
         extends RecyclerView.Adapter<StoryViewHolder>
@@ -116,6 +116,6 @@ class StoryViewHolder extends RecyclerView.ViewHolder {
         mTextView.setText(item.Title);
         itemView.setTag(item);
         String imageUrl = item.getLink();
-        setUserImageRes(itemView.getContext(), imageUrl, mImageView);
+        setUserImageResPicasso(itemView.getContext(), imageUrl, mImageView);
     }
 }

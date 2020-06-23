@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
+import static android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE;
+
 public class LoadMoreModule {
 
     private RecyclerView recyclerView;
@@ -18,12 +21,15 @@ public class LoadMoreModule {
     private Picasso sPicasso = null;
     private Runnable mSettlingResumeRunnable = null;
 
+    private Context context;
+
     public void LoadMoreUtils(RecyclerView r, LoadMoreModuleDelegate d, Context context) {
         this.recyclerView = r;
         this.delegate = d;
+        this.context = context;
 
         if (sPicasso == null) {
-            sPicasso = Picasso.with(context.getApplicationContext());
+            sPicasso = Picasso.with(context);
         }
 
         addListener();
@@ -42,21 +48,10 @@ public class LoadMoreModule {
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-                if (scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-                    recyclerView.removeCallbacks(mSettlingResumeRunnable);
-                    sPicasso.resumeTag(TAG);
-
-                } else if (scrollState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    mSettlingResumeRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            sPicasso.resumeTag(TAG);
-                        }
-                    };
-
-                    recyclerView.postDelayed(mSettlingResumeRunnable, SETTLING_DELAY);
+                if (scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    sPicasso.resumeTag(context);
                 } else {
-                    sPicasso.pauseTag(TAG);
+                    sPicasso.pauseTag(context);
                 }
             }
         });
