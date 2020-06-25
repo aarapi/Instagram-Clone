@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.octopepper.mediapickerinstagram.R;
+import com.octopepper.mediapickerinstagram.commons.models.CategoryModel;
 import com.octopepper.mediapickerinstagram.commons.models.CurrencyList;
 
 import java.io.File;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class NewPostFragment extends Fragment {
     private List<File> imageFiles;
+    private ArrayList<CategoryModel> categoryModels;
 
     private ImageView iv_post_img;
 
@@ -34,6 +36,7 @@ public class NewPostFragment extends Fragment {
     private EditText et_product_price;
 
     private Spinner sp_currency;
+    private Spinner sp_categories;
 
     public static NewPostFragment newInstance(Bundle bundleArgs) {
         NewPostFragment newPostFragment = new NewPostFragment();
@@ -55,6 +58,9 @@ public class NewPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imageFiles = (ArrayList<File>) getArguments().get("filePath");
+        categoryModels = (ArrayList<CategoryModel>) getArguments().getSerializable("CATEGORIES");
+
+
         initViews(view);
         setViews();
         setImageRes(imageFiles);
@@ -69,12 +75,26 @@ public class NewPostFragment extends Fragment {
         et_product_price = view.findViewById(R.id.et_product_price);
 
         sp_currency = view.findViewById(R.id.sp_currency);
+        sp_categories = view.findViewById(R.id.sp_categories);
     }
 
     public void setViews() {
         MyAdapterSpinner adapter = new MyAdapterSpinner(getContext(),
                 R.layout.spinner_item, CurrencyList.currencyList, CurrencyList.countriesFlag);
         sp_currency.setAdapter(adapter);
+
+        List<String> data = new ArrayList<>();
+        int size = categoryModels.size();
+
+        for (int i = 1; i < size; i++) {
+            data.add(categoryModels.get(i).categoryName);
+        }
+
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, data);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the your spinner
+        sp_categories.setAdapter(categoryAdapter);
     }
 
     public void setImageRes(List<File> imageFiles) {
@@ -91,6 +111,7 @@ public class NewPostFragment extends Fragment {
         postData.add(et_product_price.getText()
                 .toString() + " " + CurrencyList.currencyList[sp_currency.getSelectedItemPosition()]);
         postData.add(imageFiles);
+        postData.add(sp_categories.getSelectedItem().toString());
 
         return postData;
     }
@@ -98,15 +119,15 @@ public class NewPostFragment extends Fragment {
     public boolean validateInputs() {
 
         if (et_product_price.getText().toString().isEmpty()) {
-            et_product_price.setError("Shkruani cmimin!");
+            et_product_price.setError("Price is empty");
             return false;
         }
         if (et_write_caption.getText().toString().isEmpty()) {
-            et_write_caption.setError("Shkruani nje pershkrim!");
+            et_write_caption.setError("Product description is empty");
             return false;
         }
         if (et_product_name.getText().toString().isEmpty()) {
-            et_product_name.setError("Shkruani emrin e produktit!");
+            et_product_name.setError("Product name is empty");
             return false;
         }
 

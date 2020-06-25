@@ -8,8 +8,10 @@ import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeFragment;
+import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.RequestFunction;
 
 import java.io.ByteArrayOutputStream;
@@ -51,6 +53,7 @@ public class BitmapTask extends AsyncTask<String, String, String> {
         postData.add((String) newPost.get(0));
         postData.add((String) newPost.get(1));
         postData.add((String) newPost.get(2));
+        postData.add((String) newPost.get(4));
 
         for (int i = 0; i < size; i++) {
 
@@ -82,9 +85,13 @@ public class BitmapTask extends AsyncTask<String, String, String> {
 
             postData.add(encodeImage);
 
+
             publishProgress("80");
         }
-        homeFragment.sendRequest(RequestFunction.createNewPost(0, postData));
+        UserModel userModel = LocalServer.getInstance(homeFragment.getContext()).getUser();
+
+        homeFragment.sendRequest(RequestFunction
+                .createNewPost(0, postData, userModel.country, userModel.city));
         ;
         publishProgress("90");
 

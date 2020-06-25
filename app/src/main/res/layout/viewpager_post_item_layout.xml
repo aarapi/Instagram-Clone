@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        android:src="@drawable/ic_bg_topheader"
         android:id="@+id/imageView" />
 
     <ImageView

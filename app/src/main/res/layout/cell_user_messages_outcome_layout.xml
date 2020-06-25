@@ -12,8 +12,7 @@
         android:layout_marginLeft="30dp"
         android:fontFamily="@string/font_fontFamily_medium"
         android:includeFontPadding="false"
-        android:text="lacinia, sit amet placerat ante venenatis. Vestibulum feugiat dui magna, a luctus nunc suscipit et. In vitae malesuada lectus. Phasellus quis velit nibh. Aenean facilisis tempus quam sit amet tempus. Aenean luctus ultricies neque ultrices sagittis. Maecenas nulla libero, facilisis eget tincidunt in, posuere ut urna. Etiam posuere, risus eget laoreet volutpat, mi sem faucibus nisl, eget consequat arcu nunc in urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        android:background="@drawable/bg_custom_outcoming_message" />
+        android:text="lacinia, sit amet placerat ante venenatis. Vestibulum feugiat dui magna, a luctus nunc suscipit et. In vitae malesuada lectus. Phasellus quis velit nibh. Aenean facilisis tempus quam sit amet tempus. Aenean luctus ultricies neque ultrices sagittis. Maecenas nulla libero, facilisis eget tincidunt in, posuere ut urna. Etiam posuere, risus eget laoreet volutpat, mi sem faucibus nisl, eget consequat arcu nunc in urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
 
 
 </FrameLayout>

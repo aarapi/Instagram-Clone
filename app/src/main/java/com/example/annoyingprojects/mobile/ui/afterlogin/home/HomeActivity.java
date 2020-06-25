@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
@@ -28,7 +30,8 @@ import java.util.List;
 import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import static com.example.annoyingprojects.utilities.Util.setUserImageRes;
+
+import static com.example.annoyingprojects.utilities.Util.setUserImageResPicasso;
 
 public class HomeActivity extends BaseActivity implements SettingFragment.ItemClickListener {
     public static int scrollTime = 1;
@@ -42,6 +45,7 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
 
 
     private RelativeLayout rl_user_img;
+    private LinearLayout ll_bottom_menu;
     private HomeFragment homeFragment;
     private UserProfileFragment userProfileFragment;
 
@@ -57,6 +61,9 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
         super.onCreate(savedInstanceState);
         Bundle bundleArgs;
         bundleArgs = new Bundle();
+
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         userModel = LocalServer.getInstance(getApplicationContext()).getUser();
 
@@ -78,6 +85,7 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
         iv_add_post = findViewById(R.id.iv_add_post);
         rl_user_img = findViewById(R.id.rl_user_img);
         iv_likes = findViewById(R.id.iv_likes);
+        ll_bottom_menu = findViewById(R.id.ll_bottom_menu);
     }
 
     @Override
@@ -92,7 +100,7 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
     @Override
     public void setViews() {
         iv_home_button.setImageResource(R.drawable.ic_home_clicked);
-        setUserImageRes(getApplicationContext(), userModel.userImage, (ImageView) cv_user_img);
+        setUserImageResPicasso(getApplicationContext(), userModel.userImage, (ImageView) cv_user_img);
 
 
         bottomMenus.put(iv_search_button, iv_search_button);
@@ -150,6 +158,7 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
 
         }else if (v == iv_add_post){
             Intent intent = new Intent(this, PostPickerActivity.class);
+            intent.putExtra("CATEGORIES", (Serializable) LocalServer.newInstance().getCategoryModels());
             startActivityForResult(intent, CheckSetup.Activities.ADD_NEW_POST_ACTIVITY);
         }
 
@@ -160,6 +169,11 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
     public void onDataReceive(int action, List<Object> data) {
         if (data.size() == 0)
             return;
+
+        if (action == CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA) {
+            homeFragment.setLoading(true);
+            homeFragment.onDataReceive(CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA, data);
+        }
     }
 
     @Override
@@ -210,20 +224,24 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
     public void setHomeIcon() {
         setCheckedMenu(iv_home_button);
     }
-
     public UserProfileFragment getUserProfileFragment() {
         return userProfileFragment;
     }
-
     public UserModel getUserModel() {
         return userModel;
     }
-
     public BitmapTask getBitmapTask() {
         return bitmapTask;
     }
-
     public CircleImageView getCv_user_img(){
         return cv_user_img;
+    }
+
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
+    }
+
+    public LinearLayout getLl_bottom_menu() {
+        return ll_bottom_menu;
     }
 }

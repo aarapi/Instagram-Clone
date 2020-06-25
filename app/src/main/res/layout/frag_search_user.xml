@@ -20,16 +20,15 @@
             android:layout_margin="5dp"
             android:layout_toLeftOf="@+id/tv_cancel"
             android:background="@drawable/edit_text_search_backround"
-            android:hapticFeedbackEnabled="true"
-            android:hint="Kerko produktin"
+            android:hint="search username"
             android:drawableLeft="@drawable/ic_search_icon"
             android:drawablePadding="5dp"
-            android:marqueeRepeatLimit="marquee_forever"
             android:padding="5dp"
-            android:singleLine="true"
+            android:paddingRight="10dp"
             android:textColor="@color/holo_gray_dark"
             android:textColorHint="@color/color_gray_light"
             android:textSize="15dp" />
+
 
         <TextView
             android:id="@+id/tv_cancel"

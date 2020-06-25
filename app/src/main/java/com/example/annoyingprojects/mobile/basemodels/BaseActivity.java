@@ -2,21 +2,11 @@ package com.example.annoyingprojects.mobile.basemodels;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.transition.TransitionInflater;
-import android.transition.TransitionSet;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,13 +19,7 @@ import com.example.connectionframework.requestframework.sender.Request;
 import com.example.connectionframework.requestframework.sender.SenderBridge;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-
-import yalantis.com.sidemenu.interfaces.Resourceble;
-import yalantis.com.sidemenu.interfaces.ScreenShotable;
-import yalantis.com.sidemenu.model.SlideMenuItem;
-import yalantis.com.sidemenu.util.ViewAnimator;
 
 public abstract class BaseActivity extends AppCompatActivity implements
         View.OnClickListener {
@@ -119,7 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (applicationActivity != null) {
             Intent intent = new Intent(getApplicationContext(), applicationActivity.getActivityClass());
             startActivity(intent);
-            overridePendingTransition(R.anim.enter, R.anim.exit);
+            overridePendingTransition(R.anim.enter, R.anim.enter_anim);
 
         }
     }
@@ -129,7 +113,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             Intent intent = new Intent(getApplicationContext(), applicationActivity.getActivityClass());
             intent.putExtra("data", (Serializable) data);
             startActivity(intent);
-            overridePendingTransition(R.anim.enter, R.anim.exit);
+            overridePendingTransition(R.anim.enter, R.anim.enter_anim);
 
         }
     }

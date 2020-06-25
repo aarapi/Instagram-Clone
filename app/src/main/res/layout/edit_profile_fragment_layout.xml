@@ -59,8 +59,7 @@
                 android:id="@+id/iv_user_profile"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_bg_topheader"></de.hdodenhof.circleimageview.CircleImageView>
+                android:scaleType="centerCrop"></de.hdodenhof.circleimageview.CircleImageView>
 
             <ImageView
                 android:layout_width="20dp"

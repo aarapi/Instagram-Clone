@@ -194,7 +194,7 @@ public class GalleryPickerFragment extends Fragment implements GridAdapterListen
     @Override
     public void onPause() {
         super.onPause();
-        Picasso.with(getContext()).cancelRequest(mPreview);
+        Picasso.get().cancelRequest(mPreview);
     }
 
     @Override

@@ -120,7 +120,7 @@ public abstract class BaseFragment extends Fragment {
         if (applicationActivity != null) {
             Intent intent = new Intent(activity.getApplicationContext(), applicationActivity.getActivityClass());
             activity.startActivity(intent);
-            activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+            activity.overridePendingTransition(R.anim.enter, R.anim.enter_anim);
         }
     }
     protected void startActivity(int activityId, List<Object> data) {
@@ -129,7 +129,7 @@ public abstract class BaseFragment extends Fragment {
             Intent intent = new Intent(getContext(), applicationActivity.getActivityClass());
             intent.putExtra("data", (Serializable) data);
             startActivity(intent);
-            activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+            activity.overridePendingTransition(R.anim.enter, R.anim.enter_anim);
 
         }
     }

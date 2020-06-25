@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="55dp"
         android:background="#09F6F5F4">
         <ImageView
             android:id="@+id/iv_filter"
@@ -20,6 +20,35 @@
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Instacommerce"
+            android:textColor="@color/black"
+            android:fontFamily="@font/pacifico"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone"></TextView>
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toLeftOf="@+id/iv_send_message"
+            android:layout_toRightOf="@id/iv_filter"
+            android:background="@drawable/edit_text_search_backround"
+            android:hint="Search"
+            android:drawableLeft="@drawable/ic_search_icon"
+            android:drawablePadding="5dp"
+            android:padding="5dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/holo_gray_dark"
+            android:textColorHint="@color/color_gray_light"
+            android:textSize="15dp"
+            android:visibility="gone"></EditText>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +60,13 @@
             android:textStyle="bold">
 
         </TextView>
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iv_send_message" />
         <ImageView
             android:id="@+id/iv_send_message"
             android:layout_width="wrap_content"
@@ -39,7 +75,6 @@
             android:tint="@color/black"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:foreground="?android:attr/selectableItemBackground"
             android:layout_marginRight="10dp"
             ></ImageView>
 

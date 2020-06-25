@@ -1,19 +1,16 @@
 package com.example.annoyingprojects.mobile.ui.afterlogin.userprofile;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.adapters.GridAdapter;
 import com.example.annoyingprojects.adapters.ListViewAdapterPost;
 import com.example.annoyingprojects.adapters.StoryRecyclerViewAdapter;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
-import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.utilities.CheckSetup;
 
 import java.io.Serializable;
@@ -120,6 +117,7 @@ public class ActivitySinglePost extends BaseActivity {
             setResult(Activity.RESULT_OK, returnIntent);
         }
         super.onBackPressed();
+        overridePendingTransition(R.anim.exit, R.anim.exit_anim);
 
     }
 

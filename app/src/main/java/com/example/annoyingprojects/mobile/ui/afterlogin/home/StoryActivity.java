@@ -150,7 +150,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         }
     }
     public void setImageResource(int counter){
-        Picasso.with(getApplicationContext()).load(storyModelList.get(counter).getLink())
+        Picasso.get().load(storyModelList.get(counter).getLink())
                 .placeholder(R.drawable.placeholder_error_media).error(R.drawable.placeholder_error_media).fit()
                 .centerCrop().into(image);
 

@@ -13,7 +13,6 @@ import com.example.annoyingprojects.R;
 import com.example.annoyingprojects.data.MessageUsersModel;
 import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.Util;
-import com.example.connectionframework.requestframework.sender.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +92,7 @@ public class RecyclerViewAdapterMessageUsers extends RecyclerView.Adapter<Recycl
 
         void bind(MessageUsersModel messageUsersModel) {
             List<String> data = getMessageUsersData(messageUsersModel);
-            Util.setUserImageRes(context, data.get(1), iv_user_from);
+            Util.setUserImageResPicasso(context, data.get(1), iv_user_from);
 
             dialogName.setText(data.get(0));
             dialogLastMessage.setText(data.get(1));

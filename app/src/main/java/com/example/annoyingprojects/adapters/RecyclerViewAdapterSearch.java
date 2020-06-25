@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -119,7 +118,7 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
             tv_username.setText(userModel.username);
             tv_name.setText(userModel.email);
 
-            Util.setUserImageRes(context, userModel.userImage, iv_user);
+            Util.setUserImageResPicasso(context, userModel.userImage, iv_user);
         }
 
 

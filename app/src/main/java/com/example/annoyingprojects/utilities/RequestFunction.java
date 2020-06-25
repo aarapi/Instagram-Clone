@@ -1,5 +1,6 @@
 package com.example.annoyingprojects.utilities;
 
+import com.example.annoyingprojects.data.FilterModel;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.UserMessagesModel;
 import com.example.connectionframework.requestframework.sender.Request;
@@ -30,10 +31,17 @@ public class RequestFunction {
         params.add(userModel);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_LOG_IN, params);
     }
-    public static Request getPostData(int activityId, int scrollTime){
+
+    public static Request getPostData(int activityId, int scrollTime, FilterModel filterModel, String searchString) {
         List<Object> params = new ArrayList<>();
         params.add(scrollTime);
         params.add(username);
+        params.add(filterModel.country);
+        params.add(filterModel.city);
+        params.add(filterModel.category);
+        params.add(filterModel.allCategories);
+        params.add(searchString);
+
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_HOME_DATA, params);
     }
 
@@ -66,10 +74,12 @@ public class RequestFunction {
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_DASHBOARD_ACTIVITY, params);
     }
 
-    public static Request createNewPost(int activityId, List<String> postData){
+    public static Request createNewPost(int activityId, List<String> postData, String country, String city) {
         List<Object> params = new ArrayList<>();
         params.add(postData);
         params.add(username);
+        params.add(country);
+        params.add(city);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_POST, params);
     }
 

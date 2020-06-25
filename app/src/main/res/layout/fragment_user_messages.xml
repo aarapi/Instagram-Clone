@@ -27,18 +27,6 @@
         android:layout_marginRight="16dp"
         android:background="@color/gray_light" />
 
-    <com.stfalcon.chatkit.messages.MessageInput
-        android:id="@+id/input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:attachmentButtonDefaultIconColor="@color/green"
-        app:attachmentButtonDefaultIconPressedColor="@color/green_dark"
-        app:inputButtonDefaultBgColor="@color/green"
-        app:inputButtonDefaultBgPressedColor="@color/green_dark"
-        app:inputCursorDrawable="@drawable/shape_custom_cursor"
-        app:showAttachmentButton="true" />
-
 
     <!--    <RelativeLayout-->
     <!--        android:id="@+id/input"-->
