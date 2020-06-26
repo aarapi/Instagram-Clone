@@ -27,19 +27,19 @@ import java.util.Map;
 
 import gujc.directtalk9.R;
 import gujc.directtalk9.chat.SelectUserActivity;
-import gujc.directtalk9.model.UserModel;
+import gujc.directtalk9.model.User;
 
 public class UserListInRoomFragment extends Fragment {
     private String roomID;
-    private List<UserModel> userModels;
+    private List<User> users;
     private RecyclerView recyclerView;
 
     public UserListInRoomFragment() {
     }
 
-    public static final UserListInRoomFragment getInstance(String roomID, Map<String, UserModel> userModels) {
-        List<UserModel> users = new ArrayList();
-        for (Map.Entry<String, UserModel> elem : userModels.entrySet()) {
+    public static final UserListInRoomFragment getInstance(String roomID, Map<String, User> userModels) {
+        List<User> users = new ArrayList();
+        for (Map.Entry<String, User> elem : userModels.entrySet()) {
             users.add(elem.getValue());
         }
 
@@ -76,8 +76,8 @@ public class UserListInRoomFragment extends Fragment {
         return view;
     }
 
-    public void setUserList(List<UserModel> users) {
-        userModels = users;
+    public void setUserList(List<User> users) {
+        this.users = users;
     }
 
     class UserFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -97,7 +97,7 @@ public class UserListInRoomFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            final UserModel user = userModels.get(position);
+            final User user = users.get(position);
             CustomViewHolder customViewHolder = (CustomViewHolder) holder;
             customViewHolder.user_name.setText(user.getUsernm());
             //customViewHolder.user_msg.setText(user.getUsermsg());
@@ -116,7 +116,7 @@ public class UserListInRoomFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return userModels.size();
+            return users.size();
         }
     }
 

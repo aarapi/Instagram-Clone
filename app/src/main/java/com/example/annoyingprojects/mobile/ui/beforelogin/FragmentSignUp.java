@@ -1,6 +1,10 @@
 package com.example.annoyingprojects.mobile.ui.beforelogin;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,18 +14,28 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.annoyingprojects.R;
-import com.example.annoyingprojects.data.FilterModel;
 import com.example.annoyingprojects.data.UserModel;
 import com.example.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.LocationUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
+
+import gujc.directtalk9.LoginActivity;
+import gujc.directtalk9.MainActivity;
+import gujc.directtalk9.common.Util9;
+import gujc.directtalk9.model.User;
 
 public class FragmentSignUp extends BaseFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private EditText username, email, password, phoneNumber;
@@ -35,6 +49,8 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     private ProgressBar progressbar;
     private Spinner sp_countries;
     private Spinner sp_cities;
+
+    private SharedPreferences sharedPreferences;
 
     public static FragmentSignUp newInstance(Bundle args){
         FragmentSignUp fragmentSignUp = new FragmentSignUp();
@@ -59,7 +75,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
         sp_cities = containerView.findViewById(R.id.sp_cities);
 
 
-
+        sharedPreferences = getActivity().getSharedPreferences("gujc", Activity.MODE_PRIVATE);
     }
 
     @Override
@@ -146,6 +162,35 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                 progressbar.setVisibility(View.VISIBLE);
                 tv_sign_up.setVisibility(View.GONE);
                 sendRequest(RequestFunction.signUp(0, userModel));
+
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(userModel.email, userModel.password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    sharedPreferences.edit().putString("user_id", userModel.email).commit();
+                                    final String uid = FirebaseAuth.getInstance().getUid();
+
+                                    User user = new User();
+                                    user.setUid(uid);
+                                    user.setUserid(userModel.email);
+                                    user.setUsernm(userModel.username);
+                                    user.setUsermsg("...");
+
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    db.collection("users").document(uid)
+                                            .set(user)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Util9.showMessage(getContext(), "Register sucessfully");
+                                                }
+                                            });
+                                } else {
+                                    Util9.showMessage(getContext(), task.getException().getMessage());
+                                }
+                            }
+                        });
             }
         } else if (v == signin) {
             FragmentUtil.switchContent(R.id.container_frame, FragmentUtil.LOG_IN_FRAGMENT, activity, null);

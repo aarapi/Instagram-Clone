@@ -49,9 +49,8 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.exit, R.anim.exit_anim);
         chatFragment.backPressed();
-        finish();
-        ;
     }
-
 }

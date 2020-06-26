@@ -22,7 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import gujc.directtalk9.R;
 import gujc.directtalk9.chat.ChatActivity;
 import gujc.directtalk9.common.FirestoreAdapter;
-import gujc.directtalk9.model.UserModel;
+import gujc.directtalk9.model.User;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -86,7 +86,7 @@ public class UserListFragment extends Fragment {
         @Override
         public void onBindViewHolder(CustomViewHolder viewHolder, int position) {
             DocumentSnapshot documentSnapshot = getSnapshot(position);
-            final UserModel user = documentSnapshot.toObject(UserModel.class);
+            final User user = documentSnapshot.toObject(User.class);
 
             if (myUid.equals(user.getUid())) {
                 viewHolder.itemView.setVisibility(View.INVISIBLE);

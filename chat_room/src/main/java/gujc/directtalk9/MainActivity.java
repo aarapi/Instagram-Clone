@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction().add(R.id.fragment_container, new ChatRoomFragment())
-                .addToBackStack("CHAT_ROOM").commit();
+                .commit();
 
         sendRegistrationToServer();
 
@@ -89,9 +89,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.exit, R.anim.exit_anim);
+    }
 }

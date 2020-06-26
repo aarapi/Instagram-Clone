@@ -1,6 +1,6 @@
 package gujc.directtalk9.model;
 
-public class UserModel {
+public class User {
     private String userid;
     private String uid;
     private String usernm;

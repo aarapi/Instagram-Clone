@@ -67,7 +67,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,7 @@ import gujc.directtalk9.common.Util9;
 import gujc.directtalk9.model.ChatModel;
 import gujc.directtalk9.model.Message;
 import gujc.directtalk9.model.NotificationModel;
-import gujc.directtalk9.model.UserModel;
+import gujc.directtalk9.model.User;
 import gujc.directtalk9.photoview.ViewPagerActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -96,6 +95,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_FILE = 2;
     private static String rootPath = Util9.getRootPath() + "/DirectTalk9/";
+    final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(90));
+
 
     private ImageView sendBtn;
     private ImageView iv_back;
@@ -112,7 +113,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private String roomID;
     private String myUid;
     private String toUid;
-    private Map<String, UserModel> userList = new HashMap<>();
+    private Map<String, User> userList = new HashMap<>();
 
     private ListenerRegistration listenerRegistration;
     private FirebaseFirestore firestore = null;
@@ -149,7 +150,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         iv_back = view.findViewById(R.id.iv_back);
         cv_user_image = view.findViewById(R.id.cv_user_image);
 
-        setUserImage();
 
         sendBtn.setOnClickListener(sendBtnClickListener);
         iv_back.setOnClickListener(this);
@@ -230,10 +230,17 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void setUserImage() {
-        Glide.with(getContext())
-                .load("https://image.uniqlo.com/is/image/UNIQLO/ut-nintendo-museum-hero.jpg").into(cv_user_image);
-
+    public void setUserImage(User user, ImageView userPhoto) {
+        if (user.getUserphoto() == null) {
+            Glide.with(getContext()).load(R.drawable.profile_image)
+                    .apply(requestOptions)
+                    .into(userPhoto);
+        } else {
+            Glide.with(getContext())
+                    .load(storageReference.child(user.getUserphoto()))
+                    .apply(requestOptions)
+                    .into(userPhoto);
+        }
     }
 
     // get a user info
@@ -241,15 +248,17 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         firestore.collection("users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                UserModel userModel = documentSnapshot.toObject(UserModel.class);
-                userList.put(userModel.getUid(), userModel);
+                User user = documentSnapshot.toObject(User.class);
+                userList.put(user.getUid(), user);
                 if (roomID != null & userCount == userList.size()) {
                     mAdapter = new RecyclerViewAdapter();
                     recyclerView.setAdapter(mAdapter);
                 }
 
-                if (!userModel.getUid().equals(myUid))
-                    tv_username.setText(userModel.getUsernm());
+                if (!user.getUid().equals(myUid)) {
+                    tv_username.setText(user.getUsernm());
+                    setUserImage(user, cv_user_image);
+                }
             }
         });
     }
@@ -336,7 +345,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    public Map<String, UserModel> getUserList() {
+    public Map<String, User> getUserList() {
         return userList;
     }
 
@@ -418,7 +427,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         notificationModel.data.title = userList.get(myUid).getUsernm();
         notificationModel.data.body = msg_input.getText().toString();
 
-        for (Map.Entry<String, UserModel> elem : userList.entrySet()) {
+        for (Map.Entry<String, User> elem : userList.entrySet()) {
             if (myUid.equals(elem.getValue().getUid())) continue;
             notificationModel.to = elem.getValue().getToken();
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
@@ -551,13 +560,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == iv_back) {
-            getActivity().finish();
+            getActivity().onBackPressed();
         }
     }
     // =======================================================================================
 
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(90));
 
         List<Message> messageList;
         String beforeDay = null;
@@ -690,19 +698,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             }
 
             if (!myUid.equals(message.getUid())) {
-                UserModel userModel = userList.get(message.getUid());
-                messageViewHolder.msg_name.setText(userModel.getUsernm());
+                User user = userList.get(message.getUid());
+                messageViewHolder.msg_name.setText(user.getUsernm());
 
-                if (userModel.getUserphoto() == null) {
-                    Glide.with(getContext()).load(R.drawable.user)
-                            .apply(requestOptions)
-                            .into(messageViewHolder.user_photo);
-                } else {
-                    Glide.with(getContext())
-                            .load(storageReference.child("userPhoto/" + userModel.getUserphoto()))
-                            .apply(requestOptions)
-                            .into(messageViewHolder.user_photo);
-                }
+                setUserImage(user, messageViewHolder.user_photo);
             }
             messageViewHolder.divider.setVisibility(View.INVISIBLE);
             messageViewHolder.divider.getLayoutParams().height = 0;

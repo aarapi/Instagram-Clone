@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import gujc.directtalk9.R;
 import gujc.directtalk9.UserPWActivity;
 import gujc.directtalk9.common.Util9;
-import gujc.directtalk9.model.UserModel;
+import gujc.directtalk9.model.User;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -44,7 +44,7 @@ public class UserFragment extends Fragment {
     private EditText user_name;
     private EditText user_msg;
 
-    private UserModel userModel;
+    private User user;
     private Uri userPhotoUri;
 
     @Nullable
@@ -75,13 +75,13 @@ public class UserFragment extends Fragment {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                userModel = documentSnapshot.toObject(UserModel.class);
-                user_id.setText(userModel.getUserid());
-                user_name.setText(userModel.getUsernm());
-                user_msg.setText(userModel.getUsermsg());
-                if (userModel.getUserphoto() != null && !"".equals(userModel.getUserphoto())) {
+                user = documentSnapshot.toObject(User.class);
+                user_id.setText(user.getUserid());
+                user_name.setText(user.getUsernm());
+                user_msg.setText(user.getUsermsg());
+                if (user.getUserphoto() != null && !"".equals(user.getUserphoto())) {
                     Glide.with(getActivity())
-                            .load(FirebaseStorage.getInstance().getReference("userPhoto/" + userModel.getUserphoto()))
+                            .load(FirebaseStorage.getInstance().getReference("userPhoto/" + user.getUserphoto()))
                             .into(user_photo);
                 }
             }
@@ -107,18 +107,18 @@ public class UserFragment extends Fragment {
     Button.OnClickListener saveBtnClickListener = new View.OnClickListener() {
         public void onClick(final View view) {
             if (!validateForm()) return;
-            userModel.setUsernm(user_name.getText().toString());
-            userModel.setUsermsg(user_msg.getText().toString());
+            user.setUsernm(user_name.getText().toString());
+            user.setUsermsg(user_msg.getText().toString());
 
             final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
             if (userPhotoUri != null) {
-                userModel.setUserphoto(uid);
+                user.setUserphoto(uid);
             }
 
             db.collection("users").document(uid)
-                    .set(userModel)
+                    .set(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

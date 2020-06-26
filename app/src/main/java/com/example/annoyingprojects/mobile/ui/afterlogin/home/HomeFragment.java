@@ -154,6 +154,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (view == iv_send_message){
             Intent intent = new Intent(getActivity(), MainActivity.class);
             getActivity().startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.enter_anim);
         }else if (view == iv_filter){
             getParentFragmentManager();
                     FilterDialogFragment filterDialogFragment = new FilterDialogFragment();

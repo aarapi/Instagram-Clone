@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import gujc.directtalk9.common.Util9;
-import gujc.directtalk9.model.UserModel;
+import gujc.directtalk9.model.User;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText user_id;
@@ -73,22 +73,23 @@ public class LoginActivity extends AppCompatActivity {
             if (!validateForm()) return;
             final String id = user_id.getText().toString();
 
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(id, user_pw.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(id, user_pw.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         sharedPreferences.edit().putString("user_id", id).commit();
                         final String uid = FirebaseAuth.getInstance().getUid();
 
-                        UserModel userModel = new UserModel();
-                        userModel.setUid(uid);
-                        userModel.setUserid(id);
-                        userModel.setUsernm(extractIDFromEmail(id));
-                        userModel.setUsermsg("...");
+                        User user = new User();
+                        user.setUid(uid);
+                        user.setUserid(id);
+                        user.setUsernm(extractIDFromEmail(id));
+                        user.setUsermsg("...");
 
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("users").document(uid)
-                                .set(userModel)
+                                .set(user)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

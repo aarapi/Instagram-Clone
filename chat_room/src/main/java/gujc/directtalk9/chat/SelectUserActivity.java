@@ -24,7 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import gujc.directtalk9.R;
 import gujc.directtalk9.common.FirestoreAdapter;
 import gujc.directtalk9.common.Util9;
-import gujc.directtalk9.model.UserModel;
+import gujc.directtalk9.model.User;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -150,23 +150,23 @@ public class SelectUserActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder viewHolder, int position) {
             DocumentSnapshot documentSnapshot = getSnapshot(position);
-            final UserModel userModel = documentSnapshot.toObject(UserModel.class);
+            final User user = documentSnapshot.toObject(User.class);
 
-            if (myUid.equals(userModel.getUid())) {
+            if (myUid.equals(user.getUid())) {
                 viewHolder.itemView.setVisibility(View.INVISIBLE);
                 viewHolder.itemView.getLayoutParams().height = 0;
                 return;
             }
 
-            viewHolder.user_name.setText(userModel.getUsernm());
+            viewHolder.user_name.setText(user.getUsernm());
 
-            if (userModel.getUserphoto() == null) {
+            if (user.getUserphoto() == null) {
                 Glide.with(getApplicationContext()).load(R.drawable.user)
                         .apply(requestOptions)
                         .into(viewHolder.user_photo);
             } else {
                 Glide.with(getApplicationContext())
-                        .load(storageReference.child("userPhoto/" + userModel.getUserphoto()))
+                        .load(storageReference.child("userPhoto/" + user.getUserphoto()))
                         .apply(requestOptions)
                         .into(viewHolder.user_photo);
             }
@@ -175,9 +175,9 @@ public class SelectUserActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        selectedUsers.put(userModel.getUid(), userModel.getUsernm());
+                        selectedUsers.put(user.getUid(), user.getUsernm());
                     } else {
-                        selectedUsers.remove(userModel.getUid());
+                        selectedUsers.remove(user.getUid());
                     }
                 }
             });

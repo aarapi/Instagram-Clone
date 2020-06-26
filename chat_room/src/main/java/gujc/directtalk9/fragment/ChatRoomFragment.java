@@ -21,11 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import gujc.directtalk9.MainActivity;
 import gujc.directtalk9.R;
 import gujc.directtalk9.chat.ChatActivity;
 import gujc.directtalk9.model.ChatRoomModel;
 import gujc.directtalk9.model.Message;
-import gujc.directtalk9.model.UserModel;
+import gujc.directtalk9.model.User;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -79,8 +80,9 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
 
                 if (event.getAction() == KeyEvent.ACTION_UP
                         && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackClicked();
+                    getActivity().onBackPressed();
                 }
+
 
                 return true;
             }
@@ -119,12 +121,8 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
             mv_search.showSearch();
         }
         if (v == iv_back) {
-            onBackClicked();
+            getActivity().onBackPressed();
         }
-    }
-
-    public void onBackClicked() {
-        getActivity().finish();
     }
 
     @Override
@@ -141,7 +139,7 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(90));
         private List<ChatRoomModel> roomList = new ArrayList<>();
-        private Map<String, UserModel> userList = new HashMap<>();
+        private Map<String, User> userList = new HashMap<>();
         private String myUid;
         private StorageReference storageReference;
         private FirebaseFirestore firestore;
@@ -164,7 +162,7 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
                             }
 
                             for (QueryDocumentSnapshot doc : value) {
-                                userList.put(doc.getId(), doc.toObject(UserModel.class));
+                                userList.put(doc.getId(), doc.toObject(User.class));
                             }
                             getRoomInfo();
                         }
@@ -222,9 +220,9 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
                                 if (users.size() == 2) {
                                     for (String key : users.keySet()) {
                                         if (myUid.equals(key)) continue;
-                                        UserModel userModel = userList.get(key);
-                                        chatRoomModel.setTitle(userModel.getUsernm());
-                                        chatRoomModel.setPhoto(userModel.getUserphoto());
+                                        User user = userList.get(key);
+                                        chatRoomModel.setTitle(user.getUsernm());
+                                        chatRoomModel.setPhoto(user.getUserphoto());
                                     }
                                 } else {                // group chat room
                                     chatRoomModel.setTitle(document.getString("title"));
@@ -275,11 +273,11 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
             roomViewHolder.last_time.setText(chatRoomModel.getLastDatetime());
 
             if (chatRoomModel.getPhoto() == null) {
-                Glide.with(getActivity()).load(R.drawable.user)
+                Glide.with(getActivity()).load(R.drawable.profile_image)
                         .apply(requestOptions)
                         .into(roomViewHolder.room_image);
             } else {
-                Glide.with(getActivity()).load(storageReference.child("userPhoto/" + chatRoomModel.getPhoto()))
+                Glide.with(getActivity()).load(chatRoomModel.getPhoto())
                         .apply(requestOptions)
                         .into(roomViewHolder.room_image);
             }
@@ -307,6 +305,7 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
                     intent.putExtra("roomID", chatRoomModel.getRoomID());
                     intent.putExtra("roomTitle", chatRoomModel.getTitle());
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.enter_anim);
                 }
             });
         }

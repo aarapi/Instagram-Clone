@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,7 +30,14 @@ import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentUserMe
 import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gujc.directtalk9.chat.ChatActivity;
+import gujc.directtalk9.model.User;
 
 import static com.example.annoyingprojects.utilities.Util.setUserImageResPicasso;
 
@@ -168,6 +178,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (v == tv_log_out) {
+            FirebaseAuth.getInstance().signOut();
             SharedPreferences preferences = getContext().getSharedPreferences("PREFERENCE_NAME",
                     Context.MODE_PRIVATE);
             preferences.edit().remove("user").commit();
@@ -183,19 +194,30 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
                         FragmentUtil.AnimationType.SLIDE_UP
                 );
             }else {
-                MessageUsersModel messageUsersModel = new MessageUsersModel();
-                messageUsersModel.setUsername_from(LocalServer.getInstance(getContext()).getUser().username);
-                messageUsersModel.setUsername_to(userModel.username);
-                Bundle args = new Bundle();
-                args.putSerializable("USER_MESSAGES", (Serializable) messageUsersModel);
-                args.putSerializable("IS_FROM_MAIN_ACTIVITY", (Serializable) true);
-                FragmentUserMessages fragmentUserMessages = FragmentUserMessages.newInstance(args);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Query query = db.collection("users").whereEqualTo("usernm", userModel.username);
 
-                FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container
-                        , fragmentUserMessages
-                        , activity
-                        ,FragmentUtil.USER_MESSAGES_FRAGMENT
-                        ,null);
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<User> list = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            Intent intent = new Intent(getContext(), ChatActivity.class);
+                            if (task.getResult().getDocuments().size() > 0) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    User user = document.toObject(User.class);
+                                    intent.putExtra("toUid", user.getUid());
+                                    startActivity(intent);
+                                }
+                            } else {
+                                intent.putExtra("roomID", "");
+                                intent.putExtra("roomTitle", userModel.username);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
+
             }
         } else if (v == tv_phone) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", userModel.phoneNumber, null));
