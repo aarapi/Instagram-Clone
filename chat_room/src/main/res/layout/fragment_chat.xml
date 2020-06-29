@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="albi"
+                android:text=""
                 android:layout_marginLeft="5dp"
                 android:textSize="15sp"
                 android:layout_toRightOf="@+id/cv_user_image"

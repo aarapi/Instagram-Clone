@@ -14,6 +14,7 @@ public class Message {
     private List<String> readUsers = new ArrayList<>();
     private String filename;
     private String filesize;
+    private String postImg;
 
     public String getUid() {
         return uid;
@@ -69,5 +70,13 @@ public class Message {
 
     public void setFilesize(String filesize) {
         this.filesize = filesize;
+    }
+
+    public String getPostImg() {
+        return postImg;
+    }
+
+    public void setPostImg(String postImg) {
+        this.postImg = postImg;
     }
 }

@@ -49,7 +49,7 @@
             android:padding="10dp"
             android:hint="   Username"
             android:inputType="textPersonName"
-            android:text="albi"
+            android:text="agora"
             android:textColor="@color/black"
             android:textSize="12sp" />
 
@@ -65,7 +65,7 @@
             android:layout_marginTop="15dp"
             android:hint="   Passwoard"
             android:inputType="textPassword"
-            android:text="123"
+            android:text="1234567"
             android:textColor="@color/black"
             android:textSize="12sp" />
 

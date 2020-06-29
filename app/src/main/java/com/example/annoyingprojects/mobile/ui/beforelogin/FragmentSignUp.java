@@ -183,7 +183,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Util9.showMessage(getContext(), "Register sucessfully");
+//                                                    Util9.showMessage(getContext(), "Register sucessfully");
                                                 }
                                             });
                                 } else {

@@ -4,56 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <View
+        android:layout_width="40dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/rounded_background_gray"
+        android:layout_centerHorizontal="true" />
+
     <RelativeLayout
         android:id="@+id/rl_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:padding="10dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
+        android:padding="20dp">
+
         <TextView
             android:id="@+id/tv_product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"
             android:text="Product Location"></TextView>
-        <TextView
-            android:id="@+id/tv_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/white"
-            android:text="aarapi"></TextView>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/tv_product_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="500 EUR"
-            android:textColor="@color/white"
-            android:layout_marginRight="10dp"></TextView>
     </RelativeLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white_five"
+        android:layout_below="@+id/rl_header" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_header"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/divider"
         >
     <ImageView
         android:id="@+id/iv_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_location"
-        android:tint="@color/colorPrimary"
+        android:tint="@color/black"
         android:layout_margin="20dp"></ImageView>
     <TextView
         android:id="@+id/tv_location"
@@ -62,9 +54,29 @@
         android:text="Elbasan, Albania"
         android:layout_toRightOf="@+id/iv_location"
         android:layout_centerVertical="true"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="15sp"
         ></TextView>
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:text="aarapi"></TextView>
+
+        <TextView
+            android:id="@+id/tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="500 EUR"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:layout_marginRight="10dp"></TextView>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.annoyingprojects.mobile.ui.afterlogin.messages;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,12 +29,30 @@ import com.example.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.userprofile.SettingFragment;
 import com.example.annoyingprojects.repository.LocalServer;
 import com.example.annoyingprojects.utilities.RequestFunction;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.WriteBatch;
 import com.octopepper.mediapickerinstagram.commons.models.Post;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import gujc.directtalk9.chat.ChatActivity;
+import gujc.directtalk9.fragment.ChatFragment;
+import gujc.directtalk9.model.User;
 import kotlin.TypeCastException;
 import kotlin.jvm.internal.Intrinsics;
 
@@ -52,6 +71,9 @@ public class FragmentBottomPostMessage extends BottomSheetDialogFragment impleme
     private ArrayList<UserModel> usersToSendMessage = new ArrayList<>();
     private ArrayList<UserModel> userSearched = new ArrayList<>();
 
+    private FirebaseFirestore db;
+    private String roomId;
+    private String myUid;
 
     public static FragmentBottomPostMessage newInstance(Bundle args) {
         FragmentBottomPostMessage fragmentBottomPostMessage = new FragmentBottomPostMessage();
@@ -80,6 +102,9 @@ public class FragmentBottomPostMessage extends BottomSheetDialogFragment impleme
         recyclerViewAdapterSearch.SetOnItemClickListener(this);
         rv_message_users.setAdapter(recyclerViewAdapterSearch);
         recyclerViewAdapterSearch.notifyDataSetChanged();
+
+        db = FirebaseFirestore.getInstance();
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         return view;
     }
@@ -174,14 +199,16 @@ public class FragmentBottomPostMessage extends BottomSheetDialogFragment impleme
         @Override
         public void onClick(View view) {
             if (view == btn_send) {
-                PostModel postModel = (PostModel) getArguments().getSerializable("POST");
-                dismiss();
-                ((BaseActivity) getContext())
-                        .sendRequest(RequestFunction
-                                .sendPostMessage(0,
-                                        usersToSendMessage,
-                                        et_message.getText().toString(),
-                                        postModel));
+                if (et_message.getText().toString().isEmpty()) {
+                    et_message.setError("Add a message");
+                } else {
+                    PostModel postModel = (PostModel) getArguments().getSerializable("POST");
+                    dismiss();
+                    for (int i = 0; i < usersToSendMessage.size(); i++) {
+                        sendPostMessages(usersToSendMessage.get(i), postModel.getLinkImages().get(0));
+                    }
+                }
+
             }
         }
     };
@@ -212,4 +239,122 @@ public class FragmentBottomPostMessage extends BottomSheetDialogFragment impleme
     public void afterTextChanged(Editable editable) {
 
     }
+
+    private void sendPostMessages(UserModel userModel, String imageUrl) {
+        Query query = db.collection("users").whereEqualTo("usernm", userModel.username);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<User> list = new ArrayList<>();
+                if (task.isSuccessful()) {
+                    if (task.getResult().getDocuments().size() > 0) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            User user = document.toObject(User.class);
+
+                            db.collection("rooms").whereGreaterThanOrEqualTo("users." + myUid, 0).get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (!task.isSuccessful()) {
+                                                return;
+                                            }
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                Map<String, Long> users = (Map<String, Long>) document.get("users");
+
+                                                if (users.size() == 2 & users.get(user.getUid()) != null) {
+                                                    roomId = document.getId();
+                                                    break;
+                                                }
+                                            }
+                                            constructMessage(myUid, user.getUid(), imageUrl);
+                                        }
+                                    });
+
+                        }
+                    } else {
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    void constructMessage(String myUid, String toUid, String imageUrl) {
+        final Map<String, Object> messages = new HashMap<>();
+        messages.put("uid", myUid);
+        messages.put("msg", et_message.getText().toString());
+        messages.put("msgtype", "3");
+        messages.put("timestamp", FieldValue.serverTimestamp());
+        messages.put("postImg", imageUrl);
+
+        if (roomId == null) {             // create chatting room for two user
+            roomId = db.collection("rooms").document().getId();
+            CreateChattingRoom(db.collection("rooms").document(roomId), myUid, toUid);
+        }
+
+        final DocumentReference docRef = db.collection("rooms").document(roomId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+
+                WriteBatch batch = db.batch();
+
+                // save last message
+                batch.set(docRef, messages, SetOptions.merge());
+
+                // save message
+                List<String> readUsers = new ArrayList();
+                readUsers.add(myUid);
+                messages.put("readUsers", readUsers);//new String[]{myUid} );
+                batch.set(docRef.collection("messages").document(), messages);
+
+                // inc unread message count
+                DocumentSnapshot document = task.getResult();
+                Map<String, Long> users = (Map<String, Long>) document.get("users");
+
+                for (String key : users.keySet()) {
+                    if (!myUid.equals(key)) users.put(key, users.get(key) + 1);
+                }
+                document.getReference().update("users", users);
+
+                batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                        }
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    public void CreateChattingRoom(final DocumentReference room, String myUid, String toUid) {
+        Map<String, Integer> users = new HashMap<>();
+        String title = "";
+
+        users.put(myUid, 0);
+        users.put(toUid, 0);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", null);
+        data.put("users", users);
+
+        room.set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                }
+            }
+        });
+    }
+
+
 }

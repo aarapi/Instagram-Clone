@@ -644,15 +644,18 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             if (myUid.equals(message.getUid())) {
                 switch (message.getMsgtype()) {
                     case "1":
+                    case "3":
                         return R.layout.item_chatimage_right;
                     case "2":
                         return R.layout.item_chatfile_right;
+
                     default:
                         return R.layout.item_chatmsg_right;
                 }
             } else {
                 switch (message.getMsgtype()) {
                     case "1":
+                    case "3":
                         return R.layout.item_chatimage_left;
                     case "2":
                         return R.layout.item_chatfile_left;
@@ -689,6 +692,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                 } else {
                     messageViewHolder.button_item.setText("Download");
                 }
+            } else if ("3".equals(message.getMsgtype())) {
+                messageViewHolder.msg_item.setVisibility(View.VISIBLE);
+                messageViewHolder.msg_item.setText(message.getMsg());
+                Glide.with(getContext())
+                        .load(message.getPostImg())
+                        .apply(new RequestOptions().override(1000, 1000))
+                        .into(messageViewHolder.img_item);
             } else {                                                                // image transfer
                 messageViewHolder.realname = message.getMsg();
                 Glide.with(getContext())
