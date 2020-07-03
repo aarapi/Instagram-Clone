@@ -876,10 +876,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         // photo view
         Button.OnClickListener imageClickListener = new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ViewPagerActivity.class);
-                intent.putExtra("roomID", roomID);
-                intent.putExtra("realname", realname);
-                startActivity(intent);
+//                Intent intent = new Intent(getContext(), ViewPagerActivity.class);
+//                intent.putExtra("roomID", roomID);
+//                intent.putExtra("realname", realname);
+//                startActivity(intent);
             }
         };
     }
