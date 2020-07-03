@@ -19,18 +19,11 @@ public class PermissionModule {
     public void checkPermissions() {
         ArrayList<String> permissionsNeeded = new ArrayList<>();
 
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            permissionsNeeded.add(Manifest.permission.CAMERA);
-        }
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            permissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
-        }
+
         if (!permissionsNeeded.isEmpty()) {
             requestPermission(permissionsNeeded.toArray(new String[permissionsNeeded.size()]));
         }

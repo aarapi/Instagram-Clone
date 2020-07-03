@@ -6,10 +6,10 @@
   ~  Written by Albi Arapi <albiarapi1@gmail.com>, 2020.
   -->
 
-<vector android:height="10dp"
+<vector android:height="15dp"
     android:viewportHeight="512"
     android:viewportWidth="512"
-    android:width="10dp"
+    android:width="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <path
         android:fillColor="@color/color_gray_light"

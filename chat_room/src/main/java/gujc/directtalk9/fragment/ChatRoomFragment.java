@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,14 +54,17 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
-public class ChatRoomFragment extends Fragment implements View.OnClickListener, MaterialSearchView.SearchViewListener {
+public class ChatRoomFragment extends Fragment implements View.OnClickListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private RecyclerViewAdapter mAdapter;
     private RelativeLayout rl_search;
     private MaterialSearchView mv_search;
 
+    private List<ChatRoomModel> roomListForSearch = new ArrayList<>();
+
     private ImageView iv_back;
+    private ProgressBar progressbar;
 
     public ChatRoomFragment() {
     }
@@ -92,10 +96,12 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         rl_search = view.findViewById(R.id.rl_search);
         mv_search = view.findViewById(R.id.mv_search);
+        progressbar = view.findViewById(R.id.progressbar);
         iv_back = view.findViewById(R.id.iv_back);
 
         rl_search.setOnClickListener(this);
         mv_search.setOnSearchViewListener(this);
+        mv_search.setOnQueryTextListener(this);
         iv_back.setOnClickListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
@@ -133,6 +139,28 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onSearchViewClosed() {
         rl_search.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        mAdapter.roomList.clear();
+        List<ChatRoomModel> temp = new ArrayList<>();
+
+        for (ChatRoomModel chatRoomModel: roomListForSearch){
+            if (chatRoomModel.getTitle().contains(newText)){
+                temp.add(chatRoomModel);
+            }
+        }
+
+        mAdapter.roomList.addAll(temp);
+        mAdapter.notifyDataSetChanged();
+
+        return false;
     }
 
     // =============================================================================================
@@ -237,6 +265,8 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
                             for (Map.Entry<Date, ChatRoomModel> entry : orderedRooms.entrySet()) {
                                 roomList.add(entry.getValue());
                             }
+                            roomListForSearch.addAll(roomList);
+                            progressbar.setVisibility(View.GONE);
                             notifyDataSetChanged();
                             setBadge(getContext(), unreadTotal);
                         }

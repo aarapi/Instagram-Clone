@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -101,6 +102,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private ImageView sendBtn;
     private ImageView iv_back;
     private CircleImageView cv_user_image;
+    private ProgressBar progressbar;
 
     private EditText msg_input;
     private TextView tv_username;
@@ -149,6 +151,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         sendBtn = view.findViewById(R.id.sendBtn);
         iv_back = view.findViewById(R.id.iv_back);
         cv_user_image = view.findViewById(R.id.cv_user_image);
+        progressbar = view.findViewById(R.id.progressbar);
 
 
         sendBtn.setOnClickListener(sendBtnClickListener);
@@ -253,6 +256,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                 if (roomID != null & userCount == userList.size()) {
                     mAdapter = new RecyclerViewAdapter();
                     recyclerView.setAdapter(mAdapter);
+                    progressbar.setVisibility(View.GONE);
                 }
 
                 if (!user.getUid().equals(myUid)) {
@@ -340,6 +344,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     mAdapter = new RecyclerViewAdapter();
                     recyclerView.setAdapter(mAdapter);
+                    progressbar.setVisibility(View.GONE);
                 }
             }
         });
