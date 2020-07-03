@@ -41,12 +41,14 @@ public class ReceiverBridge {
             case MessagingFrameworkConstant.STATUS_CODES.Success:
                 requestAppearSuccesfully(message);
                 break;
+
             case MessagingFrameworkConstant.STATUS_CODES.WarningWithoutAlert:
             case MessagingFrameworkConstant.STATUS_CODES.Error:
             case MessagingFrameworkConstant.STATUS_CODES.Warning:
             case MessagingFrameworkConstant.STATUS_CODES.ConnectionTimedOut:
             case MessagingFrameworkConstant.STATUS_CODES.ConnectionFailed:
                 errorMessageReceived(message);
+                errorMessageReceived(message, status);
                 break;
 
 
@@ -64,6 +66,11 @@ public class ReceiverBridge {
     private void errorMessageReceived(Message message){
         requestReceived.onErrorReceived(message.getAction(), message.getData());
     }
+
+    private void errorMessageReceived(Message message, int status) {
+        requestReceived.onErrorReceived(message.getAction(), message.getData(), status);
+    }
+
 
 //    private void requestAppearNotSucessfully(Message message){
 //

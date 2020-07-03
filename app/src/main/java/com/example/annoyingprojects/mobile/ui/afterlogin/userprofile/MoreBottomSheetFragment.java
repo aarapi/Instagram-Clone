@@ -14,7 +14,7 @@ import com.example.connectionframework.requestframework.sender.Request;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MoreBottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
-    private RelativeLayout rl_cancel, rl_copy_link;
+    private RelativeLayout rl_cancel;
     private RelativeLayout rl_report_home, rl_unfollow_home, rl_delete_user;
 
     private boolean isUserPost;
@@ -50,7 +50,6 @@ public class MoreBottomSheetFragment extends BottomSheetDialogFragment implement
             rl_unfollow_home = (RelativeLayout) contentView.findViewById(R.id.rl_unfollow);
         }
         rl_cancel = (RelativeLayout) contentView.findViewById(R.id.rl_cancel);
-        rl_copy_link = (RelativeLayout) contentView.findViewById(R.id.rl_copy_link);
 
         bindViews(isUserPost);
 
@@ -65,16 +64,10 @@ public class MoreBottomSheetFragment extends BottomSheetDialogFragment implement
             rl_unfollow_home.setOnClickListener(this);
         }
         rl_cancel.setOnClickListener(this);
-        rl_copy_link.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-
-         if (view == rl_copy_link){
-            Toast.makeText(getContext(), "Link Copied", Toast.LENGTH_SHORT).show();
-        }
-
         if(isUserPost){
             if (view == rl_delete_user){
                 ((ActivitySinglePost) getContext()).sendRequest(RequestFunction.deletePost(0, postId));

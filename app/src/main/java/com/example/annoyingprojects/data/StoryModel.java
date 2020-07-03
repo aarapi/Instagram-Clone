@@ -30,7 +30,7 @@ public class StoryModel extends BaseModel {
     @SerializedName("Title")
     public String Title;
 
-    @SerializedName("SubTitle")
+    @SerializedName("username")
     public String username;
 
     @SerializedName("storyDuration")

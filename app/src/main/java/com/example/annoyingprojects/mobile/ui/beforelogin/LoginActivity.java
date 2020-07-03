@@ -29,11 +29,13 @@ import static com.example.annoyingprojects.utilities.CheckSetup.initializeApplic
 public class LoginActivity extends BaseActivity {
     private Fragment fragmentSplash, fragmentSignIn, fragmentSignUp, fragmentDashboard;
     private static final String TAG = "LoginActivity";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeApplicationActivity();
-
+        isLogedIn = false;
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -51,11 +53,12 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
 
-        sendRequest(RequestFunction.getLanguageData(getActivityId(),
-                SavedInformation.getInstance().
-                        getPreferenceData(getApplicationContext(), "languageData")));
+//        sendRequest(RequestFunction.getLanguageData(getActivityId(),
+//                SavedInformation.getInstance().
+//                        getPreferenceData(getApplicationContext(), "languageData")));
 
-        switchFragment(R.id.container_frame, new FragmentLogIn());
+        switchLoginFragment();
+
 
     }
 
@@ -66,6 +69,16 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void bindEvents() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isLogedIn) {
+            switchLoginFragment();
+            isLogedIn = false;
+        }
 
     }
 
@@ -104,7 +117,6 @@ public class LoginActivity extends BaseActivity {
        }
         }
 
-
     public AlertDialog getLanguageDialog() {
 
         final String[] languages = {"sq","en"};
@@ -137,6 +149,16 @@ public class LoginActivity extends BaseActivity {
                         })
                 .setCancelable(true)
                 .create();
+    }
+
+
+    void switchLoginFragment() {
+        String userToken = SavedInformation.getInstance().getPreferenceData(getBaseContext(), "USER_TOKEN");
+        if (userToken == null || "".equals(userToken)) {
+            switchFragment(R.id.container_frame, new FragmentLogIn());
+        } else {
+            switchFragment(R.id.container_frame, new FragmentLoginWithToken());
+        }
     }
 
 }

@@ -116,6 +116,6 @@ class StoryViewHolder extends RecyclerView.ViewHolder {
         mTextView.setText(item.Title);
         itemView.setTag(item);
         String imageUrl = item.getLink();
-        setUserImageResPicasso(itemView.getContext(), imageUrl, mImageView);
+        setUserImageResPicasso(imageUrl, mImageView);
     }
 }

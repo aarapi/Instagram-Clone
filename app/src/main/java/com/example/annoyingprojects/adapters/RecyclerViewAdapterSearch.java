@@ -118,7 +118,7 @@ public class RecyclerViewAdapterSearch extends RecyclerView.Adapter<RecyclerView
             tv_username.setText(userModel.username);
             tv_name.setText(userModel.email);
 
-            Util.setUserImageResPicasso(context, userModel.userImage, iv_user);
+            Util.setUserImageResPicasso(userModel.userImage, iv_user);
         }
 
 

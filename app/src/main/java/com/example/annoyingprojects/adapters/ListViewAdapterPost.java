@@ -63,7 +63,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
 
     // View lookup cache
     public static class ViewHolder {
-        TextView tv_user_name, tv_product_name, product_price, tv_likedby_value;
+        TextView tv_user_name, tv_product_name, product_price, tv_likedby_value, tv_created_time;
         ShowMoreTextView tv_product_description_value;
         ImageView iv_post_img, iv_send_message;
         CircleImageView cv_user_img;
@@ -155,19 +155,20 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
         LayoutInflater inflater = LayoutInflater.from(getContext());
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
             convertView = inflater.inflate(R.layout.cell_post_layout, parent, false);
-            viewHolder.cv_user_img = (CircleImageView) convertView.findViewById(R.id.cv_user_img);
-            viewHolder.tv_user_name = (TextView) convertView.findViewById(R.id.tv_user_name);
-            viewHolder.iv_post_img = (ImageView) convertView.findViewById(R.id.iv_post_img);
-            viewHolder.tv_product_name = (TextView) convertView.findViewById(R.id.tv_product_name);
-            viewHolder.tv_product_description_value = (ShowMoreTextView) convertView.findViewById(R.id.tv_product_description_value);
-            viewHolder.product_price = (TextView) convertView.findViewById(R.id.product_price);
-            viewHolder.iv_like = (CheckBox) convertView.findViewById(R.id.iv_like);
-            viewHolder.iv_send_message = (ImageView) convertView.findViewById(R.id.iv_send_message);
-            viewHolder.tv_likedby_value = (TextView) convertView.findViewById(R.id.tv_likedby_value);
-            viewHolder.viewPager = (ViewPager) convertView.findViewById(R.id.viewPager);
-            viewHolder.sliderDotspanel = (LinearLayout) convertView.findViewById(R.id.SliderDots);
-            viewHolder.iv_more = (ImageView) convertView.findViewById(R.id.iv_more);
-            viewHolder.iv_location = (ImageView) convertView.findViewById(R.id.iv_location);
+            viewHolder.cv_user_img = convertView.findViewById(R.id.cv_user_img);
+            viewHolder.tv_user_name = convertView.findViewById(R.id.tv_user_name);
+            viewHolder.iv_post_img = convertView.findViewById(R.id.iv_post_img);
+            viewHolder.tv_product_name = convertView.findViewById(R.id.tv_product_name);
+            viewHolder.tv_product_description_value = convertView.findViewById(R.id.tv_product_description_value);
+            viewHolder.product_price = convertView.findViewById(R.id.product_price);
+            viewHolder.iv_like = convertView.findViewById(R.id.iv_like);
+            viewHolder.iv_send_message = convertView.findViewById(R.id.iv_send_message);
+            viewHolder.tv_likedby_value = convertView.findViewById(R.id.tv_likedby_value);
+            viewHolder.viewPager = convertView.findViewById(R.id.viewPager);
+            viewHolder.sliderDotspanel = convertView.findViewById(R.id.SliderDots);
+            viewHolder.iv_more = convertView.findViewById(R.id.iv_more);
+            viewHolder.iv_location = convertView.findViewById(R.id.iv_location);
+            viewHolder.tv_created_time = convertView.findViewById(R.id.tv_created_time);
 
             viewHolder.iv_location.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -239,6 +240,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
             viewHolder.tv_product_description_value.addShowLessText("less");
             viewHolder.tv_product_description_value.setShowLessTextColor(R.color.gray);
             viewHolder.tv_product_description_value.setShowMoreColor(R.color.gray);
+            viewHolder.tv_created_time.setText(dataModel.getCreatedTime());
             setimageresource(dataModel.getLinkUserImg(), viewHolder.cv_user_img);
 
 

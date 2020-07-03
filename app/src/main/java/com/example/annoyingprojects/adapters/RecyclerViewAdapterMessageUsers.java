@@ -92,7 +92,7 @@ public class RecyclerViewAdapterMessageUsers extends RecyclerView.Adapter<Recycl
 
         void bind(MessageUsersModel messageUsersModel) {
             List<String> data = getMessageUsersData(messageUsersModel);
-            Util.setUserImageResPicasso(context, data.get(1), iv_user_from);
+            Util.setUserImageResPicasso(data.get(1), iv_user_from);
 
             dialogName.setText(data.get(0));
             dialogLastMessage.setText(data.get(1));

@@ -35,14 +35,27 @@
         android:textStyle="bold"
         ></TextView>
 
-        <TextView
-            android:id="@+id/iv_menu_settings"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:text="Log out"
-            android:layout_marginRight="15dp"></TextView>
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/iv_menu_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log out"
+                android:textSize="15sp"></TextView>
+
+            <ProgressBar
+                style="@style/ProgressBar"
+                android:id="@+id/loading_bar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"></ProgressBar>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout

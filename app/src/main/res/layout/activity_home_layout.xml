@@ -28,6 +28,7 @@
         >
 
         <RelativeLayout
+            android:id="@+id/rl_home_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5">
@@ -41,6 +42,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_search_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5">
@@ -53,6 +55,7 @@
                 ></ImageView>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/rl_add_post"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5">
@@ -79,6 +82,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_user"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5">

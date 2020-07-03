@@ -16,6 +16,7 @@ public class CheckSetup {
         public final static int INSTA_COMMERCE_SIGN_UP = -1;
         public final static int INSTA_COMMERCE_LANGUAGE_DATA = 0;
         public final static int INSTA_COMMERCE_LOG_IN = 1;
+        public final static int INSTA_COMMERCE_LOG_IN_WITH_TOKEN = 17;
         public final static int INSTA_COMMERCE_DASHBOARD_ACTIVITY = 2;
         public final static int INSTA_COMMERCE_PERSONAL_DATA = 3;
         public final static int INSTA_COMMERCE_HOME_DATA = 4;
@@ -31,6 +32,7 @@ public class CheckSetup {
         public final static int INSTA_COMMERCE_SEND_POST_MESSAGE = 14;
         public final static int INSTA_COMMERCE_GET_USER_LIST = 15;
         public final static int INSTA_COMMERCE_EDIT_PROFILE = 16;
+        public final static int INSTA_COMMERCE_LOG_OUT = 18;
     }
 
     public static class Activities {

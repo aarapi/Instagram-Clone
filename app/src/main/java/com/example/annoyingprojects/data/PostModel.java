@@ -1,6 +1,7 @@
 package com.example.annoyingprojects.data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class PostModel implements Serializable {
@@ -13,6 +14,7 @@ public class PostModel implements Serializable {
     private String productDescription;
     private boolean isLikeChecked;
     private int likedByNo;
+    private String createdTime;
     private String categoryName;
     private String country;
     private String city;
@@ -100,5 +102,13 @@ public class PostModel implements Serializable {
 
     public String getCity() {
         return city;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
     }
 }

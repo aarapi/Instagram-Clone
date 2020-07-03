@@ -31,6 +31,7 @@
         android:layout_toRightOf="@+id/cv_user_img"
         android:layout_marginLeft="10dp"
         android:text="Laptop Dell"></TextView>
+
     <ImageView
         android:id="@+id/iv_more"
         android:layout_width="wrap_content"
@@ -163,6 +164,17 @@
         android:layout_below="@+id/product_price"
         android:maxLines="4"
         android:text="Tanimë që qeveria ka marrë masa të rrepta për ndalimin e përhapjes së koronavirusit, Tirana dhe jo vetëm duken si qytete ‘bosh’. Më poshtë ju sjellim disa pamje me dron nga kryeqyteti."></com.skyhope.showmoretextview.ShowMoreTextView>
+
+    <TextView
+        android:id="@+id/tv_created_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20/10/2020"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/gray_darkest"
+        android:textStyle="bold"
+        android:layout_below="@+id/tv_product_description_value"></TextView>
 
 
 </RelativeLayout>

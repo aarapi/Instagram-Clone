@@ -28,8 +28,10 @@ import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.example.annoyingprojects.mobile.ui.afterlogin.messages.FragmentUserMessages;
 import com.example.annoyingprojects.repository.LocalServer;
+import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
+import com.example.connectionframework.requestframework.languageData.SavedInformation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -61,6 +63,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     private GridAdapter gridAdapter;
     private ProgressBar progressBar;
     private RelativeLayout rl_edit_profile;
+    private ProgressBar loading_bar;
 
     private CircleImageView iv_user_profile;
     private TextView tv_log_out;
@@ -91,6 +94,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
         drawer = containerView.findViewById(R.id.drawer_layout);
         navigationView = containerView.findViewById(R.id.nav_view);
+        loading_bar = containerView.findViewById(R.id.loading_bar);
 
         if (getArguments() != null) {
             userModel = (UserModel) getArguments().getSerializable(USER_PROFILE_DATA);
@@ -132,7 +136,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void setViews() {
-        setUserImageResPicasso(getContext(), userModel.userImage, iv_user_profile);
+        setUserImageResPicasso(userModel.userImage, iv_user_profile);
         tv_email.setText(userModel.email);
         tv_username.setText(userModel.username);
         tv_phone.setText(userModel.phoneNumber);
@@ -148,41 +152,61 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onDataReceive(int action, List<Object> data) {
-        List<Object> profileData = new ArrayList<>();
-        List<PostModel> postModels = getUserPosts(data);
-        profileData.add(postModels);
-        tv_posts.setVisibility(View.VISIBLE);
-        if (!isUser) {
-            Gson gson = new Gson();
-            UserModel user = gson.fromJson(gson.toJson(data.get(1)), UserModel.class);
-            tv_email.setText(user.email);
-            tv_username.setText(user.username);
-            tv_phone.setText(user.phoneNumber);
-            userModel.phoneNumber = user.phoneNumber;
-            tv_phone.setVisibility(View.VISIBLE);
-        }
-        progressBar.setVisibility(View.GONE);
-        tv_posts_value.setText(postModels.size() + "");
+        if (action == CheckSetup.ServerActions.INSTA_COMMERCE_LOG_OUT) {
+            getActivity().finish();
+        } else {
+            List<Object> profileData = new ArrayList<>();
+            List<PostModel> postModels = getUserPosts(data);
+            profileData.add(postModels);
+            tv_posts.setVisibility(View.VISIBLE);
+            if (!isUser) {
+                Gson gson = new Gson();
+                UserModel user = gson.fromJson(gson.toJson(data.get(1)), UserModel.class);
+                tv_email.setText(user.email);
+                tv_username.setText(user.username);
+                tv_phone.setText(user.phoneNumber);
+                userModel.phoneNumber = user.phoneNumber;
+                tv_phone.setVisibility(View.VISIBLE);
+            }
+            progressBar.setVisibility(View.GONE);
+            tv_posts_value.setText(postModels.size() + "");
 
-        setFragmentView(profileData);
+            setFragmentView(profileData);
+        }
     }
 
     @Override
     public void onErrorDataReceive(int action, List<Object> data) {
-        progressBar.setVisibility(View.GONE);
-        Toast toast = Toast.makeText(activity, "Couldn't retrieve data", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+        if (action == CheckSetup.ServerActions.INSTA_COMMERCE_LOG_OUT) {
+            tv_log_out.setVisibility(View.VISIBLE);
+            loading_bar.setVisibility(View.GONE);
+            Toast toast = Toast.makeText(activity, (String) data.get(0), Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else {
+            progressBar.setVisibility(View.GONE);
+            Toast toast = Toast.makeText(activity, "Couldn't retrieve data", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v == tv_log_out) {
             FirebaseAuth.getInstance().signOut();
+
             SharedPreferences preferences = getContext().getSharedPreferences("PREFERENCE_NAME",
                     Context.MODE_PRIVATE);
+
             preferences.edit().remove("user").commit();
-            getActivity().finish();
+
+
+            tv_log_out.setVisibility(View.GONE);
+            loading_bar.setVisibility(View.VISIBLE);
+            sendRequest(RequestFunction.logOut(0,
+                    SavedInformation.getInstance().getPreferenceData(getContext(), "USER_TOKEN")));
+            preferences.edit().remove("USER_TOKEN").commit();
 
         }else if (v == rl_edit_profile){
             if (isUser){
@@ -283,4 +307,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     public TextView getTv_posts_value() { return tv_posts_value;}
     public TextView getTv_email(){return tv_email;}
     public TextView getTv_username(){return tv_username;}
+
+
 }
+

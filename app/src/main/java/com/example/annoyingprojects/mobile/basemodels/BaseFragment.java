@@ -66,6 +66,16 @@ public abstract class BaseFragment extends Fragment {
                 });
 
             }
+
+            @Override
+            public void onErrorReceived(int p_action, List<Object> data, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onErrorDataReceive(p_action, data, status);
+                    }
+                });
+            }
         };
         senderBridge = new SenderBridge(requestReceived);
 
@@ -156,6 +166,10 @@ public abstract class BaseFragment extends Fragment {
 
     public void onDataReceive(int action, List<Object> data) {}
     public void onErrorDataReceive(int action, List<Object> data) {}
+
+    public void onErrorDataReceive(int action, List<Object> data, int status) {
+    }
+
 
     public void onBackClicked() {
     }

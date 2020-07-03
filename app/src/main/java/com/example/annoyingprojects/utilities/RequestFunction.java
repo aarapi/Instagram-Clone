@@ -32,6 +32,18 @@ public class RequestFunction {
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_LOG_IN, params);
     }
 
+    public static Request loginWithToken(int activityId, String userToken) {
+        List<Object> params = new ArrayList<>();
+        params.add(userToken);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_LOG_IN_WITH_TOKEN, params);
+    }
+
+    public static Request logOut(int activityId, String userToken) {
+        List<Object> params = new ArrayList<>();
+        params.add(userToken);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_LOG_OUT, params);
+    }
+
     public static Request getPostData(int activityId, int scrollTime, FilterModel filterModel, String searchString) {
         List<Object> params = new ArrayList<>();
         params.add(scrollTime);

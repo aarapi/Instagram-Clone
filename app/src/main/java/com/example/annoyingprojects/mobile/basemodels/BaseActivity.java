@@ -26,6 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public FragmentManager fragmentManager;
     private SenderBridge senderBridge;
     protected BaseActivity activity;
+    protected boolean isLogedIn;
     private ApplicationActivity applicationActivity;
     boolean isCreated = true;
 
@@ -58,6 +59,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 });
 
             }
+
+            @Override
+            public void onErrorReceived(int p_action, List<Object> data, int status) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onErrorDataReceive(p_action, data, status);
+                    }
+                });
+            }
         };
         senderBridge = new SenderBridge(requestReceived);
 
@@ -88,6 +99,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     public void onDataReceive(int action, List<Object> data) {}
     public void onErrorDataReceive(int action, List<Object> data) {}
+
+    public void onErrorDataReceive(int action, List<Object> data, int status) {
+    }
+
 
 
     protected void switchFragment(int fragmentContainerId, Fragment nextFragment) {

@@ -88,7 +88,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void setViews() {
-        setUserImageResPicasso(getContext(), userModel.userImage, iv_user_profile);
+        setUserImageResPicasso(userModel.userImage, iv_user_profile);
         et_email.setText(userModel.email);
         et_username.setText(userModel.username);
         et_phone.setText(userModel.phoneNumber);
@@ -184,9 +184,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             SavedInformation.getInstance().setPreferenceData(getContext(), userModel, "user");
             RequestFunction.username = LocalServer.getInstance(getContext()).getUser().username;
 
-            setUserImageResPicasso(getContext(), userModel.userImage,
+            setUserImageResPicasso(userModel.userImage,
                     (ImageView) ((HomeActivity) getActivity()).getCv_user_img());
-            setUserImageResPicasso(getContext(), userModel.userImage,
+            setUserImageResPicasso(userModel.userImage,
                     (ImageView) ((HomeActivity) getActivity()).getUserProfileFragment().getIv_user_profile());
             ((HomeActivity) getActivity()).getUserProfileFragment().getTv_email().setText(userModel.email);
             ((HomeActivity) getActivity()).getUserProfileFragment().getTv_username().setText(userModel.username);

@@ -93,7 +93,7 @@ public class GridAdapter extends BaseAdapter
                 viewHolder.iv_multiple.setVisibility(View.VISIBLE);
             }
 
-        setUserImageResPicasso(context, postModel.getLinkImages().get(0), viewHolder.iv_post_image);
+        setUserImageResPicasso(postModel.getLinkImages().get(0), viewHolder.iv_post_image);
 
         return convertView;
     }

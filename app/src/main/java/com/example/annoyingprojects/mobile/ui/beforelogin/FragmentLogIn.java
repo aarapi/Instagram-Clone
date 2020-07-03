@@ -40,8 +40,6 @@ import com.octopepper.mediapickerinstagram.commons.models.CategoryModel;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import gujc.directtalk9.MainActivity;
 import gujc.directtalk9.common.Util9;
 
 public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
@@ -215,6 +213,7 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             ArrayList<Posts> posts = gson.fromJson(gson.toJson(data.get(1)),postsType);
             ArrayList<StoryModel> stories = gson.fromJson(gson.toJson(data.get(2)), storiesType);
             ArrayList<CategoryModel> categoryModels = gson.fromJson(gson.toJson(data.get(4)), categoryType);
+            String userToken = (String) data.get(5);
 
             LocalServer.newInstance().setUserList(gson.fromJson(gson.toJson(data.get(3)), usersType));
             LocalServer.newInstance().setCategoryModels(categoryModels);
@@ -257,6 +256,8 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
                     }
                 }
             });
+
+            SavedInformation.getInstance().setPreferenceData(getContext(), userToken, "USER_TOKEN");
 
             startActivity(CheckSetup.Activities.HOME_ACTIVITY, homeData);
             enableLoginBtn();

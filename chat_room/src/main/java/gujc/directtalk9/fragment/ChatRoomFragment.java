@@ -221,8 +221,10 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
                                     for (String key : users.keySet()) {
                                         if (myUid.equals(key)) continue;
                                         User user = userList.get(key);
-                                        chatRoomModel.setTitle(user.getUsernm());
-                                        chatRoomModel.setPhoto(user.getUserphoto());
+                                        if (user != null) {
+                                            chatRoomModel.setTitle(user.getUsernm());
+                                            chatRoomModel.setPhoto(user.getUserphoto());
+                                        }
                                     }
                                 } else {                // group chat room
                                     chatRoomModel.setTitle(document.getString("title"));

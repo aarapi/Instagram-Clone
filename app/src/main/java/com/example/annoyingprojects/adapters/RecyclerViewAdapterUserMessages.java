@@ -134,8 +134,8 @@ public class RecyclerViewAdapterUserMessages extends RecyclerView.Adapter<Recycl
                 tv_username.setText(messageUsersModel.getPostUsername());
                 tv_message_post.setText(messageUsersModel.getMessage());
 
-                Util.setUserImageResPicasso(context, messageUsersModel.getPostImage(), iv_post_image);
-                Util.setUserImageResPicasso(context, messageUsersModel.getPostUserImg(), cv_user_img);
+                Util.setUserImageResPicasso(messageUsersModel.getPostImage(), iv_post_image);
+                Util.setUserImageResPicasso(messageUsersModel.getPostUserImg(), cv_user_img);
             } else {
                 rl_post_message.setVisibility(View.GONE);
                 rl_message.setVisibility(View.VISIBLE);

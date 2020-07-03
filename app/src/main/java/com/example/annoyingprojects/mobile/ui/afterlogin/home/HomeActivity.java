@@ -45,6 +45,11 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
 
 
     private RelativeLayout rl_user_img;
+    private RelativeLayout rl_home_button;
+    private RelativeLayout rl_search_button;
+    private RelativeLayout rl_add_post;
+    private RelativeLayout rl_user;
+
     private LinearLayout ll_bottom_menu;
     private HomeFragment homeFragment;
     private UserProfileFragment userProfileFragment;
@@ -86,21 +91,26 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
         rl_user_img = findViewById(R.id.rl_user_img);
         iv_likes = findViewById(R.id.iv_likes);
         ll_bottom_menu = findViewById(R.id.ll_bottom_menu);
+
+        rl_home_button = findViewById(R.id.rl_home_button);
+        rl_search_button = findViewById(R.id.rl_search_button);
+        rl_add_post = findViewById(R.id.rl_add_post);
+        rl_user = findViewById(R.id.rl_user);
     }
 
     @Override
     public void bindEvents() {
-        iv_search_button.setOnClickListener(this);
-        cv_user_img.setOnClickListener(this);
-        iv_home_button.setOnClickListener(this);
-        iv_add_post.setOnClickListener(this);
+        rl_search_button.setOnClickListener(this);
+        rl_user.setOnClickListener(this);
+        rl_home_button.setOnClickListener(this);
+        rl_add_post.setOnClickListener(this);
         iv_likes.setOnClickListener(this);
     }
 
     @Override
     public void setViews() {
         iv_home_button.setImageResource(R.drawable.ic_home_clicked);
-        setUserImageResPicasso(getApplicationContext(), userModel.userImage, (ImageView) cv_user_img);
+        setUserImageResPicasso(userModel.userImage, cv_user_img);
 
 
         bottomMenus.put(iv_search_button, iv_search_button);
@@ -116,6 +126,8 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
         bottomMenusNotClicked.put(iv_search_button, R.drawable.ic_search);
         bottomMenusNotClicked.put(iv_home_button, R.drawable.ic_home_run);
         bottomMenusNotClicked.put(iv_likes, R.drawable.ic_heart);
+
+        isLogedIn = true;
 
     }
 
@@ -136,17 +148,20 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
 
     @Override
     public void onClick(View v) {
-        if (v == iv_search_button){
+        ImageView imageView = null;
+        if (v == rl_search_button) {
             FragmentUtil.switchContent(R.id.fl_fragment_container,
                     FragmentUtil.SEARCH_FRAGMENT,
                     this,
                     null);
-        }else if (v == iv_home_button){
+            imageView = iv_search_button;
+        } else if (v == rl_home_button) {
             FragmentUtil.switchContent(R.id.fl_fragment_container,
                     FragmentUtil.HOME_FRAGMENT,
                     this,
                     null);
-        }else if (v == cv_user_img){
+            imageView = iv_home_button;
+        } else if (v == rl_user) {
             if (rl_user_img.getBackground() == null) {
                 userProfileFragment = new UserProfileFragment();
                 FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container,
@@ -155,14 +170,16 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
                         FragmentUtil.USER_PROFILE_FRAGMENT,
                         null);
             }
+            imageView = cv_user_img;
 
-        }else if (v == iv_add_post){
+        } else if (v == rl_add_post) {
             Intent intent = new Intent(this, PostPickerActivity.class);
             intent.putExtra("CATEGORIES", (Serializable) LocalServer.newInstance().getCategoryModels());
             startActivityForResult(intent, CheckSetup.Activities.ADD_NEW_POST_ACTIVITY);
+            imageView = iv_add_post;
         }
 
-        setCheckedMenu((ImageView) v);
+        setCheckedMenu(imageView);
     }
 
     @Override
