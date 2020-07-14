@@ -28,6 +28,10 @@ android {
             dimension "api"
             buildConfigField("String", "HOST_URL", '"http://108.61.170.39:8081/ecommerce/annoyingProjectsGateway/generics"')
         }
+//        UAT {
+//            dimension "uat"
+//            buildConfigField("String", "HOST_URL", '"http://108.61.170.39:8081/ecommerce/annoyingProjectsGateway/generics"')
+//        }
 
     }
 }

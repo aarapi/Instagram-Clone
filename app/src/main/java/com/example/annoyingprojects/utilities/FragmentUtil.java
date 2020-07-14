@@ -45,6 +45,7 @@ public class FragmentUtil {
     public static final String MESSAGE_USERS_FRAGMENT = "MESSAGE_USERS_FRAGMENT";
     public static final String USER_MESSAGES_FRAGMENT = "USER_MESSAGES_FRAGMENT";
     public static final String EDIT_PROFILE_FRAGMENT = "EDIT_PROFILE_FRAGMENT";
+    public static final String ADD_STORY_FRAGMENT = "ADD_STORY_FRAGMENT";
 
 
     public static int getToolbarHeight(Context context) {

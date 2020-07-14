@@ -71,6 +71,7 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
 
     public void signUser(String userToken) {
         sendRequest(RequestFunction.loginWithToken(0, userToken));
+        RequestFunction.userToken = userToken;
     }
 
 

@@ -1,12 +1,15 @@
 package com.example.annoyingprojects.mobile.ui.afterlogin.userprofile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,6 +36,7 @@ import com.example.annoyingprojects.utilities.CheckSetup;
 import com.example.annoyingprojects.utilities.FragmentUtil;
 import com.example.annoyingprojects.utilities.RequestFunction;
 import com.example.connectionframework.requestframework.languageData.SavedInformation;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -64,9 +69,9 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     private ProgressBar progressBar;
     private RelativeLayout rl_edit_profile;
     private ProgressBar loading_bar;
+    private FrameLayout shape_layout;
 
     private CircleImageView iv_user_profile;
-    private TextView tv_log_out;
 
     private TextView tv_posts_value;
     private TextView tv_email;
@@ -74,6 +79,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     private TextView tv_user_action;
     private TextView tv_phone;
     private TextView tv_posts;
+    private TextView tv_log_out;
 
     private boolean isUser = true;
 
@@ -90,6 +96,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void initViews() {
         rl_edit_profile = containerView.findViewById(R.id.rl_edit_profile);
+        shape_layout = containerView.findViewById(R.id.shape_layout);
         tv_user_action= containerView.findViewById(R.id.tv_user_action);
 
         drawer = containerView.findViewById(R.id.drawer_layout);
@@ -130,8 +137,9 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void bindEvents() {
         tv_log_out.setOnClickListener(this::onClick);
-        rl_edit_profile.setOnClickListener(this::onClick);
         tv_phone.setOnClickListener(this::onClick);
+        rl_edit_profile.setOnClickListener(this::onClick);
+        shape_layout.setOnClickListener(this::onClick);
     }
 
     @Override
@@ -246,6 +254,11 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         } else if (v == tv_phone) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", userModel.phoneNumber, null));
             startActivity(intent);
+        } else if (v == shape_layout) {
+            ImagePicker.Companion.with(this)
+                    .crop()                    //Crop image(Optional), Check Customization for more option
+                    .compress(1024)        //Final image resolution will be less than 1080 x 1080(Optional)
+                    .start();
         }
     }
 
@@ -256,6 +269,28 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         gv_user_post.setAdapter(gridAdapter);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Bundle args = new Bundle();
+            args.putSerializable("SELECTED_IMAGE", data.getData().getEncodedPath());
+
+            AddUserStoryFragment addUserStoryFragment = AddUserStoryFragment.newInstance(args);
+            FragmentUtil.switchFragmentWithAnimation(R.id.fl_fragment_container,
+                    addUserStoryFragment,
+                    getActivity(),
+                    FragmentUtil.ADD_STORY_FRAGMENT,
+                    FragmentUtil.AnimationType.SLIDE_UP
+            );
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(getContext(), "Error on picker.", Toast.LENGTH_SHORT).show();
+            onBackClicked();
+        } else {
+            Toast.makeText(getContext(), "Task Cancelled", Toast.LENGTH_SHORT).show();
+            onBackClicked();
+        }
+    }
 
     public void showBottomSheet() {
         SettingFragment addPhotoBottomDialogFragment =

@@ -1,8 +1,11 @@
 package com.example.annoyingprojects.utilities;
 
+import android.os.Bundle;
+
 import com.example.annoyingprojects.data.FilterModel;
 import com.example.annoyingprojects.data.PostModel;
 import com.example.annoyingprojects.data.UserMessagesModel;
+import com.example.connectionframework.requestframework.languageData.SavedInformation;
 import com.example.connectionframework.requestframework.sender.Request;
 import com.example.connectionframework.requestframework.sender.RequestFunctions;
 import com.example.annoyingprojects.data.UserModel;
@@ -11,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestFunction {
-
     public static String username;
+    public static String userToken;
 
     public static Request getLanguageData(int activityId, String languageData){
         List<Object> params = new ArrayList<>();
@@ -147,4 +150,11 @@ public class RequestFunction {
 
     }
 
+    public static Request createStory(int activityId, List<String> imageData) {
+        List<Object> params = new ArrayList<>();
+        params.add(imageData);
+        params.add(username);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_STORY, params);
+
+    }
 }

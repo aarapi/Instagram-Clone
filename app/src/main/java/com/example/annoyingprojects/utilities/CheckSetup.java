@@ -33,6 +33,7 @@ public class CheckSetup {
         public final static int INSTA_COMMERCE_GET_USER_LIST = 15;
         public final static int INSTA_COMMERCE_EDIT_PROFILE = 16;
         public final static int INSTA_COMMERCE_LOG_OUT = 18;
+        public final static int INSTA_COMMERCE_CREATE_NEW_STORY = 19;
     }
 
     public static class Activities {

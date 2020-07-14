@@ -214,6 +214,7 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             ArrayList<StoryModel> stories = gson.fromJson(gson.toJson(data.get(2)), storiesType);
             ArrayList<CategoryModel> categoryModels = gson.fromJson(gson.toJson(data.get(4)), categoryType);
             String userToken = (String) data.get(5);
+            RequestFunction.userToken = userToken;
 
             LocalServer.newInstance().setUserList(gson.fromJson(gson.toJson(data.get(3)), usersType));
             LocalServer.newInstance().setCategoryModels(categoryModels);
