@@ -144,12 +144,12 @@ public class PostPickerActivity extends AppCompatActivity implements ToolbarView
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (arePermissionsGranted(grantResults)) {
 //            pagerAdapter.setFragments(getListFragment());
-//            mMainViewPager.setAdapter(pagerAdapter);
-//
-//            mMainTabLayout.addOnTabSelectedListener(getViewPagerOnTabSelectedListener());
-//            mMainViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mMainTabLayout));
-//            mMainViewPager.setCurrentItem(0);
-//            pagerAdapter.notifyDataSetChanged();
+            mMainViewPager.setAdapter(pagerAdapter);
+
+            mMainTabLayout.addOnTabSelectedListener(getViewPagerOnTabSelectedListener());
+            mMainViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mMainTabLayout));
+            mMainViewPager.setCurrentItem(0);
+            pagerAdapter.notifyDataSetChanged();
         } else {
             finish();
         }

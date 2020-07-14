@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import gujc.directtalk9.MainActivity;
 import gujc.directtalk9.model.User;
 import jp.shts.android.storiesprogressview.StoriesProgressView;
@@ -61,8 +63,10 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     private RelativeLayout root;
 
     private ImageView image;
+    private CircleImageView cv_user;
     private ImageView iv_send_message;
     private EditText et_send_message;
+    private TextView tv_user;
 
     List<StoryModel> storyModelList;
     private int counter = 0;
@@ -83,11 +87,16 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                 case MotionEvent.ACTION_DOWN:
                     pressTime = System.currentTimeMillis();
                     storiesProgressView.pause();
+                    storiesProgressView.setVisibility(View.GONE);
+                    findViewById(R.id.ll_user).setVisibility(View.GONE);
                     return false;
                 case MotionEvent.ACTION_UP:
                     long now = System.currentTimeMillis();
                     storiesProgressView.resume();
+                    storiesProgressView.setVisibility(View.VISIBLE);
+                    findViewById(R.id.ll_user).setVisibility(View.VISIBLE);
                     return limit < now - pressTime;
+
             }
             return false;
 
@@ -147,6 +156,9 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
         image = findViewById(R.id.image);
         iv_send_message = findViewById(R.id.iv_send_message);
+        cv_user = findViewById(R.id.cv_user);
+        tv_user = findViewById(R.id.tv_user);
+
         iv_send_message.setOnClickListener(this);
         et_send_message = findViewById(R.id.et_send_message);
 
@@ -225,6 +237,11 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         }
     }
     public void setImageResource(int counter){
+        Picasso.get().load(storyModelList.get(counter).getLink())
+                .placeholder(R.drawable.placeholder_error_media).error(R.drawable.placeholder_error_media)
+                .into(cv_user);
+        tv_user.setText(storyModelList.get(counter).username);
+
         Picasso.get().load(storyModelList.get(counter).getLink())
                 .placeholder(R.drawable.placeholder_error_media).error(R.drawable.placeholder_error_media)
                 .into(new Target() {
