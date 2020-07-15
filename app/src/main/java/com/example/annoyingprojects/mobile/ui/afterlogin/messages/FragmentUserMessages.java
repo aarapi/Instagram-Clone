@@ -49,7 +49,6 @@ public class FragmentUserMessages extends BaseFragment implements View.OnClickLi
     @Override
     public void initViews() {
         rv_messages = containerView.findViewById(R.id.rv_messages);
-        input = containerView.findViewById(R.id.input);
         progress = containerView.findViewById(R.id.progress);
 
         messageUsersModel = (MessageUsersModel) getArguments().getSerializable("USER_MESSAGES");
@@ -62,7 +61,6 @@ public class FragmentUserMessages extends BaseFragment implements View.OnClickLi
 
     @Override
     public void bindEvents() {
-        input.getButton().setOnClickListener(this);
     }
 
     @Override

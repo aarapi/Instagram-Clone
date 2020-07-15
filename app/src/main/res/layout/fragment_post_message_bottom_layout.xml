@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_toLeftOf="@+id/tv_cancel"
         android:background="@drawable/edit_text_search_backround"
         android:hapticFeedbackEnabled="true"
         android:hint="Kerko user"

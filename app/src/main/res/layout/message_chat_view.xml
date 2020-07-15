@@ -9,7 +9,6 @@
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/input"
         app:dateHeaderFormat="dd MMMM yyyy"
         app:incomingDefaultBubbleColor="@color/ivory"
         app:incomingDefaultBubblePressedColor="@color/ivory_dark"
@@ -29,13 +28,6 @@
         app:outcomingTextSize="18sp"
         app:textAutoLink="all"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@+id/input"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/gray_light"/>
 
 
 </RelativeLayout>
