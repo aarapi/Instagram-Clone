@@ -21,17 +21,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "api"
 
+    flavorDimensions "api"
     productFlavors {
-        DEV {
-            dimension "api"
-            buildConfigField("String", "HOST_URL", '"http://108.61.170.39:8081/ecommerce/annoyingProjectsGateway/generics"')
-        }
-//        UAT {
-//            dimension "uat"
-//            buildConfigField("String", "HOST_URL", '"http://108.61.170.39:8081/ecommerce/annoyingProjectsGateway/generics"')
+//        dev {
+//            dimension "api"
+//            buildConfigField("String", "HOST_URL", '"http://192.168.1.4:8090/annoyingProjectsGateway/generics"')
 //        }
+        production {
+            buildConfigField("String", "HOST_URL", '"http://108.61.170.39:8081/ecommerce/annoyingProjectsGateway/generics"')
+            dimension "api"
+        }
+
+
 
     }
 }

@@ -1,7 +1,7 @@
 package com.stfalcon.chatkit.sample.utils;
 
-import com.example.connectionframework.requestframework.sender.Request;
-import com.example.connectionframework.requestframework.sender.RequestFunctions;
+import com.instacommerce.connectionframework.requestframework.sender.Request;
+import com.instacommerce.connectionframework.requestframework.sender.RequestFunctions;
 
 import java.util.ArrayList;
 import java.util.List;

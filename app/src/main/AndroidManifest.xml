@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.annoyingprojects">
+    package="com.instacommerce.annoyingprojects">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -14,12 +14,11 @@
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".mobile.ui.beforelogin.SplashScreenActivity">
+        <activity android:name="com.instacommerce.annoyingprojects.mobile.ui.beforelogin.SplashScreenActivity">
 
         </activity>
 
-        <activity
-            android:name=".mobile.ui.beforelogin.LoginActivity"
+        <activity android:name="com.instacommerce.annoyingprojects.mobile.ui.beforelogin.LoginActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,13 +26,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".mobile.ui.afterlogin.home.StoryActivity" />
-        <activity android:name=".mobile.ui.afterlogin.home.HomeActivity" />
-        <activity android:name=".mobile.ui.afterlogin.userprofile.ActivitySinglePost" />
-        <activity android:name=".mobile.ui.afterlogin.messages.MessagesActivity" />
+        <activity android:name="com.instacommerce.annoyingprojects.mobile.ui.afterlogin.home.StoryActivity" />
+        <activity android:name="com.instacommerce.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity" />
+        <activity android:name="com.instacommerce.annoyingprojects.mobile.ui.afterlogin.userprofile.ActivitySinglePost" />
+        <activity android:name="com.instacommerce.annoyingprojects.mobile.ui.afterlogin.messages.MessagesActivity" />
 
         <service
-            android:name="com.example.annoyingprojects.services.MyFirebaseMessagingService"
+            android:name="com.instacommerce.annoyingprojects.services.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

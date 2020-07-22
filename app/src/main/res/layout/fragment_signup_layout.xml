@@ -82,14 +82,14 @@
                 android:textColor="@color/black"
                 android:textSize="12sp" />
         <EditText
-            android:id="@+id/atv_phone"
+            android:id="@+id/et_confirmPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_roubded_background"
-            android:drawableLeft="@drawable/ic_phone"
-            android:hint="   Phone Number"
+            android:drawableLeft="@drawable/ic_password"
+            android:hint="   Confirm Password"
             android:drawablePadding="10dp"
-            android:inputType="phone"
+            android:inputType="textPassword"
             android:layout_marginTop="10dp"
             android:padding="10dp"
             android:textColor="@color/black"

@@ -6,9 +6,9 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.connectionframework.requestframework.receiver.RequestReceived;
-import com.example.connectionframework.requestframework.sender.Request;
-import com.example.connectionframework.requestframework.sender.SenderBridge;
+import com.instacommerce.connectionframework.requestframework.receiver.RequestReceived;
+import com.instacommerce.connectionframework.requestframework.sender.Request;
+import com.instacommerce.connectionframework.requestframework.sender.SenderBridge;
 import com.squareup.picasso.Picasso;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;

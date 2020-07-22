@@ -10,7 +10,7 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.example.fragments"
+        applicationId "com.instacommerce.fragments"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.compileSdkVersion
         versionCode 1

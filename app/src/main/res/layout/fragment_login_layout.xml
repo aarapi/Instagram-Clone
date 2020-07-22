@@ -38,7 +38,6 @@
         android:orientation="vertical"
         android:layout_centerInParent="true">
 
-
         <EditText
             android:id="@+id/atvEmailLog"
             android:layout_width="match_parent"
@@ -49,10 +48,9 @@
             android:padding="10dp"
             android:hint="   Username"
             android:inputType="textPersonName"
-            android:text="agora"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="12sp" />
-
 
         <EditText
             android:id="@+id/atvPasswordLog"
@@ -65,7 +63,7 @@
             android:layout_marginTop="15dp"
             android:hint="   Passwoard"
             android:inputType="textPassword"
-            android:text="1234567"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="12sp" />
 
