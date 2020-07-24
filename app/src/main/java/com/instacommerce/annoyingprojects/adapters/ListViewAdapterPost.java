@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -64,7 +65,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
         CircleImageView cv_user_img;
         CheckBox iv_like;
         ViewPager viewPager;
-        ImageView iv_more;
+        RelativeLayout iv_more;
         LinearLayout sliderDotspanel;
         ImageView[] dots;
         ImageView iv_location;
@@ -175,7 +176,7 @@ public class ListViewAdapterPost extends ArrayAdapter<PostModel> implements View
                 }
             });
 
-            if (!isUserPost){
+            if (!isUserPost || !dataModel.getUserName().equals(RequestFunction.username)) {
                 viewHolder.iv_more.setVisibility(View.GONE);
             }
 

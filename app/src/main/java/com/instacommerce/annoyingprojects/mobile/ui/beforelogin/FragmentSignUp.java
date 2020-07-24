@@ -3,6 +3,8 @@ package com.instacommerce.annoyingprojects.mobile.ui.beforelogin;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -125,6 +127,10 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             email.setError("Email is empty.");
             return false;
         }
+        if (!(!TextUtils.isEmpty(inEmail) && Patterns.EMAIL_ADDRESS.matcher(inEmail).matches())) {
+            email.setError("Email is not valid.");
+            return false;
+        }
         if (!inPw.equals(inPwdConfirm)) {
             et_confirmPwd.setError("Password is not correct.");
             return false;
@@ -133,6 +139,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             password.setError("Password must contain at least 8 characters.");
             return false;
         }
+
 
         return true;
     }
@@ -155,7 +162,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                 userModel.email = inputEmail;
                 userModel.password = inputPw;
                 userModel.username = inputName;
-                userModel.phoneNumber = inputPwdConfirm;
+                userModel.phoneNumber = "";
                 userModel.country = sp_countries.getSelectedItem().toString();
                 userModel.city = sp_cities.getSelectedItem().toString();
 

@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     private ProgressBar loading_bar;
     private FrameLayout shape_layout;
 
+    private ImageView add_story;
     private CircleImageView iv_user_profile;
 
     private TextView tv_posts_value;
@@ -116,6 +118,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
         iv_user_profile = containerView.findViewById(R.id.iv_user_profile);
         gv_user_post = containerView.findViewById(R.id.gv_user_post);
+        add_story = containerView.findViewById(R.id.add_story);
         tv_log_out = containerView.findViewById(R.id.iv_menu_settings);
 
         tv_posts_value = containerView.findViewById(R.id.tv_posts_value);
@@ -136,7 +139,9 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         tv_log_out.setOnClickListener(this::onClick);
         tv_phone.setOnClickListener(this::onClick);
         rl_edit_profile.setOnClickListener(this::onClick);
-        shape_layout.setOnClickListener(this::onClick);
+        if (isUser) {
+            shape_layout.setOnClickListener(this::onClick);
+        }
     }
 
     @Override
@@ -147,6 +152,12 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
         progressBar.setVisibility(View.VISIBLE);
         sendRequest(RequestFunction.getUserProfileData(0, userModel.username));
+
+        if (!isUser) {
+            add_story.setVisibility(View.INVISIBLE);
+        } else {
+            add_story.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -168,8 +179,10 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
                 UserModel user = gson.fromJson(gson.toJson(data.get(1)), UserModel.class);
                 tv_email.setText(user.email);
                 tv_username.setText(user.username);
-                userModel.phoneNumber = user.phoneNumber;
-                tv_phone.setVisibility(View.VISIBLE);
+                if (user.showContact) {
+                    userModel.phoneNumber = user.phoneNumber;
+                    tv_phone.setVisibility(View.VISIBLE);
+                }
             }
             progressBar.setVisibility(View.GONE);
             tv_posts_value.setText(postModels.size() + "");

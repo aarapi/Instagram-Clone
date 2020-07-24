@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -13,9 +17,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.instacommerce.annoyingprojects.R;
 import com.instacommerce.annoyingprojects.data.UserModel;
 import com.instacommerce.annoyingprojects.mobile.basemodels.BaseFragment;
@@ -38,10 +49,11 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.instacommerce.annoyingprojects.mobile.ui.afterlogin.home.LocationBottomSheet.TAG;
 import static com.instacommerce.annoyingprojects.utilities.CheckSetup.ServerActions.INSTA_COMMERCE_EDIT_PROFILE;
 import static com.instacommerce.annoyingprojects.utilities.Util.setUserImageResPicasso;
 
-public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
+public class EditProfileFragment extends BaseFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private CircleImageView iv_user_profile;
 
@@ -55,6 +67,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     private RelativeLayout rl_header;
     private ProgressBar progressBar;
+    private CheckBox chb_show_contact;
 
     private UserModel userModel;
 
@@ -74,6 +87,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         iv_user_profile = containerView.findViewById(R.id.iv_user_profile);
         rl_header = containerView.findViewById(R.id.rl_header);
         progressBar = containerView.findViewById(R.id.progressbar);
+        chb_show_contact = containerView.findViewById(R.id.chb_show_contact);
 
         userModel = LocalServer.getInstance(getContext()).getUser();
 
@@ -84,6 +98,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         tv_cancel.setOnClickListener(this::onClick);
         tv_change.setOnClickListener(this::onClick);
         tv_done.setOnClickListener(this::onClick);
+
+        chb_show_contact.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -92,6 +108,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         et_email.setText(userModel.email);
         et_username.setText(userModel.username);
         et_phone.setText(userModel.phoneNumber);
+        chb_show_contact.setChecked(userModel.showContact);
     }
 
     @Override
@@ -109,6 +126,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     userModel.email = et_email.getText().toString();
                     userModel.username = et_username.getText().toString();
                     userModel.phoneNumber = et_phone.getText().toString();
+                    userModel.showContact = chb_show_contact.isChecked();
 
                     String encodeImage = null;
                     if (isPhotoChanged) {
@@ -124,6 +142,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
                     progressBar.setVisibility(View.VISIBLE);
                     sendRequest(RequestFunction.editProfile(0, userModel, encodeImage));
+
+
                 }
             }
             if (view == tv_cancel) {
@@ -142,7 +162,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if (!userModel.phoneNumber.equals(et_phone.getText().toString())
                 || !userModel.username.equals(et_username.getText().toString())
                 || !userModel.email.equals(et_email.getText().toString())
-                || isPhotoChanged){
+                || isPhotoChanged || chb_show_contact.isChecked() != userModel.showContact) {
             return true;
         }
 
@@ -201,5 +221,15 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onErrorDataReceive(int action, List<Object> data) {
         super.onErrorDataReceive(action, data);
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if (b) {
+            if (et_phone.getText().toString().equals("")) {
+                et_phone.setError("Please add a phone number first.");
+                chb_show_contact.setChecked(false);
+            }
+        }
     }
 }

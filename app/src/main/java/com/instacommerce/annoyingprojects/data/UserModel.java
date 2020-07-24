@@ -13,6 +13,8 @@ public class UserModel extends BaseModel {
     public String phoneNumber;
     public String country;
     public String city;
+    public boolean showContact;
+
 
 
 

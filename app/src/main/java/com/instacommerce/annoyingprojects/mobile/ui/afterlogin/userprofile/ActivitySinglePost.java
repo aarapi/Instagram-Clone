@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.instacommerce.annoyingprojects.R;
 import com.instacommerce.annoyingprojects.adapters.ListViewAdapterPost;
-import com.instacommerce.annoyingprojects.adapters.StoryRecyclerViewAdapter;
 import com.instacommerce.annoyingprojects.data.PostModel;
 import com.instacommerce.annoyingprojects.mobile.basemodels.BaseActivity;
 import com.instacommerce.annoyingprojects.utilities.CheckSetup;
@@ -21,10 +21,9 @@ public class ActivitySinglePost extends BaseActivity {
     public static String SINGLE_POST_DATA = "SINGLE_POST_DATA";
     private ListView mainListView;
     private ListViewAdapterPost adapter;
-    private ImageView iv_backbtn;
+    private RelativeLayout iv_backbtn;
 
     private List<PostModel> postModelList;
-    private StoryRecyclerViewAdapter mStoryRVAdapter = new StoryRecyclerViewAdapter();
 
     private boolean isRefreshed = false;
 

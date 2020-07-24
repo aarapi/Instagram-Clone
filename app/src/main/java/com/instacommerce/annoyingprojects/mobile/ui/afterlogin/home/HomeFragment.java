@@ -179,6 +179,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     founderListType);
             ArrayList<StoryModel> stories = gson.fromJson(gson.toJson(data.get(1)), storiesType);
 
+            int size = stories.size();
+            for (int i = 0; i < size; i++) {
+                stories.get(i).ID = i + "";
+            }
             mStoryRVAdapter.updateStory(stories);
             adapter.setData(posts);
 
