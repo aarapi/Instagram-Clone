@@ -34,6 +34,7 @@ import com.instacommerce.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity
 import com.instacommerce.annoyingprojects.repository.LocalServer;
 import com.instacommerce.annoyingprojects.utilities.FragmentUtil;
 import com.instacommerce.annoyingprojects.utilities.RequestFunction;
+import com.instacommerce.connectionframework.requestframework.constants.MessagingFrameworkConstant;
 import com.instacommerce.connectionframework.requestframework.languageData.SavedInformation;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.gson.Gson;
@@ -143,7 +144,28 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     progressBar.setVisibility(View.VISIBLE);
                     sendRequest(RequestFunction.editProfile(0, userModel, encodeImage));
 
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName("albilaki")
+                            .build();
+
+                    user.updateEmail("test@gmail.com").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(activity, "Updated success", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    user.updateProfile(profileUpdates)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "User profile updated.");
+                                    }
+                                }
+                            });
                 }
             }
             if (view == tv_cancel) {
@@ -217,10 +239,16 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         }
     }
 
+
     @Override
-    public void onErrorDataReceive(int action, List<Object> data) {
-        super.onErrorDataReceive(action, data);
+    public void onErrorDataReceive(int action, List<Object> data, int status) {
+        super.onErrorDataReceive(action, data, status);
         progressBar.setVisibility(View.GONE);
+        if (status == MessagingFrameworkConstant.STATUS_CODES.Warning) {
+            et_email.setError((String) data.get(0));
+        } else {
+            et_username.setError((String) data.get(0));
+        }
     }
 
     @Override

@@ -157,6 +157,7 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
                 Toast toast = Toast.makeText(activity, "User couldn't login", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
+                switchFragment(R.id.container_frame, new FragmentLogIn());
             }
         }
     }

@@ -56,6 +56,7 @@ public class MediaItemView extends RelativeLayout implements ReboundModuleDelega
         mReboundModule.init(mMediaThumb);
         Bitmap currentImageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
         mMediaThumb.setImageBitmap(currentImageBitmap);
+
     }
 
     @Override
