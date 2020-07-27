@@ -5,7 +5,8 @@
     xmlns:shimmer="http://schemas.android.com/tools"
     android:layout_gravity="clip_horizontal"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
 
     <RelativeLayout
@@ -45,6 +46,11 @@
 
             />
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/white_two"
+        android:layout_below="@+id/search_root"/>
 
     <ProgressBar
         android:id="@+id/progress"

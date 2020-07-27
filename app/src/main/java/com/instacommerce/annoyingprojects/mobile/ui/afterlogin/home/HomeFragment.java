@@ -29,6 +29,7 @@ import com.instacommerce.annoyingprojects.utilities.CheckSetup;
 import com.instacommerce.annoyingprojects.utilities.RequestFunction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.instacommerce.annoyingprojects.utilities.Util;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.lang.reflect.Type;
@@ -134,11 +135,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             mainListView.setAdapter(adapter);
 
         adapter.setOnLoadMoreListener(() -> {
-            adapter.getDataSet().add(null);
-            adapter.notifyDataSetChanged();
+            boolean isNetworkAvailable = Util.isNetworkAvailable(getActivity());
+            if (isNetworkAvailable) {
+                adapter.getDataSet().add(null);
+                adapter.notifyDataSetChanged();
+            }
             sendRequest(RequestFunction.getPostData(0, scrollTime, FilterModel.newInstance(),
                     searchString));
-            scrollTime++;
+
+            if (isNetworkAvailable){
+                scrollTime++;
+            }
+
         });
 
     }
@@ -151,8 +159,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             getActivity().overridePendingTransition(R.anim.enter, R.anim.enter_anim);
         }else if (view == iv_filter){
             getParentFragmentManager();
-                    FilterDialogFragment filterDialogFragment = new FilterDialogFragment();
-                    filterDialogFragment.show(getParentFragmentManager(), FILTER_DIALOG_FRAGMENT);
+            FilterDialogFragment filterDialogFragment = new FilterDialogFragment();
+            filterDialogFragment.show(getParentFragmentManager(), FILTER_DIALOG_FRAGMENT);
             searchView.showSearch();
 
 
@@ -205,14 +213,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onErrorDataReceive(int action, List<Object> data) {
-        rl_upload_post.setVisibility(View.GONE);
-
-            swipeRefreshLayout.setRefreshing(false);
-            isLoading = false;
+        noInternetConnection();
 
         Toast toast = Toast.makeText(activity, "Couldn't refresh feed", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER,0,0);
         toast.show();
+    }
+
+    @Override
+    public void noInternetConnection() {
+        rl_upload_post.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
+        isLoading = false;
     }
 
     @Override

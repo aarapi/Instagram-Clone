@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +34,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.octopepper.mediapickerinstagram.commons.models.CategoryModel;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +47,13 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
     private SharedPreferences sharedPreferences;
 
     private ProgressBar progressbar;
+    private RelativeLayout rl_retry;
+    private Button btn_retry;
+
+    private ImageView iv_offline;
+    private TextView tv_instacommerce;
+
+
 
 
     @Override
@@ -48,11 +61,18 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
         sharedPreferences = getActivity().getSharedPreferences("gujc", Activity.MODE_PRIVATE);
 
         progressbar = containerView.findViewById(R.id.progressbar);
+        rl_retry = containerView.findViewById(R.id.rl_retry);
+        btn_retry = containerView.findViewById(R.id.btn_retry);
+
+        iv_offline = containerView.findViewById(R.id.iv_offline);
+        tv_instacommerce = containerView.findViewById(R.id.tv_instacommerce);
     }
 
     @Override
     public void bindEvents() {
+        btn_retry.setOnClickListener(this);
     }
+
 
     @Override
     public void setViews() {
@@ -63,8 +83,17 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        if (v == btn_retry){
+            rl_retry.setVisibility(View.GONE);
+            iv_offline.setVisibility(View.GONE);
+
+            progressbar.setVisibility(View.VISIBLE);
+            tv_instacommerce.setVisibility(View.VISIBLE);
 
 
+            String userToken = SavedInformation.getInstance().getPreferenceData(getContext(), "USER_TOKEN");
+            signUser(userToken);
+        }
     }
 
 
@@ -152,14 +181,39 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
                 Toast toast = Toast.makeText(activity, (String) data.get(0), Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
-                switchFragment(R.id.container_frame, new FragmentLogIn());
-            } else {
+
+            }else if (status == 700){
+                errorOnServer();
+            }else {
                 Toast toast = Toast.makeText(activity, "User couldn't login", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
                 switchFragment(R.id.container_frame, new FragmentLogIn());
             }
+        }else {
+            errorOnServer();
         }
     }
 
+    private void errorOnServer(){
+        rl_retry.setVisibility(View.VISIBLE);
+        progressbar.setVisibility(View.INVISIBLE);
+
+        tv_instacommerce.setVisibility(View.GONE);
+        iv_offline.setVisibility(View.INVISIBLE);
+
+        ((TextView) containerView.findViewById(R.id.tv_offline)).setText("An error occured!");
+        ((TextView) containerView.findViewById(R.id.tv_find_connection)).setText("Please try again");
+    }
+
+    @Override
+    public void noInternetConnection() {
+        iv_offline.setVisibility(View.VISIBLE);
+        rl_retry.setVisibility(View.VISIBLE);
+
+
+        progressbar.setVisibility(View.INVISIBLE);
+        tv_instacommerce.setVisibility(View.GONE);
+
+    }
 }

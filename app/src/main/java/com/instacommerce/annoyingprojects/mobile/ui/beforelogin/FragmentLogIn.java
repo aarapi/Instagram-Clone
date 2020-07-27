@@ -273,11 +273,15 @@ public class FragmentLogIn extends BaseFragment implements View.OnClickListener{
             public void run() {
                 tv_error.setText(errorResponse);
                 tv_error.setVisibility(View.VISIBLE);
-                enableLoginBtn();
+                noInternetConnection();
             }
         });
     }
 
+    @Override
+    public void noInternetConnection() {
+        enableLoginBtn();
+    }
 
     private void enableLoginBtn(){
         btnSignIn.setClickable(true);

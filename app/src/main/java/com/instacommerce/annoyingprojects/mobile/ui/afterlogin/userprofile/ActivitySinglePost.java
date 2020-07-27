@@ -88,6 +88,10 @@ public class ActivitySinglePost extends BaseActivity {
                 onBackPressed();
             }
         }
+    }
+
+    @Override
+    public void noInternetConnection() {
 
     }
 

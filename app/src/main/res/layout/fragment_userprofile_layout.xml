@@ -49,12 +49,13 @@
                 android:textSize="15sp"></TextView>
 
             <ProgressBar
-                style="@style/ProgressBar"
                 android:id="@+id/loading_bar"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_centerInParent="true"
-                android:visibility="invisible"></ProgressBar>
+                android:indeterminateTint="@color/colorPrimary"
+                android:visibility="invisible"
+                ></ProgressBar>
         </RelativeLayout>
     </RelativeLayout>
 

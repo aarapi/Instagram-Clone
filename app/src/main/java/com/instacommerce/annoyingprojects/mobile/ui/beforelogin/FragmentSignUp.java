@@ -223,11 +223,16 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     @Override
     public void onErrorDataReceive(int action, List<Object> data) {
         tv_error.setVisibility(View.VISIBLE);
+        noInternetConnection();
+        String errorString = (String) data.get(0);
+        tv_error.setText(errorString);
+    }
+
+    @Override
+    public void noInternetConnection() {
         progressbar.setVisibility(View.GONE);
         tv_sign_up.setVisibility(View.VISIBLE);
 
-        String errorString = (String) data.get(0);
-        tv_error.setText(errorString);
     }
 
     @Override

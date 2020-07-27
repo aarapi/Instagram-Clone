@@ -201,7 +201,8 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
 
         public void getRoomInfo() {
             // my chatting room information
-            listenerRegistration = firestore.collection("rooms").whereGreaterThanOrEqualTo("users." + myUid, 0)
+            listenerRegistration = firestore
+                    .collection("rooms").whereGreaterThanOrEqualTo("users." + myUid, 0)
 //                    a.orderBy("timestamp", Query.Direction.DESCENDING)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
@@ -264,8 +265,9 @@ public class ChatRoomFragment extends Fragment implements View.OnClickListener, 
                             roomList.clear();
                             for (Map.Entry<Date, ChatRoomModel> entry : orderedRooms.entrySet()) {
                                 roomList.add(entry.getValue());
+                                roomListForSearch.add(entry.getValue());
                             }
-                            roomListForSearch.addAll(roomList);
+
                             progressbar.setVisibility(View.GONE);
                             notifyDataSetChanged();
                             setBadge(getContext(), unreadTotal);

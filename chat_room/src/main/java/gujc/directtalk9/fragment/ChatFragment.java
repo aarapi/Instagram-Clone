@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -412,7 +413,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            //sendGCM();
+                            sendGCM();
                             sendBtn.setEnabled(true);
                         }
                     }
@@ -447,10 +448,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    System.out.println(response);
                 }
             });
         }

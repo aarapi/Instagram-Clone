@@ -1,9 +1,14 @@
 package com.instacommerce.annoyingprojects.mobile.basemodels;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +25,8 @@ import com.instacommerce.connectionframework.requestframework.sender.SenderBridg
 
 import java.io.Serializable;
 import java.util.List;
+
+import static com.instacommerce.annoyingprojects.utilities.Util.isNetworkAvailable;
 
 public abstract class BaseActivity extends AppCompatActivity implements
         View.OnClickListener {
@@ -91,16 +98,22 @@ public abstract class BaseActivity extends AppCompatActivity implements
         super.onPause();
     }
     public void sendRequest(Request request) {
-
-        if (senderBridge != null)
-            senderBridge.sendMessage(request);
+        if (isNetworkAvailable(activity)) {
+            if (senderBridge != null)
+                senderBridge.sendMessage(request);
+        }else {
+            Toast toast = Toast.makeText(getBaseContext(), "No interenet connection.", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            noInternetConnection();
+        }
     }
 
     public void onDataReceive(int action, List<Object> data) {}
     public void onErrorDataReceive(int action, List<Object> data) {}
+    public void onErrorDataReceive(int action, List<Object> data, int status) {}
+    public void noInternetConnection(){}
 
-    public void onErrorDataReceive(int action, List<Object> data, int status) {
-    }
 
 
 
@@ -145,5 +158,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public void onClick(View v) {
 
     }
+
+
 }
 

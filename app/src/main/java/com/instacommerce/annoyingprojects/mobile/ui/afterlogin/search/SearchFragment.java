@@ -120,10 +120,16 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
 
     @Override
     public void onErrorDataReceive(int action, List<Object> data) {
-        shimmer_view_container.setVisibility(View.GONE);
+        noInternetConnection();
+
         Toast toast = Toast.makeText(activity, "Couldn't retreive data", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    @Override
+    public void noInternetConnection() {
+        shimmer_view_container.setVisibility(View.GONE);
     }
 
     @Override

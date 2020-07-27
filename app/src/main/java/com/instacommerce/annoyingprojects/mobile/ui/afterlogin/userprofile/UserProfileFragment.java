@@ -34,6 +34,7 @@ import com.instacommerce.annoyingprojects.repository.LocalServer;
 import com.instacommerce.annoyingprojects.utilities.CheckSetup;
 import com.instacommerce.annoyingprojects.utilities.FragmentUtil;
 import com.instacommerce.annoyingprojects.utilities.RequestFunction;
+import com.instacommerce.annoyingprojects.utilities.Util;
 import com.instacommerce.connectionframework.requestframework.languageData.SavedInformation;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -194,35 +195,42 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onErrorDataReceive(int action, List<Object> data) {
         if (action == CheckSetup.ServerActions.INSTA_COMMERCE_LOG_OUT) {
-            tv_log_out.setVisibility(View.VISIBLE);
-            loading_bar.setVisibility(View.GONE);
+            noInternetConnection();
             Toast toast = Toast.makeText(activity, (String) data.get(0), Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
             progressBar.setVisibility(View.GONE);
-            Toast toast = Toast.makeText(activity, "Couldn't log out", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(activity, "Couldn't refresh feed", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         }
     }
 
     @Override
+    public void noInternetConnection() {
+        tv_log_out.setVisibility(View.VISIBLE);
+        loading_bar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == tv_log_out) {
-            FirebaseAuth.getInstance().signOut();
-
-            SharedPreferences preferences = getContext().getSharedPreferences("PREFERENCE_NAME",
-                    Context.MODE_PRIVATE);
-
-            preferences.edit().remove("user").commit();
-
-
             tv_log_out.setVisibility(View.GONE);
             loading_bar.setVisibility(View.VISIBLE);
             sendRequest(RequestFunction.logOut(0,
                     SavedInformation.getInstance().getPreferenceData(getContext(), "USER_TOKEN")));
-            preferences.edit().remove("USER_TOKEN").commit();
+            if (Util.isNetworkAvailable(getActivity())) {
+                FirebaseAuth.getInstance().signOut();
+
+                SharedPreferences preferences = getContext().getSharedPreferences("PREFERENCE_NAME",
+                        Context.MODE_PRIVATE);
+
+                preferences.edit().remove("user").commit();
+                preferences.edit().remove("USER_TOKEN").commit();
+            }
+
 
         }else if (v == rl_edit_profile){
             if (isUser){

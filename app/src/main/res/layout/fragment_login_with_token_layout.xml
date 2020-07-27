@@ -10,6 +10,7 @@
     android:animateLayoutChanges="true">
 
     <TextView
+        android:id="@+id/tv_instacommerce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Instacommerce"
@@ -23,26 +24,55 @@
 
     <ProgressBar
         android:id="@+id/progressbar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_centerInParent="true"
         android:indeterminateTint="@color/main_color" />
 
+        <ImageView
+            android:id="@+id/iv_offline"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/no_internet"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/progressbar"
+            android:layout_marginBottom="50dp"
+            android:visibility="gone"
+            />
     <RelativeLayout
-        android:id="@+id/btnSignIn"
-        android:layout_width="match_parent"
+        android:id="@+id/rl_retry"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/btnsignin_gradient"
-        android:textColor="#FFFFFF"
-        android:visibility="invisible">
-
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/iv_offline"
+        android:visibility="gone">
+    <TextView
+        android:id="@+id/tv_offline"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You are currently offline"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"/>
+        
         <TextView
-            android:id="@+id/tv_signin"
+            android:id="@+id/tv_find_connection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"></TextView>
+            android:text="Find a network signal or Wi-Fi before\n
+                      continuing"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_offline"/>
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retry"
+            android:layout_below="@+id/tv_find_connection"
+            android:background="@drawable/btnsignin_gradient"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            />
     </RelativeLayout>
 </RelativeLayout>

@@ -2,10 +2,12 @@ package com.instacommerce.annoyingprojects.mobile.basemodels;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,8 @@ import com.instacommerce.connectionframework.requestframework.sender.SenderBridg
 
 import java.io.Serializable;
 import java.util.List;
+
+import static com.instacommerce.annoyingprojects.utilities.Util.isNetworkAvailable;
 
 public abstract class BaseFragment extends Fragment {
     protected View containerView;
@@ -145,9 +149,16 @@ public abstract class BaseFragment extends Fragment {
 
 
     public void sendRequest(Request request) {
+        if (isNetworkAvailable(getActivity())){
+            if (senderBridge != null)
+                senderBridge.sendMessage(request);
+        }else {
+            Toast toast = Toast.makeText(getContext(), "No interenet connection.", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            noInternetConnection();
+        }
 
-        if (senderBridge != null)
-            senderBridge.sendMessage(request);
     }
 
     public void setFragmentView(List<Object> data){
@@ -156,9 +167,8 @@ public abstract class BaseFragment extends Fragment {
 
     public void onDataReceive(int action, List<Object> data) {}
     public void onErrorDataReceive(int action, List<Object> data) {}
-
-    public void onErrorDataReceive(int action, List<Object> data, int status) {
-    }
+    public void onErrorDataReceive(int action, List<Object> data, int status) {}
+    public void noInternetConnection(){}
 
 
     public void onBackClicked() {

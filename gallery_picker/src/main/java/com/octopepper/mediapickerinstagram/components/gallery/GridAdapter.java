@@ -44,7 +44,12 @@ class GridAdapter extends RecyclerViewAdapterBase<File, MediaItemView> implement
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
         swipe_refresh = containerView.findViewById(R.id.swipe_refresh);
 
         if (LocalServer.newInstance().getMessageUsersModels() == null ||
-        LocalServer.newInstance().isSendNewMessage()) {
+                LocalServer.newInstance().isSendNewMessage()) {
             progress.setVisibility(View.VISIBLE);
             LocalServer.newInstance().setSendNewMessage(false);
             sendRequest(RequestFunction.getMessageUsers(0));
@@ -93,13 +93,17 @@ public class FragmentMessageUsers extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onErrorDataReceive(int action, List<Object> data) {
+        noInternetConnection();
+    }
+
+    @Override
+    public void noInternetConnection() {
         if (isLoading) {
             swipe_refresh.setRefreshing(false);
             isLoading = false;
         }
 
         progress.setVisibility(View.GONE);
-
     }
 
     private void setMessageUsersList() {

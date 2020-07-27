@@ -212,6 +212,11 @@ public class HomeActivity extends BaseActivity implements SettingFragment.ItemCl
     }
 
     @Override
+    public void noInternetConnection() {
+        homeFragment.noInternetConnection();
+    }
+
+    @Override
     public void onItemClick(String item) {
 
     }

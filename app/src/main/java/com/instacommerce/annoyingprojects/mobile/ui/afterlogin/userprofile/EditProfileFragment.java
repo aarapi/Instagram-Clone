@@ -142,6 +142,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     }
 
                     progressBar.setVisibility(View.VISIBLE);
+                    tv_done.setVisibility(View.GONE);
                     sendRequest(RequestFunction.editProfile(0, userModel, encodeImage));
 
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -234,6 +235,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             ((HomeActivity) getActivity()).getUserProfileFragment().getTv_username().setText(userModel.username);
 
             progressBar.setVisibility(View.GONE);
+            tv_done.setVisibility(View.VISIBLE);
             Toast.makeText(getContext(), "Profile edited", Toast.LENGTH_SHORT).show();
             onBackClicked();
         }
@@ -243,12 +245,20 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onErrorDataReceive(int action, List<Object> data, int status) {
         super.onErrorDataReceive(action, data, status);
-        progressBar.setVisibility(View.GONE);
+
+        noInternetConnection();
+
         if (status == MessagingFrameworkConstant.STATUS_CODES.Warning) {
             et_email.setError((String) data.get(0));
         } else {
             et_username.setError((String) data.get(0));
         }
+    }
+
+    @Override
+    public void noInternetConnection() {
+        progressBar.setVisibility(View.GONE);
+        tv_done.setVisibility(View.VISIBLE);
     }
 
     @Override
