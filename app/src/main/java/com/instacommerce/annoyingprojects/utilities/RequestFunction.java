@@ -152,6 +152,11 @@ public class RequestFunction {
         params.add(imageData);
         params.add(username);
         return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_CREATE_NEW_STORY, params);
+    }
 
+    public static Request getSeearchedPosts(int activityId) {
+        List<Object> params = new ArrayList<>();
+        params.add(username);
+        return RequestFunctions.createRequest(activityId, CheckSetup.ServerActions.INSTA_COMMERCE_GET_MOST_SEARCHED_POSTS, params);
     }
 }

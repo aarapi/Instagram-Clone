@@ -3,6 +3,7 @@ package com.instacommerce.annoyingprojects.repository;
 import android.content.Context;
 
 import com.instacommerce.annoyingprojects.data.MessageUsersModel;
+import com.instacommerce.annoyingprojects.data.Posts;
 import com.instacommerce.annoyingprojects.data.UserModel;
 import com.instacommerce.connectionframework.requestframework.languageData.SavedInformation;
 import com.octopepper.mediapickerinstagram.commons.models.CategoryModel;
@@ -24,6 +25,7 @@ public class LocalServer {
     private ArrayList<UserModel> lastRecentSearchedUsers = new ArrayList<>();
     private ArrayList<UserModel> userList = new ArrayList<>();
     private ArrayList<CategoryModel> categoryModels = new ArrayList<>();
+    private ArrayList<Posts> searchedPosts = new ArrayList<>();
 
 
     private boolean sendNewMessage = false;
@@ -88,5 +90,13 @@ public class LocalServer {
 
     public void setCategoryModels(ArrayList<CategoryModel> categoryModels) {
         this.categoryModels = categoryModels;
+    }
+
+    public ArrayList<Posts> getSearchedPosts() {
+        return searchedPosts;
+    }
+
+    public void setSearchedPosts(ArrayList<Posts> searchedPosts) {
+        this.searchedPosts = searchedPosts;
     }
 }

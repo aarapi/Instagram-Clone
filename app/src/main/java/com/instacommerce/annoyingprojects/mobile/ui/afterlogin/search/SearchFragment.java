@@ -1,10 +1,12 @@
 package com.instacommerce.annoyingprojects.mobile.ui.afterlogin.search;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -13,10 +15,15 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.instacommerce.annoyingprojects.R;
 import com.instacommerce.annoyingprojects.adapters.RecyclerViewAdapterSearch;
+import com.instacommerce.annoyingprojects.adapters.StaggerPostRecyclerAdapter;
+import com.instacommerce.annoyingprojects.data.PostModel;
+import com.instacommerce.annoyingprojects.data.Posts;
 import com.instacommerce.annoyingprojects.data.UserModel;
+import com.instacommerce.annoyingprojects.layoutmanager.SpannedGridLayoutManager;
 import com.instacommerce.annoyingprojects.mobile.basemodels.BaseFragment;
 import com.instacommerce.annoyingprojects.mobile.ui.afterlogin.home.HomeActivity;
 import com.instacommerce.annoyingprojects.mobile.ui.afterlogin.userprofile.UserProfileFragment;
@@ -30,20 +37,24 @@ import com.google.gson.reflect.TypeToken;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SearchFragment extends BaseFragment implements TextWatcher, RecyclerViewAdapterSearch.OnItemClickListener, View.OnClickListener {
     private ProgressBar progressBar;
+    private ArrayList<PostModel> postModels = new ArrayList<>();
 
     private EditText serchInput;
     private TextView tv_cancel;
 
     private RecyclerViewAdapterSearch recyclerViewAdapterSearch;
     private RecyclerView rv_user_list;
+    private RecyclerView rv_random_posts;
 
     private ShimmerFrameLayout shimmer_view_container;
-
     private ArrayList<UserModel> userModels = new ArrayList<>();
+    boolean isKeyboardShowing = false;
+
 
     @Override
     public void initViews() {
@@ -52,10 +63,61 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
         tv_cancel = containerView.findViewById(R.id.tv_cancel);
 
         rv_user_list = containerView.findViewById(R.id.rv_user_list);
+        rv_random_posts = containerView.findViewById(R.id.rv_random_posts);
+
         shimmer_view_container = containerView.findViewById(R.id.shimmer_view_container);
 
         userModels = LocalServer.newInstance().getLastRecentSearchedUsers();
+
+        containerView.findViewById(R.id.root).getRootView().getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        Rect r = new Rect();
+                        containerView.findViewById(R.id.root).getRootView().getWindowVisibleDisplayFrame(r);
+                        int screenHeight = containerView.findViewById(R.id.root).getRootView().getRootView().getHeight();
+
+                        // r.bottom is the position above soft keypad or device button.
+                        // if keypad is shown, the r.bottom is smaller than that before.
+                        int keypadHeight = screenHeight - r.bottom;
+
+
+                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                            // keyboard is opened
+                            if (!isKeyboardShowing) {
+                                isKeyboardShowing = true;
+                                onKeyboardVisibilityChanged(true);
+                            }
+                        } else {
+                            // keyboard is closed
+                            if (isKeyboardShowing) {
+                                isKeyboardShowing = false;
+                                onKeyboardVisibilityChanged(false);
+                            }
+                        }
+                    }
+                });
+
+        ArrayList<Posts> searchedPosts = LocalServer.newInstance().getSearchedPosts();
+        int postsSize = searchedPosts.size();
+        for (int i = 0; i < postsSize; i++) {
+            PostModel postModel = searchedPosts.get(i).getPostModel();
+            postModel.setLinkUserImg(searchedPosts.get(i).getLinkUserImg());
+            postModel.setLinkImages(searchedPosts.get(i).getLinkImages());
+
+            postModels.add(postModel);
+
+        }
     }
+
+    void onKeyboardVisibilityChanged(boolean opened) {
+        if (opened) {
+            rv_random_posts.setVisibility(View.GONE);
+            tv_cancel.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @Override
     public void bindEvents() {
@@ -76,6 +138,35 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
         recyclerViewAdapterSearch = new RecyclerViewAdapterSearch(getContext(), userModels, false);
         rv_user_list.setAdapter(recyclerViewAdapterSearch);
         recyclerViewAdapterSearch.notifyDataSetChanged();
+
+        SpannedGridLayoutManager manager = new SpannedGridLayoutManager(
+                new SpannedGridLayoutManager.GridSpanLookup() {
+                    @Override
+                    public SpannedGridLayoutManager.SpanInfo getSpanInfo(int position) {
+                        // Conditions for 2x2 items
+                        if (position % 6 == 0 || position % 6 == 4) {
+                            return new SpannedGridLayoutManager.SpanInfo(2, 2);
+                        } else {
+                            return new SpannedGridLayoutManager.SpanInfo(1, 1);
+                        }
+                    }
+                },
+                3, // number of columns
+                1f // how big is default item
+        );
+        rv_random_posts.setLayoutManager(manager);
+
+
+        ArrayList<String> postsName = new ArrayList();
+        ArrayList<String> postImages = new ArrayList<>();
+        for (PostModel postModel: postModels){
+            postsName.add(postModel.getProductName());
+            postImages.add(postModel.getLinkImages().get(0));
+        }
+
+
+        StaggerPostRecyclerAdapter customAdapter = new StaggerPostRecyclerAdapter(getContext(), postsName, postImages);
+        rv_random_posts.setAdapter(customAdapter);
     }
 
     @Override
@@ -167,6 +258,10 @@ public class SearchFragment extends BaseFragment implements TextWatcher, Recycle
 
     @Override
     public void onClick(View view) {
-        onBackClicked();
+        if (view == tv_cancel){
+            rv_user_list.setVisibility(View.GONE);
+            tv_cancel.setVisibility(View.GONE);
+            rv_random_posts.setVisibility(View.VISIBLE);
+        }
     }
 }

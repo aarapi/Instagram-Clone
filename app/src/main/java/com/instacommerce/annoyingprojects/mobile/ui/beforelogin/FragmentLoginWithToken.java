@@ -131,6 +131,7 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
             ArrayList<Posts> posts = gson.fromJson(gson.toJson(data.get(1)), postsType);
             ArrayList<StoryModel> stories = gson.fromJson(gson.toJson(data.get(2)), storiesType);
             ArrayList<CategoryModel> categoryModels = gson.fromJson(gson.toJson(data.get(4)), categoryType);
+            LocalServer.newInstance().setSearchedPosts(gson.fromJson(gson.toJson(((ArrayList) data.get(6)).get(0)),postsType));
 
             LocalServer.newInstance().setUserList(gson.fromJson(gson.toJson(data.get(3)), usersType));
             LocalServer.newInstance().setCategoryModels(categoryModels);
@@ -181,6 +182,7 @@ public class FragmentLoginWithToken extends BaseFragment implements View.OnClick
                 Toast toast = Toast.makeText(activity, (String) data.get(0), Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
+                switchFragment(R.id.container_frame, new FragmentLogIn());
 
             }else if (status == 700){
                 errorOnServer();
